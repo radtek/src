@@ -1,0 +1,270 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <title>图纸标注</title>
+    <style>
+        html, body {
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+
+        .viewer {
+            height: 100%;
+            position: relative;
+            background-color: white;
+        }
+
+        .wrapper {
+            position: absolute;
+            top: 1px;
+            left: 1px;
+            bottom: 1px;
+            right: 1px;
+            overflow: hidden; /*for opera*/
+        }
+
+        .toolbar {
+            border: 1px solid black;
+            position: absolute;
+            top: 1em;
+            left: 1em;
+            right: 1em;
+            height: 3em;
+        }
+
+        .pointerImg {
+            /* background-image: url('/style/sign.png'); */
+            width: 30px;
+            /*height: 14px;*/
+            position: absolute;
+            display: none;
+        }
+
+        .iviewer_common {
+            position: absolute;
+            bottom: 10px;
+            border: 1px solid #000;
+            height: 28px;
+            z-index: 5000;
+        }
+        .iviewer_cursor {
+            cursor: -moz-grab;
+        }
+
+        .iviewer_drag_cursor {
+            cursor: -moz-grabbing;
+        }
+
+        .iviewer_button {
+            width: 28px;
+            cursor: pointer;
+            background-position: center center;
+            background-repeat: no-repeat;
+        }
+
+        .iviewer_zoom_in {
+            left: 20px;
+            background: url(style/iviewer.zoom_in.gif);
+        }
+
+        .iviewer_zoom_out {
+            left: 55px;
+            background: url(style/iviewer.zoom_out.gif);
+        }
+
+        .iviewer_zoom_zero {
+            left: 90px;
+            background: url(style/iviewer.zoom_zero.gif);
+        }
+
+        .iviewer_zoom_fit {
+            left: 125px;
+            background: url(style/iviewer.zoom_fit.gif);
+        }
+
+        .iviewer_zoom_status {
+            left: 160px;
+            font: 1em/28px Sans;
+            color: #000;
+            background-color: #fff;
+            text-align: center;
+            width: 60px;
+        }
+        .item{
+            position: absolute;
+        }
+        .item-btn{
+            border:none;
+            outline:none;
+            background:#00A3E8;
+            font-size:14px;
+            color:seashell;
+            line-height:28px;
+            padding:5px 10px;
+            margin:5px;
+            transition:0.5s;
+        }
+        .item-btn:hover{
+            background:seashell;
+            color:#00A3E8;
+        }
+        .item-select{
+            padding:5px 10px;
+            margin:5px;
+            font-size:14px;
+            line-height:28px;
+            height:38px;
+        }
+
+        #menu {
+            height: 60px;
+            width: 100px;
+            color:seashell;
+            /* border: 1px solid gray; */
+            background-color: #00A3E8;
+            padding: 5px;
+            display: none;
+            position: absolute;
+        }
+
+        #menu ul,#menu li {
+            margin:0;
+            padding:0;
+            text-align:center;
+            list-style-type: none;
+            line-height: 30px;
+            transition:0.5s;
+        }
+        #menu li:hover{
+            background:seashell;
+            color:#00A3E8;
+        }
+        /*   .imgxxx{
+         filter: drop-shadow(0px 0px 3px red);
+         }  */
+    </style>
+</head>
+<body>
+<div class="wrapper">
+    <div id="viewer1" class="viewer" style="overflow: hidden;"></div>
+</div>
+<div id="sign">
+</div>
+        <div class="item">
+            <input type="button" class="item-btn" onclick="onPoint()" value="开始标注" />
+            <input type="button" class="item-btn" value="结束标注" onclick="offPoint()" />
+            <!-- <ul id="items" style="border:1px solid #707070;background-color:white;font-size:12px;margin-left:-35px;min-height:150px;"></ul> -->
+        </div>
+<!-- 右键菜单 -->
+<div id="menu">
+    <ul>
+        <!-- <li>修改</li> -->
+        <li onclick="">删除</li>
+    </ul>
+</div>
+<script type="text/javascript" src="style/jquery.js"></script>
+<script type="text/javascript" src="style/jquery.mousewheel.mobile.min.js"></script>
+<script type="text/javascript" src="style/jquery.iviewer.mobile.js"></script>
+<script type="text/javascript" src="style/jquery.iviewer.mobilestart.js"></script>
+<script type="text/javascript" src="style/jquery.iviewer.mobileend.js"></script>
+<script type="text/javascript">
+    var $ = jQuery;
+    var src = "style/wjj.svg";//待修改
+    var signIcon = "style/sign.png";
+    var points = [];
+    points.push({imgId:"sign1",x:675.1880574893196,y:250.3509234828496});
+    points.push({imgId:"sign2",x:617.5759202861534,y:162.73878627968338});
+    var isLoading = 1;
+    var canSign=0;
+    var pointsLength = 0;
+    function changeMe(imgId, b, c, object) {
+        var offset = object.imageToContainer(b, c);
+        var percent = object.get_percent();
+        var containerOffset = object.container.offset();
+        var pointer = $(imgId + "_img");
+        offset.x += containerOffset.left;
+        offset.y += containerOffset.top;
+        pointer.css('display', 'block');
+        pointer.css('left', offset.x + 'px');
+        pointer.css('top', offset.y + 'px');
+        pointer.css("margin-top","-15px");
+        pointer.css("margin-left","-15px");
+    }
+
+    function changeAll(object) {
+        for (var i = 0; i < points.length; i++) {
+            var imgId = "#sign" + (i + 1);
+            changeMe(imgId, points[i].x, points[i].y, object);
+        }
+    }
+    function loading(object){
+        if(points){
+            for(var i=0;i<points.length;i++){
+                var imgId = "sign" + (i + 1);
+                var img = "<img src=\""+signIcon+"\" id=\"" + imgId + "_img\" class=\"pointerImg\" onclick=\"alert('点击')\" title=\"aaaaaa\">";
+                //points.push({imgId:imgId,x:signedPoints[i].x,y:signedPoints[i].y,deviceTypeId:signedPoints[i].deviceTypeId,deviceId:signedPoints[i].deviceId,fileId:signedPoints[i].fileId});
+                $("#sign").append(img);
+            }
+            pointsLength = points.length;
+            changeAll(object);
+        }
+        isLoading=0;
+    }
+    function addPoints(coords, object){
+        if(canSign==1){
+            var imgId = "sign" + (pointsLength + 1);
+            points.push({imgId:imgId,x:coords.x,y:coords.y});
+            var img = "<img src=\""+signIcon+"\" id=\"" + imgId + "_img\" class=\"pointerImg\"  onClick=\"del('" + imgId + "')\"  title=\"bbbbbbbbb\">";
+            $("#sign").append(img);
+            pointsLength++;
+            changeAll(object);
+        }
+        canSign=0;
+    }
+    $(function (){
+        $("#viewer1").iviewer({
+            src: src,
+            onClick: function (coords) {
+                addPoints(coords, this);
+            },
+            onBeforeDrag: function (coords) {
+            },
+            //初始化
+            onZoom: function () {
+                changeAll(this);
+                if(isLoading==1){
+                    loading(this);
+                }
+            },
+            //移动
+            onDrag: function () {
+                changeAll(this);
+                if(isLoading==1){
+                    loading(this);
+                }
+            },
+            //放大缩小
+            onTouchMove: function (){
+                changeAll(this);
+                if(isLoading==1){
+                    loading(this);
+                }
+            },
+            initCallback: function (){
+                this.container.context.iviewer = this;
+            }
+        });
+    });
+    function onPoint(){
+    console.log(112);
+        canSign=1;
+    }
+    function offPoint(){
+        canSign=0;
+    }
+</script>
+</body>
+</html>

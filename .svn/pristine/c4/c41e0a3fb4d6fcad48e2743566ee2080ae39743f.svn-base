@@ -1,0 +1,227 @@
+﻿using cn.justwin.DAL;
+using com.jwsoft.pm.data;
+using Newtonsoft.Json.Linq;
+using PMBase.Basic;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
+using System.Linq;
+using System.Web;
+using System.Web.Services;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+
+public partial class WeChat_task_show : Page
+{
+    public string code = string.Empty;
+    public string action = string.Empty;
+    public string Id = string.Empty; private string userID = string.Empty;
+    public string JD = string.Empty;
+    protected override void OnInit(System.EventArgs e)
+    {
+        this.code = base.Request["code"];
+        this.action = base.Request["action"];
+        this.Id = base.Request["id"];
+        this.userID = base.Request["userID"];//用户ID
+        base.OnInit(e);
+    }
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        if (!base.IsPostBack)
+        {
+            if (!string.IsNullOrEmpty(userID))
+            {
+                UserID.Value = userID;//WXAPI.getUserIdByCode(code); 
+            }
+            else
+            {
+                UserID.Value = WXAPI.getUserIdByCode(code, "1000010"); //"00200002";//WXAPI.getUserIdByCode(code); //"00200002";//WXAPI.getUserIdByCode(code); 
+            }
+            this.KeyId.Value = Id;
+            this.Bind(Id, action);
+        }
+    }
+    private void Bind(string Id, string action)
+    {
+        if (!string.IsNullOrEmpty(Id))
+        {
+            string strWhere = " and OA_Task.id='" + Id + "'";
+            DataTable dt = TaskService.GetTaskListTable(strWhere, UserID.Value);
+            if (dt.Rows.Count > 0)
+            {
+                this.type_id.InnerHtml = dt.Rows[0]["typeName"].ToString();//任务类型
+                this.priority_id.InnerHtml = dt.Rows[0]["CodeName"].ToString();//任务优先级
+                string strs = "";
+                if (dt.Rows[0]["if_send"].ToString() == "1")
+                {
+                    strs = "执行人更新任务进度时,接收更新通知";
+                }
+                else if (dt.Rows[0]["if_send"].ToString() == "1")
+                {
+                    strs = "执行人更新任务进度时,不接收更新通知";
+                }
+                else
+                {
+
+                }
+                this.if_send.InnerHtml = strs;//是否发送微信通知
+                this.title.InnerHtml = dt.Rows[0]["title"].ToString();//标题
+                this.content.InnerHtml = dt.Rows[0]["content"].ToString();//内容
+                status_name.InnerHtml = dt.Rows[0]["status_name"].ToString();//任务状态
+                if (!string.IsNullOrEmpty(dt.Rows[0]["progress"].ToString()))
+                {
+                    this.progress.InnerHtml = dt.Rows[0]["progress"].ToString()+"%";//任务进度
+                }else
+                {
+                    this.progress.InnerHtml = "0%";//任务进度
+                }
+                this.start_time.InnerHtml = Convert.ToDateTime(dt.Rows[0]["start_time"].ToString()).ToString("yyyy-MM-dd HH:mm");//开始时间
+                this.end_time.InnerHtml = Convert.ToDateTime(dt.Rows[0]["end_time"].ToString()).ToString("yyyy-MM-dd HH:mm");//结束时间
+                TimeSpan timeSpan = Convert.ToDateTime(dt.Rows[0]["end_time"].ToString()) - Convert.ToDateTime(dt.Rows[0]["start_time"].ToString());
+                this.cxsj.InnerHtml = timeSpan.TotalMinutes.ToString();///持续时间（分钟）
+               
+                if (dt.Rows[0]["status"].ToString() == "2")
+                {
+                    btns.Visible = true;
+                }
+                else
+                {
+                    btns.Visible = false;
+                }
+
+                if (dt.Rows[0]["syrID"].ToString() == UserID.Value.ToString() && dt.Rows[0]["status"].ToString() == "2")
+                {
+                    upProgress.Visible = true;
+                }
+                else
+                {
+                    upProgress.Visible = false;
+                }
+            }
+        }
+    }
+    /// <summary>
+    /// 更新任务进度
+    /// </summary>
+    [WebMethod]//标示为web服务方法属性
+    public static string changeStatus(string Id, string status)
+    {
+        string strSql = "update OA_Task set status="+ status + "  where Id='"+ Id + "'";
+        using (SqlConnection sqlConnection = new SqlConnection(SqlHelper.ConnectionString))
+        {
+            sqlConnection.Open();
+            SqlTransaction sqlTransaction = sqlConnection.BeginTransaction();
+            try
+            {
+                SqlHelper.ExecuteNonQuery(sqlTransaction, CommandType.Text, strSql);
+                sqlTransaction.Commit();
+                return status;
+            }
+            catch
+            {
+                sqlTransaction.Rollback();
+                return "0";
+            }
+        }
+    }
+
+    /// <summary>
+    /// 绑定任务进度
+    /// </summary>
+    /// <param name="KeyID"></param>
+    [WebMethod]//标示为web服务方法属性
+    public static string BindJD(string Id)
+    {
+        DataTable dtJD = publicDbOpClass.DataTableQuary(@"select OA_Task_Progress_History.*,PT_yhmc.v_xm,PT_yhmc.WXID from OA_Task_Progress_History left join PT_yhmc on 
+                                            OA_Task_Progress_History.user_id=PT_yhmc.v_yhdm where head_id='" + Id + "' order by OA_Task_Progress_History.time desc");
+        DataTable dtJDNum = publicDbOpClass.DataTableQuary(@"SELECT top 1 progress FROM OA_Task_Progress_History WHERE head_id='" + Id + "' order by time desc");
+        string strs = "";
+        if (dtJD.Rows.Count > 0)
+        {
+            foreach (DataRow dr in dtJD.Rows)
+            {
+                string imgUrl = "";
+                JObject json1 = WXAPI.getUserInfo(dr["WXID"].ToString(), "1000010");
+                if (json1 !=null)
+                {
+                    string code = json1["errcode"].ToString();
+                   
+                    if (code == "0")
+                    {
+                        imgUrl = json1["avatar"].ToString();
+                    }
+                    else
+                    {
+                        imgUrl = "";
+                    }
+                }
+                else
+                {
+                    imgUrl = "";
+                }
+                
+                strs += @"<li class='flexbox'>" + 
+                    "<div class='avator'><img src='" + imgUrl + "' alt=''></div>" +
+                                    "<div class='comment_content flexItem mapItem'>" +
+                                    "<h3 class='clearfix'><span class='title'>" + dr["v_xm"].ToString() + "</span><span class='time'>" + Convert.ToDateTime(dr["time"].ToString()).ToString("yyyy-MM-dd HH:mm") + "</span>" +
+                                    "<input type='hidden' value='" + dr["id"].ToString() + "'>" +
+                                    "</h3><p class='@class'>进度:" + dr["progress"].ToString() + "% &nbsp;&nbsp;进度说明:" + dr["content"].ToString() + "</p></div> </li>"; 
+            }
+         
+        }
+        else
+        {
+            strs= "<li class='flexbox'><p class='@class'>暂无更新记录</p></div> </li>";
+
+        }
+        if (dtJDNum.Rows.Count > 0)
+        {
+            return dtJDNum.Rows[0]["progress"].ToString()+"%|"+strs;
+        }
+        else
+        {
+            return "0%|" + strs;
+        }
+       
+    }
+    [WebMethod]//标示为web服务方法属性
+    public static string submitUp(string Id, string userID, string t1, string t2)
+    {
+        string strSql = string.Format(@"
+INSERT INTO [OA_Task_Progress_History]
+           ([id]
+           ,[progress]
+           ,[content]
+           ,[user_id]
+           ,[head_id]
+           ,[time])
+     VALUES
+           (
+		    '{0}' --<id, nvarchar(50),>
+           ,{1} --<progress, int,>
+           ,'{2}' --<content, nvarchar(max),>
+           ,'{3}' --<user_id, varchar(50),>
+           ,'{4}' --<head_id, nchar(10),>
+           ,'{5}' --<time, datetime,>
+		   )
+        ", Guid.NewGuid().ToString(), t1, t2, userID, Id, DateTime.Now);
+
+        using (SqlConnection sqlConnection = new SqlConnection(SqlHelper.ConnectionString))
+        {
+            sqlConnection.Open();
+            SqlTransaction sqlTransaction = sqlConnection.BeginTransaction();
+            try
+            {
+                SqlHelper.ExecuteNonQuery(sqlTransaction, CommandType.Text, strSql);
+                sqlTransaction.Commit();
+                return "1";
+            }
+            catch
+            {
+                sqlTransaction.Rollback();
+                return "0";
+            }
+        }
+    }
+}

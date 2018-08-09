@@ -1,0 +1,300 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="DocList.aspx.cs" Inherits="OA3_FileMsg_DocList" %>
+
+<%@ Register TagPrefix="MyUserControl" TagName="epc_usercontrol1_wf_ascx" Src="~/EPC/UserControl1/WF.ascx" %>
+<%@ Import Namespace="cn.justwin.BLL" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head id="Head1" runat="server">
+    <title></title>
+    <link href="../../Script/jquery.tooltip/jquery.tooltip.css" rel="Stylesheet" type="text/css" />
+
+    <script type="text/javascript" src="/Script/jquery.js"></script>
+    <script type="text/javascript" src="/StockManage/script/Config2.js"></script>
+    <script type="text/javascript" src="/StockManage/script/JustWinTable.js"></script>
+    <script type="text/javascript" src="/SysFrame/jscript/JsControlMenuTool.js"></script>
+    <script type="text/javascript" src="../../Script/jquery.tooltip/jquery.tooltip.js"></script>
+    <script type="text/javascript" src="../../Script/wf.js"></script>
+    <script type="text/javascript" src="/Script/My97DatePicker/WdatePicker.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            addEvent(document.getElementById('btnAdd'), 'click', add);
+            addEvent(document.getElementById('btnCopy'), 'click', copy);
+            addEvent(document.getElementById('btnEdit'), 'click', edit);
+            addEvent(document.getElementById('btnView'), 'click', view);
+            addEvent(document.getElementById('btnUp'), 'click', up);
+            addEvent(document.getElementById('btnChange'), 'click', change);
+
+            var jwtable = new JustWinTable('gvFile');
+            setButton(jwtable, 'btnSC', 'btnEdit', 'btnView', 'KeyId');
+            //replaceEmptyTable('gvId', 'gvFile');
+            showTooltip('tooltip', 15);
+            setWfButtonState2(jwtable, 'WF1');
+        });
+        //刷新本页面
+        function reLoadPage() {
+            window.location = "DocList.aspx?PId=" + document.getElementById("hdSeleValue").value;
+        }
+        function add() {
+            top.ui._DocList = window;
+            var url = '/OA3/FileMsg/DocEdit.aspx?action=add&PId=' + document.getElementById('hdSeleValue').value;
+            title = '新增文档';
+            toolbox_oncommand(url, title);
+        }
+        function copy() {
+            top.ui._DocList = window;
+            var url = '/OA3/FileMsg/DocEdit.aspx?action=copy&id=' + document.getElementById('KeyId').value + '&PId=' + document.getElementById('hdSeleValue').value;
+            title = '复制并新增文档';
+            toolbox_oncommand(url, title);
+        }
+        function up() {
+            top.ui._DocList = window;
+            var url = '/OA3/FileMsg/DocEdit.aspx?action=up&id=' + document.getElementById('KeyId').value + '&PId=' + document.getElementById('hdSeleValue').value;
+            title = '文档升版';
+            toolbox_oncommand(url, title);
+        }
+        function edit() {
+            top.ui._DocList = window;
+            var url = '/OA3/FileMsg/DocEdit.aspx?action=edit&id=' + document.getElementById('KeyId').value;
+            title = '编辑文档';
+            toolbox_oncommand(url, title);
+        }
+        function change() {
+            top.ui._DocList = window;
+            var url = '/OA3/FileMsg/DocEdit.aspx?action=change&id=' + document.getElementById('KeyId').value + '&PId=' + document.getElementById('hdSeleValue').value;
+            title = '文档变更';
+            toolbox_oncommand(url, title);
+        }
+        function view() {
+            top.ui._DocList = window;
+            var url = "/OA3/FileMsg/DocView.aspx?action=view&id=" + document.getElementById('KeyId').value;
+            title = '查看文档';
+            toolbox_oncommand(url, title);
+        }
+        function rowClick(wkpid, IsOk, count) {
+            //document.getElementById("btnAdd").disabled = false;
+            //if (IsOk == "1") {
+            //    if (count > 0) {
+            //        document.getElementById("btnSumm").disabled = false;
+            //        document.getElementById("btnSumm").value = "编辑总结";
+            //    } else {
+            //        document.getElementById("btnSumm").disabled = false;
+            //        document.getElementById("btnSumm").value = "写总结";
+            //    }
+            //} else {
+            //    document.getElementById("btnSumm").disabled = true;
+            //    document.getElementById("btnSumm").value = "写总结";
+            //}
+            //if (IsOk == "0" || IsOk == "-1") {
+            //    document.getElementById("btnSumm").disabled = true;
+            //    document.getElementById("btnSumm").value = "写总结";
+            //}
+            //document.getElementById('hdnwkpId').value = wkpid;
+        }
+    </script>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <table width="100%" style="height: 100%;" cellpadding="0" cellspacing="0">
+            <tr>
+                <td style="height: 100%; width: 100%; vertical-align: top;">
+                    <table style="height: 100%;" width="100%" cellpadding="0" cellspacing="0">
+                        <tr>
+                            <td rowspan="2" style="width: 180px; height: 100%; vertical-align: top; border-right: solid 1px #AAAAAA;">
+                                <div id="departmentDiv" style="width: 180px; height: 100%; border: solid 0px red; overflow: auto;">
+                                    <asp:TreeView ID="tvFile" ExpandDepth="1" ShowLines="true" OnSelectedNodeChanged="tvFile_SelectedNodeChanged" runat="server">
+                                        <NodeStyle HorizontalPadding="5px" />
+                                        <SelectedNodeStyle HorizontalPadding="5px" BackColor="#3399FF" ForeColor="White" />
+                                    </asp:TreeView>
+                                </div>
+                            </td>
+                            <td valign="top" style="height: 100%;">
+                                <table style="width: 100%;">
+                                    <tr>
+                                        <td style="width: 100%; vertical-align: top;">
+                                            <table class="queryTable" cellpadding="3px" cellspacing="0px">
+                                                <tr>
+                                                    <td class="descTd" style="white-space: nowrap;">文档编码
+                                                    </td>
+                                                    <td>
+                                                        <asp:TextBox ID="DocCode" CssClass="easyui-validatebox" data-options="validType:'validQueryChars[50]'" runat="server"></asp:TextBox>
+                                                    </td>
+                                                    <td class="descTd" style="white-space: nowrap;">文档名称
+                                                    </td>
+                                                    <td>
+                                                        <asp:TextBox ID="FileName" CssClass="easyui-validatebox" data-options="validType:'validQueryChars[50]'" runat="server"></asp:TextBox>
+                                                    </td>
+                                                    <td class="descTd" style="white-space: nowrap;">更新时间</td>
+                                                    <td>
+                                                        <asp:TextBox ID="txtStartTime" CssClass="easyui-validatebox" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm'})" runat="server"></asp:TextBox>
+                                                    </td>
+                                                    <td class="descTd" style="white-space: nowrap;">至</td>
+                                                    <td>
+                                                        <asp:TextBox ID="txtEndTime" CssClass="easyui-validatebox" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm'})" runat="server"></asp:TextBox>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="descTd" style="white-space: nowrap;">文档类型</td>
+                                                    <td>
+                                                        <asp:DropDownList ID="DocTypeID" Width="100%" runat="server"></asp:DropDownList>
+
+                                                    </td>
+                                                    <td class="descTd" style="white-space: nowrap;">文档状态</td>
+                                                    <td>
+                                                        <asp:DropDownList ID="DocStatusID" Width="100%" runat="server"></asp:DropDownList></td>
+                                                    <td>文档版本</td>
+                                                    <td>
+                                                        <asp:DropDownList ID="DocVersionID" Width="100%" runat="server"></asp:DropDownList></td>
+                                                    <td>&nbsp;</td>
+                                                    <td>
+                                                        <asp:Button ID="btnQuery" Text="查询" OnClick="btnQuery_Click" runat="server" />
+
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align: left;" class="divFooter">
+                                            <input type="button" id="btnAdd" value="新增" runat="server"/>
+                                            <input type="button" id="btnCopy" value="复制并新建" style="width: auto" runat="server"/>
+                                            <input type="button" id="btnChange" value="变更" style="width: auto" runat="server"/>
+                                            <input type="button" id="btnUp" value="升版" style="width: auto" runat="server"/>
+                                            <input type="button" id="btnEdit" value="编辑" disabled="disabled" runat="server"/>
+                                            <asp:Button ID="btnSC" Text="删除" Enabled="false" OnClick="btnSC_Click" runat="server" />
+                                            <input type="button" id="btnView" value="查看" style="display: none;" />
+                                            <MyUserControl:epc_usercontrol1_wf_ascx ID="WF1"  BusiClass="001" runat="server" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="height: 81.5%;">
+                                            <div style="height: 100%; width: 1040px;">
+                                                <asp:GridView ID="gvFile" CssClass="gvdata" Width="100%" AutoGenerateColumns="False" OnRowDataBound="gvFile_RowDataBound" DataKeyNames="Id" runat="server">
+                                                    <Columns>
+                                                        <asp:TemplateField>
+                                                            <HeaderTemplate>
+                                                                <asp:CheckBox ID="cbAllBox" runat="server" />
+                                                            </HeaderTemplate>
+                                                            <ItemTemplate>
+                                                                <asp:CheckBox ID="cbBox" runat="server" />
+                                                            </ItemTemplate>
+                                                        </asp:TemplateField>
+                                                        <asp:TemplateField HeaderText="序号" HeaderStyle-Width="25px">
+                                                            <ItemTemplate>
+                                                                <%#Eval("pageindex") %>
+                                                            </ItemTemplate>
+                                                        </asp:TemplateField>
+                                                        
+                                                        <asp:TemplateField>
+                                                            <HeaderTemplate>
+                                                                文档类型
+                                                            </HeaderTemplate>
+                                                            <ItemTemplate>
+                                                                <center> <%# Eval("DocTypeName").ToString()%></center>
+                                                            </ItemTemplate>
+                                                        </asp:TemplateField>
+                                                        <asp:TemplateField>
+                                                            <HeaderTemplate>
+                                                                文档状态
+                                                            </HeaderTemplate>
+                                                            <ItemTemplate>
+                                                                 <center><%# Eval("DocStatusName").ToString()%></center>
+                                                            </ItemTemplate>
+                                                        </asp:TemplateField>
+                                                        <asp:TemplateField>
+                                                            <HeaderTemplate>
+                                                                文档版本
+                                                            </HeaderTemplate>
+                                                            <ItemTemplate>
+                                                                 <center><%# Eval("DocVersionName").ToString()%></center>
+                                                            </ItemTemplate>
+                                                        </asp:TemplateField>
+                                                        <asp:TemplateField>
+                                                            <HeaderTemplate>
+                                                                文档编码
+                                                            </HeaderTemplate>
+                                                            <ItemTemplate>
+                                                                <%# Eval("DocCode").ToString()%>
+                                                            </ItemTemplate>
+                                                        </asp:TemplateField>
+                                                        <asp:TemplateField HeaderStyle-Width="250px">
+                                                            <HeaderTemplate>
+                                                                文档名称
+                                                            </HeaderTemplate>
+                                                            <ItemTemplate>
+                                                                <span class="al tooltip" title='<%# Eval("FileName").ToString() %>' onclick="toolbox_oncommand('/OA3/FileMsg/DocView.aspx?ic=<%# Eval("Id") %>&DocAttribute=<%# Eval("DocAttribute") %>','查看文档')">
+                                                                    <%# StringUtility.GetStr(Eval("FileName").ToString(), 20) %>
+                                                                </span>
+                                                            </ItemTemplate>
+                                                        </asp:TemplateField>
+                                                        <asp:TemplateField HeaderText="创建人">
+                                                            <ItemTemplate>
+                                                                 <center><%# Eval("v_xm").ToString()%></center>
+                                                            </ItemTemplate>
+                                                        </asp:TemplateField>
+                                                        <asp:TemplateField HeaderStyle-Width="70px">
+                                                            <HeaderTemplate>
+                                                                更新时间
+                                                            </HeaderTemplate>
+                                                            <ItemTemplate>
+                                                                <center> <%# System.Convert.ToDateTime(Eval("DocEditDate")).ToString("yyyy-MM-dd HH:mm") %></center>
+                                                            </ItemTemplate>
+                                                        </asp:TemplateField>
+                                                        <asp:TemplateField>
+                                                            <HeaderTemplate>
+                                                                文档属性
+                                                            </HeaderTemplate>
+                                                            <ItemTemplate>
+                                                                 <center><%# Eval("DocAttributeName").ToString()%></center>
+                                                            </ItemTemplate>
+                                                        </asp:TemplateField>
+                                                       <asp:TemplateField HeaderText="流程状态" HeaderStyle-Width="80px" >
+                                                            <ItemTemplate>
+                                                                   <center><%# Common2.GetStateNullString(Eval("FlowStatusName").ToString()) %></center>
+                                                                <%--  <center><%# (Eval("DocAttribute").ToString() == "0") ? Common2.GetStateNullString(Eval("DocCBFlowStatus").ToString()) : Common2.GetStateNullString(Eval("DocSBFlowStatus").ToString())%></center>--%>
+                                                            </ItemTemplate>
+                                                        </asp:TemplateField>
+                                                    </Columns>
+                                                    <RowStyle CssClass="rowa"></RowStyle>
+                                                    <AlternatingRowStyle CssClass="rowb"></AlternatingRowStyle>
+                                                    <HeaderStyle CssClass="header"></HeaderStyle>
+                                                    <FooterStyle CssClass="footer"></FooterStyle>
+                                                </asp:GridView>
+                                                <asp:Label ID="lblMsgAleave" Text="" runat="server"></asp:Label>
+                                                <webdiyer:AspNetPager ID="AspNetPager1" Width="100%" ShowPageIndexBox="Always" UrlPaging="false" PageIndexBoxType="TextBox" TextBeforePageIndexBox="转到: " FirstPageText="首页" LastPageText="末页" PrevPageText="上一页" NextPageText="下一页" HorizontalAlign="Left" EnableTheming="true" SubmitButtonText="确定" SubmitButtonStyle="width:40px; vertical-align:top;" TextAfterPageIndexBox="页" OnPageChanged="AspNetPager1_PageChanged" runat="server">
+                                                </webdiyer:AspNetPager>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+            </tr>
+        </table>
+        <input id="KeyId" type="hidden" runat="server" />
+        <asp:HiddenField ID="hdSeleValue" runat="server" />
+        <div id="divFram" title="" style="display: none">
+            <iframe id="ifFram" frameborder="0" width="100%" height="100%" src=""></iframe>
+        </div>
+        <%-- <asp:HiddenField ID="hdGuid" runat="server" />
+        <asp:HiddenField ID="hdUserCodes" runat="server" />
+   
+        <asp:HiddenField ID="hdUser" runat="server" />
+        <asp:Button ID="btnRe" Style="display: none;" runat="server" />
+        <asp:HiddenField ID="hdType" runat="server" />
+        <asp:HiddenField ID="hfldPurchaseChecked" runat="server" />
+        <asp:HiddenField ID="hdFormat" runat="server" />
+        <asp:HiddenField ID="hdFilType" runat="server" />
+        <asp:HiddenField ID="hdPath" runat="server" />
+        <asp:HiddenField ID="hdSearchShow" Value="0" runat="server" />
+        <asp:HiddenField ID="hfldFIleName" runat="server" />
+        <asp:Button ID="btnDown" Style="display: none;" OnClick="btnDown_Click" runat="server" />
+       
+        <asp:HiddenField ID="hfldManagerCode" runat="server" />--%>
+    </form>
+</body>
+</html>

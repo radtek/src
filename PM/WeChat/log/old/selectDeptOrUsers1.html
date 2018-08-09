@@ -1,0 +1,642 @@
+﻿<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>选择人员</title>
+    <meta name="description" content=""/>
+    <meta name="HandheldFriendly" content="True"/>
+    <meta name="MobileOptimized" content="320"/>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <meta content="telephone=no" name="format-detection"/>
+    <meta content="email=no" name="format-detection"/>
+    <link rel="stylesheet" href="../wxqyh/jsp/wap/css/ku.css"/>
+    <link rel="stylesheet" href="../wxqyh/jsp/wap/css/font-awesome.min.css"/>
+    <script src="../wxqyh/js/3rd-plug/jquery-ui-1.8/js/jquery-1.7.2.min.js"></script>
+</head>
+<body>
+<div id="userOrDept_select" class="userOrDept_select none" style="display: block;">
+    <div id="checkUsers" class="wrap">
+        <div class="selectTab bottom_boder flexbox">
+            <!--<div datatype="group" class="selectTab_item flexItem active">常用</div>-->
+            <div datatype="user" class="selectTab_item flexItem">选择人员</div>
+        </div>
+        <div class="wrap_inner" style="height: 571px;">
+            <div class="search_box_height"></div>
+            <div class="selectMain">
+                <!--<div class="selectMain_item">-->
+                <!--<div class="itemTitle bottom_boder c999">标签(<span></span>)-->
+                <!--<i class="icon-slide icon-slideDown"></i>-->
+                <!--</div>-->
+                <!--<div style="display: none;"></div>-->
+                <!--<div class="itemTitle bottom_boder c999">常用群组(<span></span>)-->
+                <!--<i class="icon-slide icon-slideDown"></i>-->
+                <!--</div> <div style="display: none;"></div>-->
+                <!--<div class="itemTitle bottom_boder c999">常用联系人</div>-->
+                <!--<div></div>-->
+                <!--</div>-->
+                <div class="selectMain_item" style="display: block;">
+                    <div class="selectSearch bottom_boder flexbox">
+                        <div class="search_button">
+                            <i class="icon_search"></i>
+                            <span>姓名/手机号</span>
+                        </div>
+                        <div class="search_more">
+                            <a class="search_letter_btn">
+                                <i class="ic_letterList"></i>
+                            </a>
+                            <div id="allUsersFirst" class="letter_list" style="z-index: 9; top: 44px; display: none;">
+                                <ul class="clearfix">
+                                    <li><a>A</a></li>
+                                    <li><a>B</a></li>
+                                    <li><a>C</a></li>
+                                    <li><a>D</a></li>
+                                    <li><a>E</a></li>
+                                    <li><a>F</a></li>
+                                    <li><a>G</a></li>
+                                    <li><a>H</a></li>
+                                    <li><a>I</a></li>
+                                    <li><a>J</a></li>
+                                    <li><a>K</a></li>
+                                    <li><a>L</a></li>
+                                    <li><a>M</a></li>
+                                    <li><a>N</a></li>
+                                    <li><a>O</a></li>
+                                    <li><a>P</a></li>
+                                    <li><a>Q</a></li>
+                                    <li><a>R</a></li>
+                                    <li><a>S</a></li>
+                                    <li><a>T</a></li>
+                                    <li><a>U</a></li>
+                                    <li><a>V</a></li>
+                                    <li><a>W</a></li>
+                                    <li><a>X</a></li>
+                                    <li><a>Y</a></li>
+                                    <li><a>Z</a></li>
+                                    <li><a>*</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="itemTitle bottom_boder bgfff fz16" onclick="changeType(this,'bm')" style="line-height: 45px;">按组织架构选人<a class="rightLink1">&gt;</a></div>
+                    <div class="itemTitle bottom_boder bgfff fz16" onclick="changeType(this,'ry')" style="line-height: 45px;display:none">按成员名称选人<a class="rightLink1">&gt;</a></div>
+                    <div id="users" style="display: block;">
+                        <div id="allUsers">
+                            <!--全部人员-->
+                            <!--全部人员-->
+                        </div>
+                    </div>
+                    <div id="depts" style="display: none;">
+                        <div id="allDepts">
+                            <div class="itemTitle bottom_boder clearfix">
+                                <div class="fl" style="width: 150px;">
+                                    <span class="fl cblue">全部</span>
+                                    <span class="fl">
+                                        <span class="lh20 c999 ml5">&gt; ... &gt; </span>
+                                        <span class="cblue">返回上一级</span>
+                                    </span>
+                                </div>
+                                <div class="ellipsis2 c999">&gt; 专属一部分一</div>
+                            </div>
+                            <!--部门人员-->
+                            <!--部门人员-->
+                        </div>
+                        <!--<div></div>-->
+                        <!--<p class="text-center c999 mt30 pt20">无更多联系人信息</p>-->
+                    </div>
+                </div>
+
+                <!--&lt;!&ndash;按组织机构选人&ndash;&gt;-->
+                <!--<div class="selectMain_item" style="display: none;">-->
+                    <!--<div></div>-->
+                    <!--<p class="text-center c999 mt30 pt20">无更多部门信息</p>-->
+                <!--</div>-->
+                <!--<div class="selectMain_item" style="display: none;">-->
+                    <!--<div></div>-->
+                <!--</div>-->
+            </div>
+            <div class="footheight mt20"></div>
+        </div>
+        <div class="foot_bar foot_bar_user">
+            <div class="foot_bar_inner flexbox">
+                <div class="flexItem">
+                    <a class="btn qwui-btn_default">取消</a>
+                </div>
+                <div class="selected mt5">
+                    <p class="cblue fz14">
+
+                    </p>
+                </div>
+                <div class="flexItem">
+                    <a class="btn fr">确定</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--搜索人员部分-->
+    <div id="searchUsers" class="wrap" style="display: none;">
+        <div class="selectSearch bottom_boder flexbox selectSearchBox">
+            <div class="search_outer">
+                <div class="search_inner">
+                    <a><i class="icon_search" id="search"></i></a>
+                    <a><i class="icon_del"></i></a>
+                    <input type="search" placeholder="姓名/手机号" required="required" class="search_input">
+                </div>
+            </div>
+            <div class="search_more">
+                <a class="search_letter_btn">
+                    <i class="ic_letterList"></i>
+                </a>
+                <div class="letter_list" style="z-index: 9; top: 44px; display: none;">
+                    <ul class="clearfix">
+                        <li><a>A</a></li>
+                        <li><a>B</a></li>
+                        <li><a>C</a></li>
+                        <li><a>D</a></li>
+                        <li><a>E</a></li>
+                        <li><a>F</a></li>
+                        <li><a>G</a></li>
+                        <li><a>H</a></li>
+                        <li><a>I</a></li>
+                        <li><a>J</a></li>
+                        <li><a>K</a></li>
+                        <li><a>L</a></li>
+                        <li><a>M</a></li>
+                        <li><a>N</a></li>
+                        <li><a>O</a></li>
+                        <li><a>P</a></li>
+                        <li><a>Q</a></li>
+                        <li><a>R</a></li>
+                        <li><a>S</a></li>
+                        <li><a>T</a></li>
+                        <li><a>U</a></li>
+                        <li><a>V</a></li>
+                        <li><a>W</a></li>
+                        <li><a>X</a></li>
+                        <li><a>Y</a></li>
+                        <li><a>Z</a></li>
+                        <li><a>*</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div id="userOrDept_select_r" class="wrap_inner" style="height: 571px;">
+            <div>
+                <div class="search_box_height"></div>
+                <div id="searchResult">
+                    <!--搜索到的人员-->
+                    <!--搜索到的人员-->
+                </div>
+                <p class="text-center c999 mt30 pt20" id="noSearchResult" style="display: none;">没有搜索到任何数据，换别的关键字试试</p>
+                <div class="footheight"></div>
+            </div>
+        </div>
+        <div class="foot_bar foot_bar_result">
+            <div class="foot_bar_inner flexbox">
+                <a id="selectCheckedOk" class="flexItem btn">确定</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--<script src="../wxqyh/jsp/wap/js/pinyin.js"></script>-->
+<script>
+    $(document).ready(function () {
+        getDepts();
+        getUsers();
+    });
+    //设置每个用户的帮助信息的折叠或打开的状态
+
+    //定义部门人员数组
+    //var alldepts = [];
+    //alldepts.push({id:2,name:"开发部",fid:1});
+    //alldepts.push({id:3,name:"测试部",fid:2});
+    //alldepts.push({id:4,name:"销售部",fid:3});
+    //alldepts.push({id:5,name:"运营部",fid:4});
+    //alldepts.push({id:6,name:"维护部",fid:2});
+    //alldepts.push({id:7,name:"人事部",fid:1});
+    //alldepts.push({ id: 8, name: "财务部", fid: 1 });
+    //{"alldepts":[{"id":2,"name":"开发部1","fid":1},{"id":3,"name":"测试部1","fid":1},{"id":4,"name":"销售部1","fid":1},{"id":5,"name":"运营部1","fid":1},{"id":6,"name":"维护部1","fid":1},{"id":7,"name":"人事部1","fid":1},{"id":8,"name":"财务部1","fid":1}]}
+
+    var alldepts = [];
+    function getDepts() {
+        $.ajax({
+            type: "POST",
+            url: "../Ajax/AjaxGetMsg.aspx/getDepts",
+            // data: "{helpId: '" + helpId + "'}",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            async: false,
+            success: function Success(data) {
+                if (data.d != "") {
+                    alldepts = eval("(" + data.d + ")").alldepts;
+                }
+                else {
+                    //alldepts=[];
+                }
+            }
+        });
+    }
+    //var allusers = [];
+    //allusers.push({dept:1,first:"Z",id:1,name:"张三",tel:13804093570,url:"http://p.qlogo.cn/bizmail/uqibPEIicNrjEErw2dcgln6868Micl38EWF1VfWlQOcHgQUEJE2D26lmA/100"});
+    //allusers.push({dept:2,first:"L",id:2,name:"李四",tel:13804093571,url:"http://p.qlogo.cn/bizmail/uqibPEIicNrjEErw2dcgln6868Micl38EWF1VfWlQOcHgQUEJE2D26lmA/100"});
+    //allusers.push({dept:2,first:"W",id:3,name:"王五",tel:13804093572,url:"http://p.qlogo.cn/bizmail/uqibPEIicNrjEErw2dcgln6868Micl38EWF1VfWlQOcHgQUEJE2D26lmA/100"});
+    //allusers.push({dept:3,first:"Z",id:4,name:"赵六",tel:13804093573,url:"http://p.qlogo.cn/bizmail/uqibPEIicNrjEErw2dcgln6868Micl38EWF1VfWlQOcHgQUEJE2D26lmA/100"});
+    //allusers.push({dept:4,first:"Q",id:5,name:"青野",tel:13804093574,url:"http://p.qlogo.cn/bizmail/uqibPEIicNrjEErw2dcgln6868Micl38EWF1VfWlQOcHgQUEJE2D26lmA/100"});
+    var allusers = [];
+    function getUsers() {
+        $.ajax({
+            type: "POST",
+            url: "../Ajax/AjaxGetMsg.aspx/getUsers",
+            //data: "{deptId: '" + helpId + "'}",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            async: false,
+            success: function Success(data) {
+                if (data.d != "") {
+                    //alert(data.d);
+                    allusers = eval("(" + data.d + ")").allusers;
+                }
+                else {
+                    //allusers = [];
+                }
+            }
+        });
+    }
+    //初始化人员列表
+    var words=["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
+    function allUsers(){
+        var allusershtml = "";
+        for(var i=0;i<words.length;i++){
+            var flag = true;
+            for(var j=0;j<allusers.length;j++) {
+                if(allusers[j].first==words[i]){
+                    allusershtml +="<div class=\"settings-item\">";
+                    if(flag){
+                        allusershtml +="<div class=\"letter_bar\" style=\"padding: 0px 15px;\">"+words[i]+"</div>";
+                    }
+                    allusershtml +="<div class=\"inner-settings-item flexbox\" onclick='rowsChecked(this)'>" +
+                        "<div class=\"user_select_icon ccuser_select_icon active\">" +
+                        "<label><input type=\"checkbox\" name=\"checkUsers\" value=\""+allusers[j].id+"\" userName=\""+allusers[j].name+"\" url=\""+allusers[j].url+"\"><span></span></label>" +
+                        "</div>" +
+                        "<div class=\"avator\">"     +
+                        "<img src=\""+allusers[j].url+"\"" +
+                        " alt=\"\">" +
+                        "</div>" +
+                        "<div class=\"title flexItem\">" +
+                        "<p class=\"name\">"+allusers[j].name+"</p>" +
+                        "</div>" +
+                        "</div>";
+                    allusershtml+="</div>";
+                    flag = false;
+                }
+            }
+        }
+        $("#allUsers").html(allusershtml);
+    }
+    //初始化人员列表
+    //初始化部门列表
+    function allDepts(fid) {
+        var mbxhtml="";
+        var folderCount = getDeptIdByFidCount(fid,1);
+        if(folderCount==2){
+            mbxhtml="<div class=\"itemTitle bottom_boder clearfix\">" +
+                "<div class=\"fl\" style=\"width: 35px;\">" +
+                "<span class=\"fl cblue\" onclick='allDepts(1)'>全部</span>" +
+                "</div>"+getDeptIdByFid(fid,"")+"</div>";
+        }
+        if(folderCount==3){
+            mbxhtml = "<div class=\"itemTitle bottom_boder clearfix\">" +
+                "<div class=\"fl\" style=\"width: 120px;\">" +
+                "<span class=\"fl cblue\" onclick='allDepts(1)'>全部&nbsp;&gt;</span>" +
+                "<span class=\"fl\">" +
+                "<span class=\"cblue\" onclick=\"backdept("+fid+")\">&nbsp;返回上一级</span>" +
+                "</span>" +
+                "</div>"+getDeptIdByFid(fid,"")+"</div>";
+        }
+        if(folderCount>3){
+            mbxhtml = "<div class=\"itemTitle bottom_boder clearfix\">" +
+                "<div class=\"fl\" style=\"width: 150px;\">" +
+                "<span class=\"fl cblue\" onclick='allDepts(1)'>全部</span>" +
+                "<span class=\"fl\">" +
+                "<span class=\"lh20 c999 ml5\">&gt; ... &gt; </span>" +
+                "<span class=\"cblue\" onclick=\"backdept("+fid+")\">返回上一级</span>" +
+                "</span>" +
+                "</div>"+getDeptIdByFid(fid,"")+"</div>";
+        }
+        if(!fid){
+            fid=1;
+        }
+        hid=fid;
+        var alldeptshtml = mbxhtml;
+        //alert(alldepts.length);
+            for(var i=0;i<alldepts.length;i++) {
+                if(alldepts[i].fid==fid){//获取子部门
+                    var countDept=0;
+                    var countUser=0;
+                    for(var j=0;j<alldepts.length;j++) {//获取子部门数量
+                        if(alldepts[j].fid==alldepts[i].id){
+                            countDept++;
+                        }
+                    }
+                    for(var k=0;k<allusers.length;k++) {//获取子人员数量
+                        if(allusers[k].dept==alldepts[i].id){
+                            countUser++;
+                        }
+                    }
+                  alldeptshtml +="<div class=\"settings-item\"><a class=\"rightLink\">&gt;</a>" +
+                                    "<div class=\"inner-settings-item-dept flexbox\" onclick=\"allDepts("+alldepts[i].id+")\" style=\"cursor: pointer;\">" +
+                                    "<div class=\"avator org\"><img src=\"../wxqyh/jsp/wap/images/aa.jpg\" alt=\"\"></div>" +
+                                    "<div class=\"title flexItem\"><p class=\"lh20\">"+alldepts[i].name+"</p>" +
+                                    "<p class=\"lh20 fz13 c999\">("+countDept+")部门,("+countUser+")人员</p></div>" +
+                                    "</div>" +
+                                  "</div>";
+                }
+            }
+            for(var i=0;i<allusers.length;i++) {
+                if(allusers[i].dept==fid){//获取部门人员
+                  alldeptshtml +="<div class=\"settings-item\">" +
+                                      "<div class=\"inner-settings-item flexbox\" onclick='rowsChecked(this)'>" +
+                                      "<div class=\"user_select_icon ccuser_select_icon\"><label><input type=\"checkbox\" name=\"checkUsers\" value=\""+allusers[i].id+"\" userName=\""+allusers[i].name+"\" url=\""+allusers[i].url+"\"><span></span></label></div>" +
+                                      "<div class=\"avator\">" +
+                                      "<img src=\""+allusers[i].url+"\" alt=\"\">" +
+                                      "</div>" +
+                                      "<div class=\"title flexItem\"><p class=\"name\">"+allusers[i].name+"</p></div>" +
+                                      "</div>" +
+                              "</div>";
+                }
+            }
+        $("#allDepts").html(alldeptshtml);
+    }
+    function getDeptIdByFid(fid,mbx){
+        for (var i = 0;i<alldepts.length;i++){
+            if(alldepts[i].id==fid){
+                mbx="<div class=\"ellipsis2 c999\">&gt; "+alldepts[i].name+"</div>";
+                return mbx;
+            }
+        }
+        return mbx;
+    }
+    function getDeptIdByFidCount(fid,count){
+        for (var i = 0;i<alldepts.length;i++){
+            if(alldepts[i].id==fid){
+                count++;
+                return getDeptIdByFidCount(alldepts[i].fid,count);
+            }
+        }
+        return count;
+    }
+    function backdept(fid){
+        for (var i = 0;i<alldepts.length;i++){
+            if(alldepts[i].id==fid){
+                allDepts(alldepts[i].fid);
+            }
+        }
+    }
+    //初始化部门列表
+    //搜索人员
+    var type="ry";
+    var hid=1;
+    var firstword="";
+    $("#search").click(function(){
+            if(firstword!=""&&firstword!=null){//判断是否按首字母查询
+                searchUsers(firstword,"first");
+            }else{
+                var search = $(".search_input").val();//获取搜索框的值
+                if(search==''||search==null){//搜索全部
+                    searchUsers(search,"all");
+                }else{
+                    var reNum=/^\d*$/;//判断输入是否为数字正则表达式
+                    if(reNum.test(search)){//如果是数字按手机号处理
+                        searchUsers(search,"tel");
+                    }else {//如果非数字按姓名处理
+                        searchUsers(search,"name");
+                    }
+                }
+            }
+    });
+    function searchUsers(str,tp){//参数str搜索字符串，type为搜索类型
+        //字符串方法indexOf
+        var len = allusers.length;
+        var searchResultHtml="";
+        if(type=='bm'){
+            if(tp=='tel'){
+                for(var i=0;i<len;i++){
+                    //如果字符串中不包含目标字符会返回-1
+                    if(allusers[i].tel.indexOf(str)>=0&&allusers[i].dept==hid){
+                        searchResultHtml+="<div class=\"settings-item\">" +
+                            "<div class=\"inner-settings-item flexbox\" onclick='rowsChecked(this)'>" +
+                            "<div class=\"user_select_icon ccuser_select_icon\"><label><input type=\"checkbox\" name=\"searchUsers\" value=\""+allusers[i].id+"\"><span></span></label></div>" +
+                            "<div class=\"avator\">" +
+                            "<img src=\""+allusers[i].url+"\" alt=\"\">" +
+                            "</div>" +
+                            "<div class=\"title flexItem\"><p class=\"name\">"+allusers[i].name+"</p></div>" +
+                            "</div>" +
+                            "</div>";
+                    }
+                }
+            }
+            if(tp=='name'){
+                for(var i=0;i<len;i++){
+                    //如果字符串中不包含目标字符会返回-1
+                    if(allusers[i].name.indexOf(str)>=0&&allusers[i].dept==hid){
+                        searchResultHtml+="<div class=\"settings-item\">" +
+                            "<div class=\"inner-settings-item flexbox\" onclick='rowsChecked(this)'>" +
+                            "<div class=\"user_select_icon ccuser_select_icon\"><label><input type=\"checkbox\" name=\"searchUsers\" value=\""+allusers[i].id+"\"><span></span></label></div>" +
+                            "<div class=\"avator\">" +
+                            "<img src=\""+allusers[i].url+"\" alt=\"\">" +
+                            "</div>" +
+                            "<div class=\"title flexItem\"><p class=\"name\">"+allusers[i].name+"</p></div>" +
+                            "</div>" +
+                            "</div>";
+                    }
+                }
+            }
+            if(tp=='all'){
+                for(var i=0;i<len;i++){
+                    if(allusers[i].dept==hid){
+                        //如果字符串中不包含目标字符会返回-1
+                        searchResultHtml+="<div class=\"settings-item\">" +
+                            "<div class=\"inner-settings-item flexbox\" onclick='rowsChecked(this)'>" +
+                            "<div class=\"user_select_icon ccuser_select_icon\"><label><input type=\"checkbox\" name=\"searchUsers\" value=\""+allusers[i].id+"\"><span></span></label></div>" +
+                            "<div class=\"avator\">" +
+                            "<img src=\""+allusers[i].url+"\" alt=\"\">" +
+                            "</div>" +
+                            "<div class=\"title flexItem\"><p class=\"name\">"+allusers[i].name+"</p></div>" +
+                            "</div>" +
+                            "</div>";
+                    }
+                }
+            }
+            if(tp=='first'){
+                for(var i=0;i<len;i++){
+                    //如果字符串中不包含目标字符会返回-1
+                    if(allusers[i].first==str&&allusers[i].dept==hid) {
+                        searchResultHtml += "<div class=\"settings-item\">" +
+                            "<div class=\"inner-settings-item flexbox\" onclick='rowsChecked(this)'>" +
+                            "<div class=\"user_select_icon ccuser_select_icon\"><label><input type=\"checkbox\" name=\"searchUsers\" value=\"" + allusers[i].id + "\"><span></span></label></div>" +
+                            "<div class=\"avator\">" +
+                            "<img src=\"" + allusers[i].url + "\" alt=\"\">" +
+                            "</div>" +
+                            "<div class=\"title flexItem\"><p class=\"name\">" + allusers[i].name + "</p></div>" +
+                            "</div>" +
+                            "</div>";
+                    }
+                }
+            }
+        }else{
+            if(tp=='tel'){
+                for(var i=0;i<len;i++){
+                    //如果字符串中不包含目标字符会返回-1
+                    if(allusers[i].tel.indexOf(str)>=0){
+                        searchResultHtml+="<div class=\"settings-item\">" +
+                            "<div class=\"inner-settings-item flexbox\" onclick='rowsChecked(this)'>" +
+                            "<div class=\"user_select_icon ccuser_select_icon\"><label><input type=\"checkbox\" name=\"searchUsers\" value=\""+allusers[i].id+"\"><span></span></label></div>" +
+                            "<div class=\"avator\">" +
+                            "<img src=\""+allusers[i].url+"\" alt=\"\">" +
+                            "</div>" +
+                            "<div class=\"title flexItem\"><p class=\"name\">"+allusers[i].name+"</p></div>" +
+                            "</div>" +
+                            "</div>";
+                    }
+                }
+            }
+            if(tp=='name'){
+                for(var i=0;i<len;i++){
+                    //如果字符串中不包含目标字符会返回-1
+                    if(allusers[i].name.indexOf(str)>=0){
+                        searchResultHtml+="<div class=\"settings-item\">" +
+                            "<div class=\"inner-settings-item flexbox\" onclick='rowsChecked(this)'>" +
+                            "<div class=\"user_select_icon ccuser_select_icon\"><label><input type=\"checkbox\" name=\"searchUsers\" value=\""+allusers[i].id+"\"><span></span></label></div>" +
+                            "<div class=\"avator\">" +
+                            "<img src=\""+allusers[i].url+"\" alt=\"\">" +
+                            "</div>" +
+                            "<div class=\"title flexItem\"><p class=\"name\">"+allusers[i].name+"</p></div>" +
+                            "</div>" +
+                            "</div>";
+                    }
+                }
+            }
+            if(tp=='all'){
+                for(var i=0;i<len;i++){
+                    //如果字符串中不包含目标字符会返回-1
+                    searchResultHtml+="<div class=\"settings-item\">" +
+                        "<div class=\"inner-settings-item flexbox\" onclick='rowsChecked(this)'>" +
+                        "<div class=\"user_select_icon ccuser_select_icon\"><label><input type=\"checkbox\" name=\"searchUsers\" value=\""+allusers[i].id+"\"><span></span></label></div>" +
+                        "<div class=\"avator\">" +
+                        "<img src=\""+allusers[i].url+"\" alt=\"\">" +
+                        "</div>" +
+                        "<div class=\"title flexItem\"><p class=\"name\">"+allusers[i].name+"</p></div>" +
+                        "</div>" +
+                        "</div>";
+                }
+            }
+            if(tp=='first'){
+                for(var i=0;i<len;i++){
+                    //如果字符串中不包含目标字符会返回-1
+                    if(allusers[i].first==str) {
+                        searchResultHtml += "<div class=\"settings-item\">" +
+                            "<div class=\"inner-settings-item flexbox\" onclick='rowsChecked(this)'>" +
+                            "<div class=\"user_select_icon ccuser_select_icon\"><label><input type=\"checkbox\" name=\"searchUsers\" value=\"" + allusers[i].id + "\"><span></span></label></div>" +
+                            "<div class=\"avator\">" +
+                            "<img src=\"" + allusers[i].url + "\" alt=\"\">" +
+                            "</div>" +
+                            "<div class=\"title flexItem\"><p class=\"name\">" + allusers[i].name + "</p></div>" +
+                            "</div>" +
+                            "</div>";
+                    }
+                }
+            }
+        }
+
+        if(searchResultHtml.length>0){//搜索结果有数据时
+            $("#searchResult").html(searchResultHtml);
+        }else{//搜索结果无数据时
+            $("#noSearchResult").show();
+        }
+        firstword="";//查询完毕清空首字母
+    }
+        $(".icon_del").click(function () {//搜索框删除按钮点击函数
+            $(".search_input").val("");
+        });
+        //首字母过滤部分
+        $(".search_letter_btn").click(function (){
+            var firstDiv = $(this).next();
+            if(firstDiv.css("display")=='none'){
+                firstDiv.show();
+            }else{
+                firstDiv.hide();
+            }
+            $("ul li a").click(function (){
+                if($(this).html()=="*"){
+                    $(".search_button").click();
+                    $("#search").click();
+                }else{
+                    firstword = $(this).html();
+                    $(".search_button").click();
+                    $("#search").click();
+                }
+                firstDiv.hide();
+            });
+        });
+
+        //首字母过滤部分
+    //搜索人员
+    //定义已选中人员数组
+    var checkedAllUsers=[];
+    //定义已选中人员数组
+    $(".search_button").click(function (){
+        $("#searchUsers").show();
+        $("#checkUsers").hide();
+        //查询页面初始化清空上一次待选项和搜索内容
+        $("#searchResult").html("");
+        $(".search_input").val("");
+        $("#noSearchResult").hide();
+        //查询页面初始化清空上一次待选项和搜索内容
+    });
+    $("#selectCheckedOk").click(function (){//搜索人员并选择完成时点击确定按钮执行函数
+        $("#searchUsers").hide();//隐藏搜索页面
+        $("#checkUsers").show();//显示字母排序页面
+        checkedSearchedUsersOk();//执行搜索页面选择完成事件函数
+    });
+    function checkedSearchedUsersOk(){//搜索页面选择完成执行函数
+        $("input[name='searchUsers']:checked").each(function () {
+            var userId = $(this).val();
+            $("input[name='checkUsers'][value='"+userId+"']").prop("checked",true);
+        });
+    }
+    //添加整行选中效果
+    function rowsChecked(e){
+        var ckbx = $(e).find("input[type='checkbox']");
+        if(ckbx.prop("checked")){
+            ckbx.prop("checked",false);
+        }else{
+            ckbx.prop("checked",true);
+        }
+    }
+    //变更选择方式
+    function changeType(e,t){
+        if(t=='bm'){
+            $('#depts').show();
+            $('#users').hide();
+            $(e).hide();
+            $(e).next().show();
+            $('#allDepts').html('');
+            allDepts();
+            type="bm";
+        }
+        if(t=='ry'){
+            $('#users').show();
+            $('#depts').hide();
+            $(e).hide();
+            $(e).prev().show();
+            $('#allUsers').html('');
+            allUsers();
+            type="ry";
+        }
+    }
+    $(function () {
+        allUsers();
+    });
+</script>
+</body>
+</html>

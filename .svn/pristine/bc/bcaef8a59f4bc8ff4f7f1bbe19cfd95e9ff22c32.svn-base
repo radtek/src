@@ -1,0 +1,341 @@
+﻿<html>
+<head>
+    <meta charset="utf-8" />
+    <title>新建日志</title>
+    <meta name="description" content="" />
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="MobileOptimized" content="320" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta content="telephone=no" name="format-detection" />
+    <meta content="email=no" name="format-detection" />
+    <link rel="stylesheet" href="../resource/css/ku.css" />
+    <link rel="stylesheet" href="../resource/css/font-awesome.min.css" />
+    <script src="../resource/js/jquery-1.7.2.min.js"></script>
+</head>
+<body>
+<div id="wrap_main" class="wrap">
+    <div id="main" class="wrap_inner" style="height: 571px;">
+        <div id="isUnSubmit" class="topWarn" style="display: none;text-align: center;">
+            <div class="topWarn-text">
+                你有日志未提交，点击前往补交
+            </div>
+        </div>
+        <form action="" id="taskform" onsubmit="return false;">
+            <input type="hidden" name="tbQyDiaryPO.currentDay" id="currentDate" />
+            <div class="form-style">
+                <!--日志类型部分-->
+                <div class="f-item f-item-select">
+                    <div class="inner-f-item item-text flexbox">
+                        <span class="f-item-title">日志类型</span>
+                        <div class="flexItem">
+                            <select name="type_id" id="type_id" class="flexItem item-select direction_rtl">
+                                <option value="">请选择</option>
+                                <option value="">日报</option>
+                                <option value="">周报</option>
+                                <option value="">月报</option>
+                                <option value="">工作总结</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <!--日志类型部分-->
+                <div class="detaildata">
+                    <!--日志标题部分-->
+                    <div class="f-item">
+                        <div class="inner-f-item">
+                            <div class="flexItem" style="padding-right: 40px;">
+                                <input type="text" name="title" value="" id="title" placeholder="请输入日志标题" class="item-select inputStyle item-title"/>
+                            </div>
+                        </div>
+                    </div>
+                    <!--日志标题部分-->
+                    <!--日志内容部分-->
+                    <div class="f-item">
+                        <div class="inner-f-item tapeBox">
+                            <div class="text_div">
+                                <textarea class="item-select inputStyle item-content" name="content" id="content" cols="30" rows="2" placeholder="请输入日志内容" style="height: 42px;"></textarea>
+                            </div>
+                            <div class="fr">
+                                <!--<div class="icon-circular mt5 mr10" id="showActionSheet">-->
+                                    <!--<i class="icon-circular-ic icon-circular-book"></i>-->
+                                <!--</div>-->
+                                <div class="tape" id="voiceIds" style="display: block;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--日志内容部分-->
+                    <!--日志上传图片部分-->
+                    <div class="f-item">
+                        <div class="loadImg clearfix" id="upPicDiv">
+                            <div class="f-add-user-list" style="margin: 0;">
+                                <ul id="imglist" class="impression clearfix">
+                                    <li class="f-user-add" id="addimage">
+                                        <input id="imageFileInput" class="imageFileInput" accept="image/jpeg,image/jpg,image/png,image/gif" type="file" />
+                                    </li>
+                                    <li class="f-user-remove" show="0" onclick="removeImage(this,'imglist')"></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <!--日志上传图片部分-->
+                    <!-- 上传媒体文件（手机端页面）引入  start -->
+                    <div class="form-style" id="medialist">
+                        <div class="letter_bar file_top borderBottommNone">
+                            <span class="file_top_tit" >附件(0)</span>
+                            <span class="file_top_btn" style="">
+                                <input type="file" name="file" id="fileFile1" filename="mediaIds" class="upload_file_input" />
+                                <i>+</i>上传
+                            </span>
+                        </div>
+                    </div>
+                    <!-- 上传媒体文件（手机端页面）引入  end -->
+                </div>
+                <div class="separate_bar separate_bar_h15"></div>
+
+                <!--选择审阅人-->
+                <!--标题部分-->
+                <div class="letter_bar">
+                    审阅人
+                    <div class="loadlast_onoff">
+                        <!--加载上次-->
+                        <div class="onOff" id="onOff2">
+                            <span class="onOff_off">
+                                <input type="hidden" name="toSelectId" id="toSelectId" value="0" />
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <!--标题部分-->
+                <!--数据部分-->
+                <div class="f-item">
+                    <div class="f-add-user clearfix">
+                        <div class="inner-f-add-user">
+                            <div class="f-add-user-list">
+                                <ul class="clearfix" id="syrUl" >
+                                    <!--<li>-->
+                                        <!--<a class="remove_icon" style="display: inline;"></a>-->
+                                        <!--<p class="img">-->
+                                            <!--<img src="http://p.qlogo.cn/bizmail/uqibPEIicNrjEErw2dcgln6868Micl38EWF1VfWlQOcHgQUEJE2D26lmA/100" alt="">-->
+                                        <!--</p>-->
+                                        <!--<p class="name">潘全全</p>-->
+                                    <!--</li>-->
+                                    <!--<li><a class="remove_icon" style="display: inline;"></a>-->
+                                        <!--<p class="img">-->
+                                            <!--<img src="http://p.qlogo.cn/bizmail/vLo4ibTPak84PTBYO5yIkicNL3ftwbV3oibCvYTQqWVfPicicYyiaQLYiakYQ/100" alt="">-->
+                                        <!--</p>-->
+                                        <!--<p class="name">潘翔伟</p></li>-->
+                                    <!--<li>-->
+                                        <!--<a class="remove_icon" style="display: inline;"></a>-->
+                                        <!--<p class="img">-->
+                                            <!--<img src="http://p.qlogo.cn/bizmail/ibvzGOTWvkhKyViabceZGyMC5WoJccbqrxWMZ02Y6RwEBp6DhH2Aejbg/100" alt="">-->
+                                        <!--</p>-->
+                                        <!--<p class="name">雲潇</p>-->
+                                    <!--</li>-->
+                                    <li class="ico-add" onclick="selectUsers('syr')"></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--数据部分-->
+                <!--选择审阅人-->
+
+                <!--选择相关人-->
+                <!--标题部分-->
+                <div class="letter_bar">
+                    相关人
+                    <div class="loadlast_onoff">
+                        <!--加载上次-->
+                        <div class="onOff" id="onOff3">
+                            <span class="onOff_off"><input type="hidden" name="ccSelectId" id="ccSelectId" value="0" /></span>
+                        </div>
+                    </div>
+                </div>
+                <!--标题部分-->
+                <!--数据部分-->
+                <div class="f-item">
+                    <div class="f-add-user clearfix">
+                        <div class="inner-f-add-user">
+                            <div id="ccPersonList" class="f-add-user-list">
+                                <ul class="clearfix" id="xgrUl">
+                                    <!--<li>-->
+                                        <!--<a class="remove_icon" style="display: inline;"></a>-->
+                                        <!--<p class="img">-->
+                                            <!--<img src="http://p.qlogo.cn/bizmail/uqibPEIicNrjEErw2dcgln6868Micl38EWF1VfWlQOcHgQUEJE2D26lmA/100" alt="">-->
+                                        <!--</p>-->
+                                        <!--<p class="name">潘全全</p>-->
+                                    <!--</li>-->
+                                    <li class="ico-add" onclick="selectUsers('xgr')"></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--数据部分-->
+                <!--选择相关人-->
+                <div class="form_btns mt10">
+                    <div class="inner_form_btns">
+                        <div class="fbtns flexbox">
+                            <input type="hidden" name="tbQyDiaryPO.diaryStatus" id="taskStatus" value="" />
+                            <a class="fbtn btn qwui-btn_default flexItem" style="margin-right: 5px;" href="javascript:commitTask('0')">保存为草稿</a>
+                            <a class="fbtn btn flexItem" style="margin-left: 5px;" href="javascript:commitTask('1')">立即提交</a>
+                        </div>
+                        <div class="fbtns_desc"></div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!--引入选择人员部分-->
+    <div id="usersSelect" style="display: none"> </div>
+    <script type="text/javascript">$('#usersSelect').load('selectUsers.html');</script>
+    <!--引入选择人员部分-->
+</div>
+<script src="../resource/js/selectUsers.js"></script>
+<script>
+    $(document).ready(function () {
+        getDepts();//获取部门信息
+        getUsers();//获取人员信息
+      
+       
+    });
+    function getDepts() {
+        $.ajax({
+            type: "POST",
+            url: "../Ajax/AjaxGetMsg.aspx/getDepts",
+            // data: "{helpId: '" + helpId + "'}",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            async: false,
+            success: function Success(data) {
+                if (data.d != "") {
+                    alldepts = eval("(" + data.d + ")").alldepts;
+                    console.log(alldepts);
+                }
+                else {
+                    //alldepts=[];
+                }
+            }
+        });
+    }
+    function getUsers() {
+        $.ajax({
+            type: "POST",
+            url: "../Ajax/AjaxGetMsg.aspx/getUsers",
+            //data: "{deptId: '" + helpId + "'}",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            async: false,
+            success: function Success(data) {
+                if (data.d != "") {
+                    //alert(data.d);
+                    allusers = eval("(" + data.d + ")").allusers;
+                    console.log(allusers);
+                      allUsers();
+                }
+                else {
+                    //allusers = [];
+                }
+            }
+        });
+    }
+    function GetQueryString(name) {//获取url参数
+        var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if(r!=null)return  unescape(r[2]); return null;
+    }
+    $(function(){
+        var diaryId = GetQueryString("id");//获取url中的id参数
+        if(diaryId){//此页面为update页面
+            getDataById(diaryId);
+        }
+    });
+    //获取update页面数据start
+    function getDataById(id) {
+//        $.ajax({
+//            type: "POST",
+//            //url: "../Ajax/AjaxGetMsg.aspx/getDepts",
+//            data: "{id: '" + id + "'}",
+//            contentType: "application/json; charset=utf-8",
+//            dataType: "json",
+//            async: false,
+//            success: function Success(data) {
+//                if (data) {
+                    //测试数据
+                    var data=[];
+                    data.push({id:"1",type_id:"1",project_id:"1",title:"测试标题1",
+                        creater:"张三",status:"2",start_time:"2017-12-01",times:"1",
+                        content:"测试数据一",intro:"摘要",cover:"封面",attachs:"附件",
+                        vidios:"视频",voices:"音频",tasks:"关联任务",
+                        syr:[{dept:"1",first:"Z",id:"1",name:"张三",tel:"13804093570",url:"http://p.qlogo.cn/bizmail/uqibPEIicNrjEErw2dcgln6868Micl38EWF1VfWlQOcHgQUEJE2D26lmA/100"},{dept:2,first:"L",id:2,name:"李四",tel:13804093571,url:"http://p.qlogo.cn/bizmail/uqibPEIicNrjEErw2dcgln6868Micl38EWF1VfWlQOcHgQUEJE2D26lmA/100"}],
+                        xgr:[{dept:"2",first:"W",id:"3",name:"王五",tel:"13804093572",url:"http://p.qlogo.cn/bizmail/uqibPEIicNrjEErw2dcgln6868Micl38EWF1VfWlQOcHgQUEJE2D26lmA/100"},{dept:3,first:"Z",id:4,name:"赵六",tel:13804093573,url:"http://p.qlogo.cn/bizmail/uqibPEIicNrjEErw2dcgln6868Micl38EWF1VfWlQOcHgQUEJE2D26lmA/100"}],
+                    });
+                    $("input[name='title']").val(data[0].title);//处理title
+                    $("textarea[name='content']").html(data[0].content);//处理content
+                    //处理审阅人
+                    var syr=data[0].syr;
+                    if(syr.length>0){
+                        checkedAllUsers=[];
+                        selectType="syr";
+                        for(var i = 0;i<syr.length;i++){
+                            var userId = syr[i].id;
+                            var userName = syr[i].name;
+                            var userUrl = syr[i].url;
+                            checkedAllUsers.push({id:userId,name:userName,url:userUrl});
+                        }
+                        console.log(checkedAllUsers);
+                        okChecked();
+                    }
+                    //处理审阅人
+                    var xgr=data[0].xgr;
+                    if(xgr.length>0){
+                        checkedAllUsers=[];
+                        selectType="xgr";
+                        for(var i = 0;i<xgr.length;i++){
+                            var userId = xgr[i].id;
+                            var userName = xgr[i].name;
+                            var userUrl = xgr[i].url;
+                            checkedAllUsers.push({id:userId,name:userName,url:userUrl});
+                        }
+                        okChecked();
+                    }
+                    //测试数据
+//                  其他待实现。。。。
+//                } else {
+//
+//
+//                }
+//            }
+//        });
+    }
+    //获取update页面数据end
+    //点击加载上一次审阅人(样式)
+    $('#onOff2').click(function () {
+        if ($(this).attr('class') == 'onOff'){
+            $(this).attr('class', 'onOff_on');
+            $(this).children('.onOff_off').addClass('active');
+            $("#toSelectId").val("1");
+            //selectFormCcOrTo("0");//0表示审阅人
+        } else {
+            $(this).attr('class', 'onOff');
+            $(this).children('.onOff_off').removeClass('active');
+            $("#toSelectId").val("0");
+        }
+    });
+    //点击加载上一次相关人(样式)
+    $('#onOff3').click(function () {
+        if ($(this).attr('class') == 'onOff') {
+            $(this).attr('class', 'onOff_on');
+            $(this).children('.onOff_off').addClass('active');
+            $("#ccSelectId").val("1");
+            //selectFormCcOrTo("1");//1表示相关人
+        } else {
+            $(this).attr('class', 'onOff');
+            $(this).children('.onOff_off').removeClass('active');
+            $("#ccSelectId").val("0");
+        }
+    });
+</script>
+</body>
+</html>

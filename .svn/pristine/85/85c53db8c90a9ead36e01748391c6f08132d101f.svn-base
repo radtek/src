@@ -1,0 +1,20 @@
+<?xml version="1.0"  encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" assembly="Domain" namespace="cn.justwin.Domain.Entities">
+  <class name="OAJournal" table="OA_Journal" lazy="true">
+    <id name="Id" column="Id" type="string"  />
+    <property name="type_id" column="type_id" type="string"  />
+    <property name="project_id" column="project_id" type="string"  />
+    <property name="title" column="title" type="string"  />
+    <property name="creater" column="creater" type="string"  />
+    <property name="status" column="status" type="int"  />
+    <property name="start_time" column="start_time" type="DateTime"  />
+    <property name="end_time" column="end_time" type="DateTime"  />
+    <property name="content" column="content" type="string"  />
+    <property name="cover" column="cover" type="string"  />
+    <property name="attachs" column="attachs" type="string"  />
+    <property name="vidios" column="vidios" type="string"  />
+    <property name="voices" column="voices" type="string"  />
+    <property name="task_id" column="task_id" type="string"  />
+    <property name="create_date" column="create_date" type="DateTime"/>
+  </class>
+</hibernate-mapping>

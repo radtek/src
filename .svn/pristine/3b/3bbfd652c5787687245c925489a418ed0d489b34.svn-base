@@ -1,0 +1,76 @@
+﻿using com.jwsoft.pm.data;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
+using System.Text;
+
+namespace DomainServices.cn.justwin.Domain.Services
+{
+    public class TaskService
+    {
+        public DataTable GetTaskTypeTable(string strWhere, string UserCode)
+        {
+            string strSql = string.Format(@"SELECT * FROM (
+                                         SELECT row_number() over (ORDER BY OA_Task_Type.sort desc,OA_Task_Type.id desc) as  
+                                         pageindex--序号 
+                                        , OA_Task_Type.content_temp,--任务内容模板
+	                                            OA_Task_Type.id,--工作任务类型表_主键ID
+	                                            OA_Task_Type.is_use,--是否启用 0停用;1启用
+	                                            OA_Task_Type.name,--类型名称
+	                                            OA_Task_Type.remark,--备注说明
+	                                            OA_Task_Type.sort,--序号
+	                                            OA_Task_Type.title_temp--任务标题模板 
+                                            FROM
+	                                            OA_Task_Type 
+                                            WHERE 1 = 1  {0}  ) t ORDER BY sort DESC 
+	                                       ", strWhere);
+            return publicDbOpClass.DataTableQuary(strSql);
+        }
+        public int ChangeViewTime(string KeyID, string UserCode)
+        {
+            return publicDbOpClass.ExecuteSQL("update OA_Task_Append set look_time='" + DateTime.Now + "' where task_id='" + KeyID + "' and user_id='" + UserCode + "'");
+        }
+        public DataTable GetTaskListTable(string strWhere, string userCode)
+        {
+            string strSql = string.Format(@"SELECT * FROM (
+                                        SELECT row_number() over (ORDER BY create_time desc,OA_Task.id desc) as 
+                                         pageindex--序号 
+										,OA_Task.id	--工作任务表_主键ID
+										,type_id	--任务类型ID
+										,OA_Task_Type.name typeName--任务类型名称
+										,title	--任务名称
+										,[content]	--任务详细内容
+										,creater_id	--创建人ID
+										,PT_yhmc.v_xm--创建人
+										,create_time	--最后修改时间
+										,status	--任务状态(0草稿中、1执行中、2已逾期、3已完成、4已关闭、5已删除 )
+                                        ,CASE WHEN status=0 THEN '草稿中'  WHEN status=1 THEN '执行中' WHEN status=2 THEN '已逾期' WHEN status=3 THEN '已完成' WHEN status=4 THEN '已关闭' END status_name 
+										,start_time	--任务开始时间
+										,end_time	--任务结束时间
+										,datediff(minute, start_time,end_time) longs--持续多少分钟
+										,complete_time	--任务完成时间
+										,priority_id	--任务优先级 id
+										,XPM_Basic_CodeList.CodeName--任务优先级名称
+										,XPM_Basic_CodeList.I_xh--任务优先级排序
+										--,OA_Task_Append.progress--任务进度百分比
+										--,OA_Task_Append.up_time--任务最新提交时间
+										--,OA_Task_Append.remark--任务进度备注说明
+										,(SELECT progress FROM OA_Task_Append WHERE user_id='{1}' and OA_Task_Append.Task_id=OA_Task.Id) progress--任务进度百分比
+										,(SELECT up_time FROM OA_Task_Append WHERE user_id='{1}' and OA_Task_Append.Task_id=OA_Task.Id) up_time--任务最新提交时间
+										,(SELECT remark FROM OA_Task_Append WHERE user_id='{1}' and OA_Task_Append.Task_id=OA_Task.Id) remark--任务进度备注说明
+                                        ,(SELECT top 1 PT_yhmc.v_xm FROM OA_Task_Append  LEFT JOIN PT_yhmc ON OA_Task_Append.user_id=PT_yhmc.v_yhdm WHERE OA_Task_Append.Task_id=OA_Task.Id and (user_type=0 OR user_type=2)) syr --审阅人
+										,(SELECT PT_yhmc.v_xm+',' FROM OA_Task_Append LEFT JOIN PT_yhmc ON OA_Task_Append.user_id=PT_yhmc.v_yhdm WHERE OA_Task_Append.Task_id=OA_Task.Id and user_type=1 FOR XML PATH('')) xgr --相关人
+                                        ,(SELECT  top 1 CASE WHEN look_time IS NOT NULL THEN 1 ELSE 0 END ifck FROM OA_Task_Append	WHERE user_id='{1}' and OA_Task_Append.Task_id=OA_Task.Id ORDER BY	look_time DESC) ifck--是否查看该日志
+																				,(SELECT  COUNT(Id) plAll  FROM OA_Task_Comment WHERE OA_Task_Comment.Task_id=OA_Task.Id) plAll--评论总数
+																					,(SELECT  COUNT(Id) plNew  FROM OA_Task_Comment WHERE OA_Task_Comment.Task_id=OA_Task.Id  and [time] >(SELECT top 1 look_time FROM OA_Task_Append	WHERE user_id='{1}' and OA_Task_Append.Task_id=OA_Task.Id ORDER BY	look_time DESC)) plNew--新评论数量
+																				FROM OA_Task 
+                                        LEFT JOIN OA_Task_Type ON OA_Task.type_id=OA_Task_Type.Id
+                                        LEFT JOIN PT_yhmc ON OA_Task.creater_id=PT_yhmc.v_yhdm
+                                        LEFT JOIN XPM_Basic_CodeList ON OA_Task.priority_id=XPM_Basic_CodeList.NoteID
+                                        WHERE 1 = 1 and status !=5 {0}
+                                        ) t ORDER BY I_xh", strWhere, userCode);
+            return publicDbOpClass.DataTableQuary(strSql);
+        }
+    }
+}

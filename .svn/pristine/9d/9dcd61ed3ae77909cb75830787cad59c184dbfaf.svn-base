@@ -1,0 +1,80 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace PMBase.Basic
+{
+    public class AudioTranscoding
+    {
+        public static void transcoding(string a,string b)
+        {
+        //}
+        //static void Main(string[] args)
+        //{
+            Process process = new Process();
+
+            try
+            {
+                //if (args.Length != 2)
+                //{
+                //    Console.WriteLine("参数不合法");
+                //    return;
+                //}
+
+                string inputFile = a;//args[0];
+                string outputFile = b;// args[1];
+                process.StartInfo.FileName = "../PMBase/Basic/ffmpeg.exe";  // 这里也可以指定ffmpeg的绝对路径
+                process.StartInfo.Arguments = " -i " + inputFile + " -y " + outputFile;
+                process.StartInfo.UseShellExecute = false;
+                process.StartInfo.CreateNoWindow = true;
+                process.StartInfo.RedirectStandardOutput = true;
+                process.StartInfo.RedirectStandardInput = true;
+                process.StartInfo.RedirectStandardError = true;
+                process.ErrorDataReceived += new DataReceivedEventHandler(Output);  // 捕捉ffmpeg.exe的错误信息
+
+                DateTime beginTime = DateTime.Now;
+
+                process.Start();
+                process.BeginErrorReadLine();   // 开始异步读取
+
+                Console.WriteLine("\n开始音频转码...\n");
+
+                process.WaitForExit();    // 等待转码完成
+
+                if (process.ExitCode == 0)
+                {
+                    int exitCode = process.ExitCode;
+                    DateTime endTime = DateTime.Now;
+                    TimeSpan t = endTime - beginTime;
+                    double seconds = t.TotalSeconds;
+                    Console.WriteLine("\n转码完成！总共用时：" + seconds + "秒\n");
+                }
+                // ffmpeg.exe 发生错误
+                else
+                {
+                    Console.WriteLine("\nffmpeg.exe 程序发生错误，转码失败！");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("\n错误！！" + ex.ToString());
+            }
+            finally
+            {
+                process.Close();
+            }
+        }
+
+        private static void Output(object sendProcess, DataReceivedEventArgs output)
+        {
+            Process p = sendProcess as Process;
+            if (p.HasExited && p.ExitCode == 1) // 在ffmpeg发生错误的时候才输出信息
+            {
+                Console.WriteLine(output.Data);
+            }
+        }
+    }
+}

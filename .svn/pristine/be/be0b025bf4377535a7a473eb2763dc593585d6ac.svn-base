@@ -1,0 +1,208 @@
+<html><!-- 用于手机调用页面，不获取用户登录信息，避免抛出异常。"dgu" don't get user -->
+<head>
+    <meta charset="utf-8">
+    <title>日志详情</title>
+    <meta name="description" content="">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta content="telephone=no" name="format-detection">
+    <meta content="email=no" name="format-detection">
+    <link rel="stylesheet" href="../resource/css/ku.css"/>
+    <link rel="stylesheet" href="../resource/css/font-awesome.min.css"/>
+    <script src="../resource/js/jquery-1.7.2.min.js"></script>
+</head>
+<body>
+<div id="wrap_main" class="wrap">
+    <div id="main" class="wrap_inner" style="height: 571px;">
+        <div class="article_detail">
+            <div class="article-detail">
+                <div class="detail-title" id="title"></div>
+                <div class="detail-small-title">
+                    <span id="detailTime">15:05</span>
+                    <span id="creater">雲潇</span>
+                    <a onclick="editDiary()" id="editbtnDiv_id" style="display: none">编辑</a>
+                    <a onclick="editDiary()" style="">复制</a>
+                </div>
+                <div class="detail-content article_content">
+                    <div id="content"></div>
+                    <div id="topImage" style="">
+                        <img src="https://qwyimg.do1.com.cn/fileweb/compress/upload/img/7c8757f99d6d4bba99e1b62edea494a5/20171201/3187ff4e28e449dfa08033aa54bfb237.jpeg" style="width:100%">
+                    </div>
+                </div>
+                <div class="detail-type-bar">
+                    <i class="icon-tips mr10"></i>
+                    <span id="type_id">周报</span>
+                </div>
+                <!-- 上传媒体文件（手机端页面）引入  start -->
+                <div class="form-style mb15" id="medialist" style="">
+                    <div class="letter_bar file_top borderBottommNone">
+                        <span class="file_top_tit">附件(2)</span>
+                    </div>
+                    <div class="settings-item" id="75741e97212e43c9b5a8ce31f74a5ede"
+                         data-file="{&quot;agentCode&quot;:&quot;&quot;,&quot;agentName&quot;:&quot;&quot;,&quot;createPerson&quot;:&quot;a2c112c6b915db47a31d051b0a8e1c7d&quot;,&quot;createTime&quot;:&quot;2017-12-01 15:05:27&quot;,&quot;ext&quot;:&quot;&quot;,&quot;fileExt&quot;:&quot;TXT&quot;,&quot;fileName&quot;:&quot;开发流程及注意事项.txt&quot;,&quot;fileSize&quot;:1174,&quot;fileSizeStr&quot;:&quot;1.14 K&quot;,&quot;groupId&quot;:&quot;&quot;,&quot;id&quot;:&quot;75741e97212e43c9b5a8ce31f74a5ede&quot;,&quot;mediaId&quot;:&quot;3YxDJZZoZ2arnky4cVwC4sKcydJSWRQIPQb_tUEPJwug&quot;,&quot;mediaOutTime&quot;:1512371127203,&quot;orderId&quot;:&quot;&quot;,&quot;orgId&quot;:&quot;7c8757f99d6d4bba99e1b62edea494a5&quot;,&quot;personName&quot;:&quot;&quot;,&quot;sourceType&quot;:2,&quot;status&quot;:1,&quot;type&quot;:&quot;file&quot;,&quot;url&quot;:&quot;/upload/wx/7c8757f99d6d4bba99e1b62edea494a5/20171201/75741e97212e43c9b5a8ce31f74a5ede.txt&quot;}">
+                        <input type="hidden" name="mediaIds" value="75741e97212e43c9b5a8ce31f74a5ede">
+                        <div class="inner-settings-item flexbox fujian"><p class="TXT"></p>
+                            <div class="fujian_text flexItem"><p class="name">开发流程及注意事项.txt</p>
+                                <p class="fujian_size">1.14 K</p>
+                                <p class="arrow">
+                                    <a class="wrap"><i class="qw-operate-icon qw-operate-icon-download"></i></a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- 上传媒体文件（手机端页面）引入  end -->
+                <!-- 语音 -->
+                <div class="detail_tapeEndBox" id="voicelist" style="display: none;"></div>
+                <div class="detail-score ohidden" id="ScoreDIV" style="display: none;">
+                    <div class="pingfen" id="diaryScore">
+                        <div class="mb5 c999"><span id="pingfenId">评分(0)</span></div>
+                    </div>
+                    <div class="process_tit" id="showScore" onclick="showAllScore()" style="display:none">查看所有 6 个评分</div>
+                    <div id="btn_div_per1" style="display:none;">
+                        <div class="flexbox mt15">
+                            <a class="btn flexItem" id="startTaskBtn2" href="javascript:scoreSubmit()">评分</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="letter_bar first_top" id="syrCount"></div>
+            <div class="f-item" id="tolist" style="">
+                <a href="javascript:searchList('to');" class="quick_tel w45" id="toarrow" style="display: none;"></a>
+                <div class="f-add-user clearfix">
+                    <div class="inner-f-add-user">
+                        <div class="f-add-user-list">
+                            <ul id="syr">
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="letter_bar" id="xgrCount">相关人()</div>
+            <div class="f-item" id="cclist" style="border-bottom: none;">
+                <a href="javascript:searchList('cc');" class="quick_tel w45" id="ccarrow" style="display: none;"></a>
+                <div class="f-add-user clearfix" style="border-bottom: none">
+                    <div class="inner-f-add-user">
+                        <div class="f-add-user-list">
+                            <ul id="xgr">
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pageNumber">
+                <div class="prev" onclick="showAnother('pre')">上一篇日志</div>
+                <div class="next" onclick="showAnother('next')">下一篇日志</div>
+            </div>
+            <div class="comments-box" id="comments-box">
+                <div class="letter_bar first_top"><span id="commentCount">回复(0)</span>
+                    <div class="loadlast_onoff">
+                        <div class="onOff" id="isShowComment"><span class="onOff_off"></span></div>
+                    </div>
+                </div>
+                <div class="lastComment" id="commentCount0" style="">暂无回复</div>
+                <div class="comment_list clearfix" id="comments">
+                    <ul id="commentList"></ul>
+                </div>
+            </div>
+            <div class="all_pull">
+                <p class="lastComment" id="noneMore" style="display: none;">没有更多评论啦</p>
+            </div>
+            <div class="footheight" style=""></div>
+        </div>
+    </div>
+</div>
+<script>
+    var diaryId;
+    function GetQueryString(name) {//获取url参数
+        var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if(r!=null)return  unescape(r[2]); return null;
+    }
+    $(function(){
+        diaryId = GetQueryString("id");//获取url中的id参数
+        if(diaryId){//此页面为update页面
+            getDataById(diaryId);
+        }
+    });
+    //获取update页面数据start
+    function getDataById(id) {
+//        $.ajax({
+//            type: "POST",
+//            //url: "../Ajax/AjaxGetMsg.aspx/getDepts",
+//            data: "{id: '" + id + "'}",
+//            contentType: "application/json; charset=utf-8",
+//            dataType: "json",
+//            async: false,
+//            success: function Success(data) {
+//                if (data) {
+        //测试数据
+        var data=[];
+        data.push({id:"1",type_id:"日报",project_id:"1",title:"测试标题1",
+            creater:"张三",status:"2",start_time:"2017-12-01",times:"1",
+            content:"测试数据一",intro:"摘要",cover:"封面",attachs:"附件",
+            vidios:"视频",voices:"音频",tasks:"关联任务",
+            syr:[{dept:"1",first:"Z",id:"1",name:"张三",tel:"13804093570",url:"http://p.qlogo.cn/bizmail/uqibPEIicNrjEErw2dcgln6868Micl38EWF1VfWlQOcHgQUEJE2D26lmA/100"},{dept:2,first:"L",id:2,name:"李四",tel:13804093571,url:"http://p.qlogo.cn/bizmail/uqibPEIicNrjEErw2dcgln6868Micl38EWF1VfWlQOcHgQUEJE2D26lmA/100"}],
+            xgr:[{dept:"2",first:"W",id:"3",name:"王五",tel:"13804093572",url:"http://p.qlogo.cn/bizmail/uqibPEIicNrjEErw2dcgln6868Micl38EWF1VfWlQOcHgQUEJE2D26lmA/100"},{dept:3,first:"Z",id:4,name:"赵六",tel:13804093573,url:"http://p.qlogo.cn/bizmail/uqibPEIicNrjEErw2dcgln6868Micl38EWF1VfWlQOcHgQUEJE2D26lmA/100"}],
+        });
+        $("#title").html(data[0].title);//处理title
+        $("#content").html(data[0].content);//处理content
+        $("#type_id").html(data[0].type_id);//处理content
+        //处理审阅人
+        var syr=data[0].syr;
+        $("#syrCount").html("审阅人（"+syr.length+"）");
+        if(syr.length>0){
+            var syrHtml="";
+            for(var i = 0;i<syr.length;i++){
+                var userId = syr[i].id;
+                var userName = syr[i].name;
+                var userUrl = syr[i].url;
+              syrHtml+="<li>" +
+                            "<p class=\"img\">" +
+                            "<img src=\""+userUrl+"\" alt=\"\">" +
+                            "</p>" +
+                            "<p class=\"name\">"+userName+"</p>" +
+                       "</li>";
+            }
+            $("#syr").html(syrHtml);
+        }
+        //处理相关人
+        var xgr=data[0].xgr;
+        $("#xgrCount").html("相关人（"+xgr.length+"）");
+        if(xgr.length>0){
+            var xgrHtml="";
+            for(var i = 0;i<xgr.length;i++){
+                var userId = xgr[i].id;
+                var userName = xgr[i].name;
+                var userUrl = xgr[i].url;
+              xgrHtml+="<li>" +
+                            "<p class=\"img\">" +
+                            "<img src=\""+userUrl+"\" alt=\"\">" +
+                            "</p>" +
+                            "<p class=\"name\">"+userName+"</p>" +
+                       "</li>";
+            }
+            $("#xgr").html(xgrHtml);
+        }
+        //测试数据
+//                  其他待实现。。。。
+//                } else {
+//
+//
+//                }
+//            }
+//        });
+    }
+    function editDiary(){
+
+    }
+    function showAnother(type){//type(prev,next):上一篇，下一篇
+        //TODO
+    }
+
+</script>
+</body>
+</html>

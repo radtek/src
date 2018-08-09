@@ -1,0 +1,546 @@
+﻿using cn.justwin.BLL;
+using cn.justwin.Domain.Entities;
+using cn.justwin.Domain.Services;
+using cn.justwin.Web;
+using com.jwsoft.pm.data;
+using Newtonsoft.Json.Linq;
+using PMBase.Basic;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.IO;
+using System.Linq;
+using System.Net;
+using System.Security.Cryptography;
+using System.Web;
+using System.Web.Services;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+
+public partial class AjaxGetMsg : System.Web.UI.Page
+{
+    private static OAJournalService pcSer = new OAJournalService();
+    private static OAJournalAppendService pcSer2 = new OAJournalAppendService();
+    protected void Page_Load(object sender, EventArgs e)
+    {
+
+    }
+
+    [WebMethod]//标示为web服务方法属性
+    public static string getDepts()
+    { //{ "alldepts":[{"id":2,"name":"开发部1","fid":1},{"id":3,"name":"测试部1","fid":1},{"id":4,"name":"销售部1","fid":1},{"id":5,"name":"运营部1","fid":1},{"id":6,"name":"维护部1","fid":1},{"id":7,"name":"人事部1","fid":1},{"id":8,"name":"财务部1","fid":1}]}
+        string strRes1 = "{\"alldepts\":[";
+        string strRes2 = "";
+        string strRes3 = "]}";
+        DataTable dt = publicDbOpClass.DataTableQuary("select i_bmdm,i_sjdm,V_BMMC from PT_d_bm where c_sfyx='y'");
+        foreach (DataRow dr in dt.Rows)
+        {
+            strRes2 += "{\"id\":\"" + dr["i_bmdm"] + "\",\"name\":\"" + dr["V_BMMC"] + "\",\"fid\":\"" + dr["i_sjdm"] + "\"},";
+        }
+        string strRes = strRes1 + strRes2.Substring(0, strRes2.Length - 1) + strRes3;
+        return strRes;
+        //return "{\"alldepts\":[{\"id\":2,\"name\":\"开发部1\",\"fid\":1},{\"id\":3,\"name\":\"测试部1\",\"fid\":1},{\"id\":4,\"name\":\"销售部1\",\"fid\":1},{\"id\":5,\"name\":\"运营部1\",\"fid\":1},{\"id\":6,\"name\":\"维护部1\",\"fid\":1},{\"id\":7,\"name\":\"人事部1\",\"fid\":1},{\"id\":8,\"name\":\"财务部1\",\"fid\":1}]}";
+    }
+
+    [WebMethod]//标示为web服务方法属性
+    public static string getUsers()
+    {
+        string strRes1 = "{\"allusers\":[";
+        string strRes2 = "";
+        string strRes3 = "]}";
+        DataTable dt = publicDbOpClass.DataTableQuary("select i_bmdm,'A' first,v_yhdm,v_xm,MobilePhoneCode,'SS' img from PT_yhmc where State=1");
+        foreach (DataRow dr in dt.Rows)
+        {
+          strRes2 += "{\"dept\":\"" + dr["i_bmdm"] + "\",\"first\":\"" + WXAPI.GetCharSpellCode(dr["v_xm"].ToString().Substring(0, 1)) + "\",\"id\":\"" + dr["v_yhdm"] + "\",\"name\":\"" + dr["v_xm"] + "\",\"tel\":\"" + dr["MobilePhoneCode"] + "\",\"url\":\"" + dr["img"] + "\"},";
+        }
+        string strRes = strRes1 + strRes2.Substring(0, strRes2.Length - 1) + strRes3;
+        return strRes;
+        //{dept:1,first:"Z",id:1,name:"张三",tel:13804093570,url:"http://p.qlogo.cn/bizmail/uqibPEIicNrjEErw2dcgln6868Micl38EWF1VfWlQOcHgQUEJE2D26lmA/100"});
+    }
+    [WebMethod]//标示为web服务方法属性
+    public static string getlogList(string code, string userType, int rows, int page, string search, string status)
+    {
+        //userType   //cg 草稿 tj已提交 sy 我审阅的 xg 相关的
+        //string strRes1 = " [{\"total\":\"15\",\"data\":[";
+        string strRes2 = "";
+        string strRes3 = "]}]";
+        string strCreater = getUserIdByCode(code);//"00000000";
+        string str1 = ((rows * (page - 1)) + 1).ToString();
+        string str2 = (rows * page).ToString();
+        string strs = "  and  pageindex between " + str1 + " and " + str2;
+        string strSQL = "select * from (select row_number() over (order by create_date desc,start_time desc)as pageindex,* from OA_Journal where creater='" + strCreater + "'and status='" + status + "' )t where 1=1 " + strs + "";
+        string strSQLCount = "select * from (select row_number() over (order by create_date,id desc)as pageindex,* from OA_Journal where creater='" + strCreater + "' and status='" + status + "' )t where 1=1 ";
+        DataTable dt = publicDbOpClass.DataTableQuary(strSQL);
+        DataTable dtCount = publicDbOpClass.DataTableQuary(strSQLCount);
+
+        foreach (DataRow dr in dt.Rows)
+        {
+            strRes2 += "{\"id\":\"" + dr["id"] + "\",\"status\":\"" + dr["status"] + "\",\"title\":\"" + dr["title"] + "\",\"content\":\"" + dr["content"] + "\",\"create_date\":\"" + dr["create_date"] + "\"},";
+        }
+        string strRes = " [{\"total\":\"" + dtCount.Rows.Count + "\",\"data\":[" + strRes2.Substring(0, strRes2.Length - 1) + strRes3;
+        return strRes;
+    }
+    [WebMethod]//标示为web服务方法属性
+    public static string getTemps(string typeId)
+    {
+        string strRes3 = "";
+        DataTable dt = publicDbOpClass.DataTableQuary("select * from OA_Journal_Type where Id='" + typeId + "'");
+        foreach (DataRow dr in dt.Rows)
+        {
+            strRes3 = dr["title_temp"].ToString() + ";" + dr["content_temp"].ToString();
+        }
+        return strRes3;
+    }
+
+    [WebMethod]//标示为web服务方法属性
+    public static string getTypes(string diaryId)
+    {
+        string strRes0 = "";
+        if (!string.IsNullOrEmpty(diaryId))
+        {
+            strRes0 = "<option value=\"0\" >请选择</option>";
+        }
+        else
+        {
+            strRes0 = "<option value=\"0\" selected>请选择</option>";
+        }
+
+        //string strRes1 = "<option value=\"1\">日报</option>";
+        DataTable dt = publicDbOpClass.DataTableQuary(" select * from OA_Journal_Type where is_use=1 ");
+        DataTable dt2 = publicDbOpClass.DataTableQuary(" select * from OA_Journal where id='" + diaryId + "' ");
+        foreach (DataRow dr in dt.Rows)
+        {
+            if (!string.IsNullOrEmpty(diaryId) && dr["Id"].ToString() == dt2.Rows[0]["type_id"].ToString())
+            {
+                strRes0 += "<option value=\"" + dr["Id"].ToString() + "\" selected>" + dr["name"].ToString() + "</option>";
+            }
+            else
+            {
+                strRes0 += "<option value=\"" + dr["Id"].ToString() + "\">" + dr["name"].ToString() + "</option>";///dr["title_temp"].ToString() + ";" + dr["content_temp"].ToString();
+            }
+
+        }
+        return strRes0;
+    }
+    [WebMethod]//标示为web服务方法属性
+    //加载上次 审阅人 or 相关人  type 0:审阅人；1相关人
+    public static string GetBeforeUsers(string type)
+    {
+        int user_type = 0;
+        int user_type2 = 0;
+        string strUser = "00000000";
+        if (type == "syr")
+        {
+            user_type = 0;
+            user_type2 = 2;
+        }
+        if (type == "xgr")
+        {
+            user_type = 1;
+            user_type2 = 1;
+        }
+
+
+        //string strRes1 = "{\"checkUsers\":[";
+        string strRes1 = "[";
+        string strRes2 = "";
+        //string strRes3 = "]}";
+        string strRes3 = "]";
+        DataTable dt = publicDbOpClass.DataTableQuary(@"select v_yhdm,v_xm  from PT_yhmc WHERE v_yhdm in(SELECT user_id from OA_Journal_Append WHERE (user_type = " + user_type + " or  user_type = " + user_type2 + ") and journal_id  in(select top 1 id from OA_Journal WHERE creater = '" + strUser + "' ORDER BY create_date desc))");
+        foreach (DataRow dr in dt.Rows)
+        {
+            JObject json1 = WXAPI.getUserInfo(dr["v_yhdm"].ToString());
+            string imgUrl = json1["avatar"].ToString();
+            //id name 姓名 imgUrl 头像
+            strRes2 += "{\"id\":\"" + dr["v_yhdm"] + "\",\"name\":\"" + dr["v_xm"] + "\",\"url\":\"" + imgUrl + "\"},";
+        }
+        string strRes = strRes1 + strRes2.Substring(0, strRes2.Length - 1) + strRes3;
+        return strRes;
+    }
+    [WebMethod]//标示为web服务方法属性
+    //
+    public static string getDataById(string id)
+    {
+        string strRes1 = "[";
+        string strRes2 = "";
+        string strRes3 = "]";
+
+        DataTable dt = publicDbOpClass.DataTableQuary(@"select OA_Journal_Type.name typeName,PT_yhmc.v_xm ,PT_PrjInfo.PrjName,OA_Journal.* from OA_Journal 
+                                                        left join OA_Journal_Type on type_id=OA_Journal_Type.Id
+                                                        left join PT_yhmc on creater=PT_yhmc.v_yhdm
+                                                        left join PT_PrjInfo on project_id=PT_PrjInfo.PrjGuid where OA_Journal.Id='" + id + "'");
+        foreach (DataRow dr in dt.Rows)
+        {
+            PTPrjInfo ptp = new PTPrjInfo();
+           PTPrjInfoService ptpService = new PTPrjInfoService();
+            ptp = ptpService.GetById(dr["project_id"].ToString());
+            string ptName = ptp.PrjName;
+            //{id:"1",type_id:"1",project_id:"1",title:"测试标题1",
+            //    creater: "张三",status: "2",start_time: "2017-12-01",times: "1",
+            //                content: "测试数据一",intro: "摘要",cover: "封面",attachs: "附件",
+            //                vidios: "视频",voices: "音频",tasks: "关联任务"
+            strRes2 += "{\"id\":\"" + dr["id"] + "\",\"typeName\":\"" + dr["typeName"] + "\",\"v_xm\":\"" + dr["v_xm"] + "\",\"PrjName\":\"" + ptName + "\",\"title\":\"" + dr["title"] + "\",\"type_id\":\"" + dr["type_id"] + "\",\"project_id\":\"" + dr["project_id"] + "\",\"creater\":\"" + dr["creater"] + "\",\"status\":\"" + dr["status"] + "\",\"start_time\":\"" + Convert.ToDateTime(dr["start_time"]).ToString("yyyy-MM-dd HH:mm") + "\",\"end_time\":\"" + Convert.ToDateTime(dr["end_time"]).ToString("yyyy-MM-dd HH:mm") + "\",\"content\":\"" + dr["content"] + "\"}";
+        }
+        string strRes = strRes1 + strRes2 + strRes3;
+        return strRes;
+    }
+    [WebMethod]//标示为web服务方法属性
+    //加载上次 审阅人 or 相关人  type 0:审阅人；1相关人
+    public static string getUsersById(string diaryId, string userType)
+    {
+        int user_type = 0;
+        int user_type2 = 0;
+        if (userType == "syr")
+        {
+            user_type = 0;
+            user_type2 = 2;
+        }
+        if (userType == "xgr")
+        {
+            user_type = 1;
+            user_type2 = 1;
+        }
+
+
+        //string strRes1 = "{\"checkUsers\":[";
+        string strRes1 = "[";
+        string strRes2 = "";
+        //string strRes3 = "]}";
+        string strRes3 = "]";
+        string strSQL = @"select v_yhdm,v_xm  from PT_yhmc WHERE v_yhdm in(SELECT user_id from OA_Journal_Append WHERE (user_type = " + user_type + " or  user_type = " + user_type2 + ") and journal_id  in(select id from OA_Journal WHERE id = '" + diaryId + "'))";
+        DataTable dt = publicDbOpClass.DataTableQuary(strSQL);
+        foreach (DataRow dr in dt.Rows)
+        {
+            JObject json1 = WXAPI.getUserInfo(dr["v_yhdm"].ToString());
+            string imgUrl = json1["avatar"].ToString();
+            //id name 姓名 imgUrl 头像
+            strRes2 += "{\"id\":\"" + dr["v_yhdm"] + "\",\"name\":\"" + dr["v_xm"] + "\",\"url\":\"" + imgUrl + "\"},";
+        }
+        string strRes = strRes1 + strRes2.Substring(0, strRes2.Length - 1) + strRes3;
+        return strRes;
+    }
+
+    [WebMethod]//标示为web服务方法属性
+               //提交保存 type:0 草稿;1 提交;    新增or修改
+               //data: "{id: '" + 日志id + "',type: '" +   草稿;1 提交;  + "',action: '" +   add | edit + "',
+               //title: '" + 标题 + "'content: '" + 内容 + "'
+               //start_time: '" + 开始时间 + "'end_time: '" + 结束时间 + "'type_id: '" +日志类型 + "',
+               //syr: '" + 审阅人 + "',xgr: '" + 相关人 + "',project_id: '" + 关联项目 + "',tasks: '" + 关联任务 + "'",
+    public static string saveDataBasic(string code, string id, string imgIds, string voiceIds, string type, string action, string title, string content, string start_time, string end_time, string type_id, string syr, string xgr, string project_id, string tasks)
+    {
+        //imgIds: '" + imgIds2 + "',voiceIds:
+        OAJournal model = new OAJournal();
+        model.Id = id;
+        model.title = title;//标题
+        model.type_id = type_id;//日志类型
+        model.start_time = Convert.ToDateTime(start_time); ;//日志开始时间
+        model.end_time = Convert.ToDateTime(end_time);//日志结束时间
+        model.content = content;//内容
+        model.status = Convert.ToInt32(type);//日志状态(0草稿;1提交)
+        model.creater = getUserIdByCode(code);//"00000000";//创建人ID
+        model.create_date = DateTime.Now;//创建时间
+        if (!string.IsNullOrEmpty(project_id))
+        {
+           model.project_id = project_id;//关联项目ID
+        }
+        model.voices = voiceIds;//关联语音
+        model.vidios = imgIds;//关联视频(图片)
+        //model.cover = "";//封面
+        //model.tasks = tasks;//关联任务
+
+        try
+        {
+            if (action == "add")
+            {
+                pcSer.Add(model);
+                saveRY(id, syr, xgr);
+                saveImgOrVoice(imgIds, id,"img");
+                saveImgOrVoice(imgIds, id, "voice");
+                saveVoice(voiceIds, id);
+                // string , string voiceIds
+            }
+            else if (action == "edit")
+            {
+                pcSer.Update(model);
+                publicDbOpClass.ExecSqlString("DELETE from OA_Journal_Append where journal_id='" + model.Id + "'");
+                saveRY(id, syr, xgr);
+            }
+            return "1";
+        }
+        catch(Exception ex)
+        {
+            return "0";
+        }
+    }
+    /// <summary>
+    /// 保存图片 or 语音
+    /// </summary>
+    /// <param name="Ids">服务器文件ID</param>
+    /// <param name="JournalID">日志ID</param>
+    /// <param name="type">img 图片;voice 语音</param>
+    private static void saveImgOrVoice(string Ids, string JournalID, string type)
+    {
+        if (!string.IsNullOrEmpty(Ids))
+        {
+            string[] strImgs = Ids.Substring(0, Ids.Length - 1).Split(';');
+            foreach (string str in strImgs)
+            {
+                string strbdId = str.Split(',')[0];
+                string strfwqId = str.Split(',')[1];
+                HttpContext context = HttpContext.Current;
+                string str1 = HttpContext.Current.Server.MapPath("/");
+                string str2 = "";//ConfigHelper.Get("JournalVoices");
+                if (type== "img")
+                {
+                     str2 = "/UploadFiles/JournalPhotos/";//ConfigHelper.Get("JournalVoices");
+                }
+                else if (type == "voice")
+                {
+                     str2 = "/UploadFiles/JournalVoices/";//ConfigHelper.Get("JournalVoices");
+                }
+                else
+                {
+                    str2 = "/UploadFiles/";
+                }
+                string str3 = JournalID;
+                string path = str1.Substring(0, str1.Length - 1) + str2 + str3 + "\\";
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                }
+                string tagUrl = "https://qyapi.weixin.qq.com/cgi-bin/media/get?access_token=" + WXAPI.getToken() + "&media_id=" + strfwqId + "";
+                HttpWebResponse response = HttpWebResponseUtility.CreateGetHttpResponse(tagUrl, null, null, null);
+                string strfwqFilename = response.Headers.ToString().Split('"')[1];//服务器文件名称(ID)
+                string strbfdFilename = strfwqId + strfwqFilename.Split('.')[1];//本地文件名称(ID)
+                Stream responseStream = response.GetResponseStream();
+                //创建本地文件写入流
+                Stream stream = new FileStream(path + strbfdFilename, FileMode.Create);//保存文件到本地
+                byte[] bArr = new byte[1024];
+                int size = responseStream.Read(bArr, 0, (int)bArr.Length);
+                while (size > 0)
+                {
+                    stream.Write(bArr, 0, size);
+                    size = responseStream.Read(bArr, 0, (int)bArr.Length);
+                }
+                stream.Close();
+                responseStream.Close();
+            }
+        }
+    }
+    //保存语音
+    private static void saveVoice(string voiceIds, string JournalID)
+    {
+        
+    }
+
+
+
+    private static void saveImg(string imgIds)
+    {
+        if (!string.IsNullOrEmpty(imgIds))
+        {
+            string[] strImgs = imgIds.Substring(0,imgIds.Length-1).Split(',');
+        }
+    }
+
+    private static void saveRY(string Id, string syr, string xgr)
+    {
+        OAJournalAppend model2 = new OAJournalAppend();
+        int ii = 0;
+        string strSYR = syr;//审阅人
+        string strXGRS = xgr;//相关人
+        if (!string.IsNullOrEmpty(strXGRS))
+        {
+            string[] strXGR = strXGRS.Split(',');
+            foreach (string str in strXGR)
+            {
+                model2.Id = Guid.NewGuid().ToString();//主键
+                model2.journal_id = Id;//日志ID
+                model2.user_id = str;//审阅人ID
+                if (str == strSYR)
+                {
+                    model2.user_type = 2;//0 审阅人、1相关人、2审阅及相关人;
+                    ii = 1;//为1时,同时保存审阅人
+                }
+                else
+                {
+                    model2.user_type = 1;// l 审阅人、1相关人、2审阅及相关人;
+                }
+                //model2.score = null;//评价/评分
+                //model2.look_time = null;//查阅时间
+                pcSer2.Add(model2);
+            }
+        }
+        if (!string.IsNullOrEmpty(strSYR))
+        {
+            if (ii == 0)
+            {
+                model2.Id = Guid.NewGuid().ToString();//主键
+                model2.journal_id = Id;//日志ID
+                model2.user_id = strSYR;//审阅人ID
+                model2.user_type = 0;//0 审阅人、1相关人、2审阅及相关人;
+                                     //model2.score = null;//评价/评分
+                                     //model2.look_time = null;//查阅时间
+                pcSer2.Add(model2);
+            }
+        }
+    }
+
+    [WebMethod]//标示为web服务方法属性
+    public static string getProject_id(string diaryId)
+    {
+        string strRes0 = "";
+        if (!string.IsNullOrEmpty(diaryId))
+        {
+            strRes0 = "<option value=\"0\" >请选择</option>";
+        }
+        else
+        {
+            strRes0 = "<option value=\"0\" selected>请选择</option>";
+        }
+
+        //string strRes1 = "<option value=\"1\">日报</option>";
+        DataTable dt2 = publicDbOpClass.DataTableQuary(" select * from OA_Journal where id='" + diaryId + "' ");
+        System.Collections.Generic.IList<SelectProject> project = SelectProjectHelper.GetProject("00000000", Parameters.PrjAvaildState5, "", "");
+        foreach (var item in project)
+        {
+            if (!string.IsNullOrEmpty(diaryId) && item.Id == dt2.Rows[0]["project_id"].ToString())
+            {
+                strRes0 += "<option value=\"" + item.Id + "\" selected>" + item.Name + "</option>";
+            }
+            else
+            {
+                strRes0 += "<option value=\"" + item.Id + "\">" + item.Name + "</option>";///dr["title_temp"].ToString() + ";" + dr["content_temp"].ToString();
+            }
+        }
+        return strRes0;
+    }
+    [WebMethod]//标示为web服务方法属性
+    public static string getPLById(string diaryId)
+    {
+        string strRes1 = "[";
+        string strRes2 = "";
+        string strRes3 = "]";
+        DataTable dt = publicDbOpClass.DataTableQuary(@" select 'ss' img, PT_yhmc.v_xm ,OA_Journal_Comment.* from OA_Journal_Comment 
+                        left join PT_yhmc on OA_Journal_Comment.user_id=PT_yhmc.v_yhdm WHERE journal_id='" + diaryId + "' ORDER BY time desc ");
+        foreach (DataRow dr in dt.Rows)
+        {
+            strRes2 += "{\"id\":\"" + dr["id"] + "\",\"v_xm\":\"" + dr["v_xm"] + "\",\"img\":\"" + dr["img"] + "\",\"time\":\"" + dr["time"] + "\",\"content\":\"" + dr["content"] + "\"},";
+        }
+        string strRes = strRes1 + strRes2.Substring(0, strRes2.Length - 1) + strRes3;
+        return strRes;
+    }
+
+    [WebMethod]//标示为web服务方法属性
+    public static string getJSSDK(string strUrl)
+    {
+        //appId: '', // 必填，企业微信的cropID
+        //timestamp: , // 必填，生成签名的时间戳
+        //nonceStr: '', // 必填，生成签名的随机串
+        //signature: '',// 必填，签名，见[附录1](#11974)
+        string appId = new BasicConfigService().GetValue("corpId");// 必填，签名，见[附录1](#11974)
+        string timestamp = Convert.ToString(WXAPI.ConvertDateTimeInt(DateTime.Now)); // 必填，生成签名的时间戳
+        string nonceStr = WXAPI.createNonceStr(); // 必填，生成签名的随机串
+        string jsapiTicket = WXAPI.getTicket();
+        string url = strUrl;//HttpContext.Current.Request.Url.ToString();
+        string rawstring = "jsapi_ticket=" + jsapiTicket + "&noncestr=" + nonceStr + "&timestamp=" + timestamp + "&url=" + url + "";
+        //string rawstring = "jsapi_ticket=&noncestr=&timestamp=&url=";
+        string signature = WXAPI.SHA1_Hash(rawstring);// 必填，签名
+        string strRes = "[{\"appid\":\"" + appId + "\",\"timestamp\":\"" + timestamp + "\",\"jsapiTicket\":\"" + jsapiTicket + "\",\"nonceStr\":\"" + nonceStr + "\",\"signature\":\"" + signature + "\"}]";
+        return strRes;
+    }
+    [WebMethod]//标示为web服务方法属性
+    public static string getUserIdByCode(string code)
+    {
+        WXAPI.getUserIdByCode(code);
+        return "";
+    }
+    [WebMethod]//标示为web服务方法属性
+    public static string getPFById(string diaryId)
+    {
+        DataTable dt = publicDbOpClass.DataTableQuary(@"select * from OA_Journal_Append WHERE (user_type=1 or user_type=2) and journal_id='" + diaryId + "'");
+        string strPF = dt.Rows[0]["score"].ToString();
+        string strUserID = dt.Rows[0]["user_id"].ToString();
+        if (!string.IsNullOrEmpty(strPF))
+        {
+            return strUserID + "," + strPF;
+        }
+        else
+        {
+            return strUserID + ",无";
+        }
+    }
+    
+   [WebMethod]//标示为web服务方法属性
+    public static string setPFById(string diaryId,string score)
+    {
+        //设置评分
+        publicDbOpClass.ExecSqlString("update OA_Journal_Append  set score='" + score + "' where (user_type=1 or user_type=2) and  journal_id='" + diaryId + "'");
+        //返回评分人和评分结果
+        DataTable dt = publicDbOpClass.DataTableQuary(@"select * from OA_Journal_Append WHERE (user_type=1 or user_type=2) and journal_id='" + diaryId + "'");
+        string strPF = dt.Rows[0]["score"].ToString();
+        string strUserID = dt.Rows[0]["user_id"].ToString();
+        if (!string.IsNullOrEmpty(strPF))
+        {
+            return strUserID + "," + strPF;
+        }
+        else
+        {
+            return strUserID + ",无";
+        }
+    }
+    [WebMethod]//标示为web服务方法属性
+    public static string getSrcFiles(string diaryId,string type)
+    {
+        string str1 = HttpContext.Current.Server.MapPath("/");
+        string str2 = "";//ConfigHelper.Get("JournalVoices");
+        if (type == "JournalFiles")
+        {
+            str2 = "/UploadFiles/JournalFiles/";//ConfigHelper.Get("JournalVoices");
+        }
+        string str3 = diaryId;
+        string text = str1.Substring(0, str1.Length - 1) + str2 + str3 + "\\";
+        HttpContext context = HttpContext.Current;
+        context.Response.ContentType = "Application/json";
+        //string text = string.Empty;
+        string s = string.Empty;
+        string arg_21_0 = string.Empty;
+        if (!string.IsNullOrEmpty(context.Request["Path"]))
+        {
+            text = context.Request["Path"];
+        }
+        List<MergerFolder> list = null;
+        if (!string.IsNullOrEmpty(context.Request["merger"]))
+        {
+            list = JsonConvert.DeserializeObject<List<MergerFolder>>(context.Request["merger"]);
+        }
+        List<Annex> list2 = new List<Annex>();
+        if (list != null)
+        {
+            string str = text.Substring(text.LastIndexOf('/') + 1);
+            foreach (MergerFolder current in list)
+            {
+                try
+                {
+                    DirectoryUtility directoryUtility = new DirectoryUtility(current.Path + str);
+                    list2.AddRange(directoryUtility.GetAnnex(true));
+                }
+                catch
+                {
+                }
+            }
+        }
+        try
+        {
+            DirectoryUtility directoryUtility = new DirectoryUtility(text);
+            list2.AddRange(directoryUtility.GetAnnex());
+        }
+        catch
+        {
+        }
+        ISerializable serializable = new cn.justwin.Serialize.JsonSerializer();
+        s = serializable.Serialize<List<Annex>>(list2);
+        context.Response.Write(s);
+    }
+}
+}

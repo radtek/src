@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<hibernate-mapping assembly="Domain" namespace="cn.justwin.Domain.Entities" xmlns="urn:nhibernate-mapping-2.2">
+	<class name="AsTest" table="As_Test" lazy="true" >
+		<id name="Id">
+			<column name="Id" sql-type="nvarchar" length="200" not-null="true" />
+		</id>
+		<property name="ApplicantId">
+			<column name="ApplicantId" sql-type="varchar" length="8" not-null="true" />
+		</property>
+		<property name="ApplicationDate">
+			<column name="ApplicationDate" sql-type="datetime" not-null="true" />
+		</property>
+		<property name="Cash">
+			<column name="Cash" sql-type="decimal" not-null="true" />
+		</property>
+		
+		<property name="ApplicationReason">
+			<column name="ApplicationReason" sql-type="nvarchar(max)" not-null="false" />
+		</property>
+		<property name="FlowState">
+			<column name="FlowState" sql-type="int" not-null="true" />
+		</property>
+	</class>
+</hibernate-mapping>

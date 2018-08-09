@@ -1,0 +1,786 @@
+﻿<html>
+<!-- 用于手机调用页面，不获取用户登录信息，避免抛出异常。"dgu" don't get user -->
+<head>
+    <meta charset="utf-8">
+    <title>日志详情</title>
+    <meta name="description" content="">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta content="telephone=no" name="format-detection">
+    <meta content="email=no" name="format-detection">
+    <link rel="stylesheet" href="../resource/css/ku.css" />
+    <link rel="stylesheet" href="../resource/css/font-awesome.min.css" />
+    <script src="../resource/js/jquery-1.7.2.min.js"></script>
+</head>
+<body>
+    <div id="wrap_main" class="wrap">
+        <div id="main" class="wrap_inner" style="height: 571px;">
+            <div class="article_detail">
+                <div class="article-detail">
+                    <div class="detail-title" id="title">title</div>
+                    <div class="detail-small-title">
+                        <span id="start_time"></span> 
+                        <span id="end_time"></span>
+                        [持续<span id="cxsj"></span>分钟]
+                        <span id="creater"></span>
+                        <!--<a onclick="editDiary()" id="editbtnDiv_id" style="display: none">编辑</a>
+                        <a onclick="editDiary()" style="">复制</a>-->
+                    </div>
+                    <div class="detail-content article_content">
+                        <div id="content"></div>
+           
+
+                        <!--上传图片部分-->
+                        <div class="f-item">
+                            <div class="loadImg clearfix">
+                                <div class="f-add-user-list" style="margin: 0;">
+                                    <ul id="addImg" class="clearfix1">
+                                     
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <!--上传图片部分-->
+                        <!--上传音频部分-->
+                        <div class="f-item">
+                            <div class="loadImg clearfix">
+                                <div class="f-add-user-list" style="margin: 0;">
+                                    <ul id="addVoice" class="clearfix1">
+                                     
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                
+                        <!--浮动窗口-->
+                        <!--上传音频部分-->
+                        <!--上传视频部分-->
+                   
+                 
+                        <!-- 预览框： -->
+                        <div class="preview"></div>
+                        <!--上传视频部分-->
+                        <!--上传附件部分-->
+                        <div class="form-style" id="medialist">
+                            <div class="letter_bar file_top borderBottommNone">
+                                <span class="file_top_tit">附件</span>
+                               
+                                <span id="fileInput" style="display: none">
+                                </span>
+                            </div>
+                        </div>
+                        <div class="settings-item" id="fj">
+           
+                        </div>
+                        <div class="separate_bar separate_bar_h15"></div>
+                        <!--上传附件部分-->
+
+                    <div class="detail_tapeEndBox" id="voicelist" style="display: none;"></div>
+                    <!--评分部分-->
+                    <div class="detail-score ohidden" style="display: block;">
+                        <div class="pingfen" id="diaryScore">
+                            <div class="mb5 c999"><span id="pingfenId">评分</span></div>
+                        </div>
+                        <div id="btn_div_per1" style="display:block;">
+                            <div class="flexbox mt15" id="scoreDiv" >
+                               
+                                <img name="scoreImg" src="../resource/images/star-off.png" alt="1" title="1分" onclick="changeScore($(this))">
+                                <img name="scoreImg" src="../resource/images/star-off.png" alt="2" title="2分" onclick="changeScore($(this))">
+                                <img name="scoreImg" src="../resource/images/star-off.png" alt="3" title="3分" onclick="changeScore($(this))">
+                                <img name="scoreImg" src="../resource/images/star-off.png" alt="4" title="4分" onclick="changeScore($(this))">
+                                <img name="scoreImg" src="../resource/images/star-off.png" alt="5" title="5分" onclick="changeScore($(this))">
+                                <img name="scoreImg" src="../resource/images/star-off.png" alt="6" title="6分" onclick="changeScore($(this))">
+                                <img name="scoreImg" src="../resource/images/star-off.png" alt="7" title="7分" onclick="changeScore($(this))">
+                                <img name="scoreImg" src="../resource/images/star-off.png" alt="8" title="8分" onclick="changeScore($(this))">
+                                <img name="scoreImg" src="../resource/images/star-off.png" alt="9" title="9分" onclick="changeScore($(this))">
+                                <img name="scoreImg" src="../resource/images/star-off.png" alt="10" title="10分" onclick="changeScore($(this))">
+                                &nbsp; &nbsp; &nbsp; &nbsp;
+                                <span id="scoreSpan">0分</span>
+                                <input type="hidden" name="score" id="score" value="0">
+                            </div>
+                            <div class="flexbox mt15">
+                                <a class="btn flexItem" id="startTaskBtn2" href="javascript:submitScore()">评分</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!--评分部分-->
+                </div>
+                <div class="letter_bar first_top" id="syrCount">审阅人</div>
+                <div class="f-item" id="tolist" style="">
+                    <a href="javascript:searchList('to');" class="quick_tel w45" id="toarrow" style="display: none;"></a>
+                    <div class="f-add-user clearfix">
+                        <div class="inner-f-add-user">
+                            <div class="f-add-user-list">
+                                <ul id="syr"></ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="letter_bar" id="xgrCount">相关人</div>
+                <div class="f-item" id="cclist" style="border-bottom: none;">
+                    <a href="javascript:searchList('cc');" class="quick_tel w45" id="ccarrow" style="display: none;"></a>
+                    <div class="f-add-user clearfix" style="border-bottom: none">
+                        <div class="inner-f-add-user">
+                            <div class="f-add-user-list">
+                                <ul id="xgr"></ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--<div class="pageNumber">
+                    <div class="prev" onclick="showAnother('pre')">上一篇日志</div>
+                    <div class="next" onclick="showAnother('next')">下一篇日志</div>
+                </div>-->
+                <div class="comments-box" id="comments-box">
+                    <div class="letter_bar first_top">
+                        <span id="commentCount">评论</span>
+                        <!--<div class="loadlast_onoff">
+                            <div class="onOff" id="isShowComment"><span class="onOff_off"></span></div>
+                        </div>-->
+                    </div>
+                    <div class="lastComment" id="commentCount0" style="">暂无回复</div>
+                    <div class="comment_list clearfix" id="comments">
+                        <ul id="commentList">
+                            <!--<li class='flexbox'>
+                                <div class='avator'>
+                                    <img src='http://p.qlogo.cn/bizmail/uqibPEIicNrjEErw2dcgln6868Micl38EWF1VfWlQOcHgQUEJE2D26lmA/100' alt=''>
+                                </div>
+                                <div class='comment_content flexItem mapItem'>
+                                    <h3 class='clearfix'>
+                                        <span class='title'>潘全全</span>  	    <span class='time'>14分钟前</span>
+                                        <input type='hidden' value='907b5365-f39e-40cc-8d24-5f3764022dfe'>
+                                    </h3>
+                                    <p class='@class'>888</p>
+                                 </div> 
+                            </li>-->
+                        </ul>
+                    </div>
+                </div>
+                <div class="all_pull">
+                    <p class="lastComment" id="noneMore" style="display: none;">没有更多评论啦</p>
+                </div>
+                <div class="footheight" style=""></div>
+            </div>
+        </div>
+        <div class="foot_bar commentBtnBox " style="position: fixed;">
+            <form action="/wxqyh/portal/diaryAction!commitComment.action" id="commentform" method="post" onsubmit="return false;">
+                <input type="hidden" class="" name="tbQyDiaryCommentPO.content" id="sendComment" placeholder="说点什么吧">
+                <input type="hidden" id="userIds" name="userIds">
+                <input type="hidden" name="tbQyDiaryCommentPO.diaryId" id="taskId" value="5d41196e-4968-42f0-b52b-bbbd94064ca4">
+                <input type="hidden" name="id" value="">
+                <input type="hidden" name="type" value="1" id="type">
+            </form>
+
+            <div class="foot_bar_inner">
+                <div class="foot_input_bar">
+                    <div class="flexbox">
+                        <div class="face_btn_box">
+                            <a href="#" id="plus_btn" class="get_plus_btn"></a>
+                        </div>
+
+                        <div class="comment_input flexItem">
+                            <textarea class="text_input" id="inputDiv"></textarea>
+                        </div>
+                        <div class="submit_btn">
+                            <a id="sendmsg" class="btn white_btn comment_btn">发 表</a>
+                            <a id="sendmsg_spare" class="btn white_btn comment_btn" style="display:none;">发 表</a>
+                        </div>
+                    </div>
+                    <div class="positionInfo " style="display:none">正在获取定位信息...</div>
+                </div>
+                <!--<div class="foot_plus_bar">-->
+                <!--<div id="plus_btns" class="plus_btns_wrap hide" style="display: block;">-->
+                <!--<div class="plus_btns">-->
+                <!--<ul class="clearfix flexbox">-->
+                <!--<li id="atPersonId">-->
+                <!--<div class="plus_btn_img nameIcon" onclick="userSelect('a2c112c6b915db47a31d051b0a8e1c7d')">-->
+                <!--&lt;!&ndash; <i class="fa fa-user"></i> &ndash;&gt;-->
+                <!--</div>-->
+                <!--<div class="plus_btn_txt">点名@人</div>-->
+                <!--</li>-->
+                <!--<li>-->
+                <!--<div id="get_smile" class="plus_btn_img emojiIcon">-->
+                <!--&lt;!&ndash; 	<i class="fa fa-smile-o"></i> &ndash;&gt;-->
+                <!--</div>-->
+                <!--<div class="plus_btn_txt">表情</div>-->
+                <!--</li>-->
+                <!--&lt;!&ndash; <li>-->
+                <!--<div class="plus_btn_img soundIcon" id="sound" onclick="closeRecord()">-->
+                <!--</div>-->
+                <!--<div class="plus_btn_txt">语音</div>-->
+                <!--</li> &ndash;&gt;-->
+                <!--<li id="imageId">-->
+                <!--<div class="plus_btn_img imgIcon">-->
+                <!--<input id="imageFileInput" class="inputImg" accept="image/jpeg,image/jpg,image/png,image/gif" type="file">-->
+                <!--<input id="imageInput" value="" type="hidden">-->
+                <!--</div>-->
+                <!--<div class="plus_btn_txt">图片</div>-->
+                <!--</li>-->
+                <!--<li onclick="anonyComment(this)" id="anonymousId" style="display:none">-->
+                <!--<div class="plus_btn_img anonymousIcon">-->
+                <!--</div>-->
+                <!--<div class="plus_btn_txt">匿名</div>-->
+                <!--</li>-->
+                <!--<li id="positionId" style="" onclick="showPosition()">-->
+                <!--<div class="plus_btn_img positionIcon">-->
+                <!--</div>-->
+                <!--<div class="plus_btn_txt">地理位置</div>-->
+                <!--</li>-->
+                <!--&lt;!&ndash; <li>-->
+                <!--<div class="plus_btn_img" onclick="sendVoice()">-->
+                <!--</div>-->
+                <!--<div class="plus_btn_txt">发送语音</div>-->
+                <!--</li>-->
+                <!--<li>-->
+                <!--<div class="plus_btn_img" onclick="playVoice()">-->
+                <!--</div>-->
+                <!--<div class="plus_btn_txt">播放语音</div>-->
+                <!--</li>-->
+                <!--</ul> &ndash;&gt;-->
+                <!--</ul>-->
+                <!--</div>-->
+                <!--</div>-->
+                <!--<div id="emoji_list" class="emoji_list hide">-->
+                <!--<div class="emoji_list_inner">-->
+                <!--<div class="emoji_list_viewport" style="width: 484px;">-->
+                <!--<div class="flipsnap clearfix" style="width: 1936px; transition-property: transform; transition-timing-function: cubic-bezier(0, 0, 0.25, 1); transition-duration: 350ms; transform: translate(0px, 0px);">-->
+                <!--<div class="item" style="width: 484px;">-->
+                <!--<ul class="clearfix">-->
+                <!--<li><a title=":smile:" href="#"><img align="absmiddle" data-alt=":smile:" class="emoji" data-src="/wxqyh/jsp/wap/images/emoji/smile.png" data-title=":smile:"></a></li>-->
+                <!--<li><a title=":blush:" href="#"><img align="absmiddle" data-alt=":blush:" class="emoji" data-src="/wxqyh/jsp/wap/images/emoji/blush.png" data-title=":blush:"></a></li>-->
+                <!--<li><a title=":heart_eyes:" href="#"><img align="absmiddle" data-alt=":heart_eyes:" class="emoji" data-src="/wxqyh/jsp/wap/images/emoji/heart_eyes.png" data-title=":heart_eyes:"></a></li>-->
+                <!--<li><a title=":grin:" href="#"><img align="absmiddle" data-alt=":grin:" class="emoji" data-src="/wxqyh/jsp/wap/images/emoji/grin.png" data-title=":grin:"></a></li>-->
+                <!--<li><a title=":joy:" href="#"><img align="absmiddle" data-alt=":joy:" class="emoji" data-src="/wxqyh/jsp/wap/images/emoji/joy.png" data-title=":joy:"></a></li>-->
+                <!--<li><a title=":yum:" href="#"><img align="absmiddle" data-alt=":yum:" class="emoji" data-src="/wxqyh/jsp/wap/images/emoji/yum.png" data-title=":yum:"></a></li>-->
+                <!--<li><a title=":sunglasses:" href="#"><img align="absmiddle" data-alt=":sunglasses:" class="emoji" data-src="/wxqyh/jsp/wap/images/emoji/sunglasses.png" data-title=":sunglasses:"></a></li>-->
+                <!--<li><a title=":stuck_out_tongue_closed_eyes:" href="#"><img align="absmiddle" data-alt=":stuck_out_tongue_closed_eyes:" class="emoji" data-src="/wxqyh/jsp/wap/images/emoji/stuck_out_tongue_closed_eyes.png" data-title=":stuck_out_tongue_closed_eyes:"></a></li>-->
+                <!--<li><a title=":sleeping:" href="#"><img align="absmiddle" data-alt=":sleeping:" class="emoji" data-src="/wxqyh/jsp/wap/images/emoji/sleeping.png" data-title=":sleeping:"></a></li>-->
+                <!--<li><a title=":flushed:" href="#"><img align="absmiddle" data-alt=":flushed:" class="emoji" data-src="/wxqyh/jsp/wap/images/emoji/flushed.png" data-title=":flushed:"></a></li>-->
+                <!--<li><a title=":relieved:" href="#"><img align="absmiddle" data-alt=":relieved:" class="emoji" data-src="/wxqyh/jsp/wap/images/emoji/relieved.png" data-title=":relieved:"></a></li>-->
+                <!--<li><a title=":disappointed:" href="#"><img align="absmiddle" data-alt=":disappointed:" class="emoji" data-src="/wxqyh/jsp/wap/images/emoji/disappointed.png" data-title=":disappointed:"></a></li>-->
+                <!--<li><a title=":astonished:" href="#"><img align="absmiddle" data-alt=":astonished:" class="emoji" data-src="/wxqyh/jsp/wap/images/emoji/astonished.png" data-title=":astonished:"></a></li>-->
+                <!--<li><a title=":rage:" href="#"><img align="absmiddle" data-alt=":rage:" class="emoji" data-src="/wxqyh/jsp/wap/images/emoji/rage.png" data-title=":rage:"></a></li>-->
+                <!--<li><a title=":sob:" href="#"><img align="absmiddle" data-alt=":sob:" class="emoji" data-src="/wxqyh/jsp/wap/images/emoji/sob.png" data-title=":sob:"></a></li>-->
+                <!--<li><a title=":neckbeard:" href="#"><img align="absmiddle" data-alt=":neckbeard:" class="emoji" data-src="/wxqyh/jsp/wap/images/emoji/neckbeard.png" data-title=":neckbeard:"></a></li>-->
+                <!--<li><a title=":smiling_imp:" href="#"><img align="absmiddle" data-alt=":smiling_imp:" class="emoji" data-src="/wxqyh/jsp/wap/images/emoji/smiling_imp.png" data-title=":smiling_imp:"></a></li>-->
+                <!--<li><a title=":sweat:" href="#"><img align="absmiddle" data-alt=":sweat:" class="emoji" data-src="/wxqyh/jsp/wap/images/emoji/sweat.png" data-title=":sweat:"></a></li>-->
+                <!--<li><a title=":fearful:" href="#"><img align="absmiddle" data-alt=":fearful:" class="emoji" data-src="/wxqyh/jsp/wap/images/emoji/fearful.png" data-title=":fearful:"></a></li>-->
+                <!--<li><a title=":cold_sweat:" href="#"><img align="absmiddle" data-alt=":cold_sweat:" class="emoji" data-src="/wxqyh/jsp/wap/images/emoji/cold_sweat.png" data-title=":cold_sweat:"></a></li>-->
+                <!--<li><a title=":scream:" href="#"><img align="absmiddle" data-alt=":scream:" class="emoji" data-src="/wxqyh/jsp/wap/images/emoji/scream.png" data-title=":scream:"></a></li>-->
+                <!--</ul>-->
+                <!--</div>-->
+                <!--<div class="item" style="width: 484px;">-->
+                <!--<ul class="clearfix">-->
+                <!--<li><a title=":no_mouth:" href="#"><img align="absmiddle" data-alt=":no_mouth:" class="emoji" data-src="/wxqyh/jsp/wap/images/emoji/no_mouth.png" data-title=":no_mouth:"></a></li>-->
+                <!--<li><a title=":neutral_face:" href="#"><img align="absmiddle" data-alt=":neutral_face:" class="emoji" data-src="/wxqyh/jsp/wap/images/emoji/neutral_face.png" data-title=":neutral_face:"></a></li>-->
+                <!--<li><a title=":open_mouth:" href="#"><img align="absmiddle" data-alt=":open_mouth:" class="emoji" data-src="/wxqyh/jsp/wap/images/emoji/open_mouth.png" data-title=":open_mouth:"></a></li>-->
+                <!--<li><a title=":ghost:" href="#"><img align="absmiddle" data-alt=":ghost:" class="emoji" data-src="/wxqyh/jsp/wap/images/emoji/ghost.png" data-title=":ghost:"></a></li>-->
+                <!--<li><a title=":new_moon_with_face:" href="#"><img align="absmiddle" data-alt=":new_moon_with_face:" class="emoji" data-src="/wxqyh/jsp/wap/images/emoji/new_moon_with_face.png" data-title=":new_moon_with_face:"></a></li>-->
+                <!--<li><a title=":no_good:" href="#"><img align="absmiddle" data-alt=":no_good:" class="emoji" data-src="/wxqyh/jsp/wap/images/emoji/no_good.png" data-title=":no_good:"></a></li>-->
+                <!--<li><a title=":shit:" href="#"><img align="absmiddle" data-alt=":shit:" class="emoji" data-src="/wxqyh/jsp/wap/images/emoji/shit.png" data-title=":shit:"></a></li>-->
+                <!--<li><a title=":cupid:" href="#"><img align="absmiddle" data-alt=":cupid:" class="emoji" data-src="/wxqyh/jsp/wap/images/emoji/cupid.png" data-title=":cupid:"></a></li>-->
+                <!--<li><a title=":heart:" href="#"><img align="absmiddle" data-alt=":heart:" class="emoji" data-src="/wxqyh/jsp/wap/images/emoji/heart.png" data-title=":heart:"></a></li>-->
+                <!--<li><a title=":broken_heart:" href="#"><img align="absmiddle" data-alt=":broken_heart:" class="emoji" data-src="/wxqyh/jsp/wap/images/emoji/broken_heart.png" data-title=":broken_heart:"></a></li>-->
+                <!--<li><a title=":exclamation:" href="#"><img align="absmiddle" data-alt=":exclamation:" class="emoji" data-src="/wxqyh/jsp/wap/images/emoji/exclamation.png" data-title=":exclamation:"></a></li>-->
+                <!--<li><a title=":question:" href="#"><img align="absmiddle" data-alt=":question:" class="emoji" data-src="/wxqyh/jsp/wap/images/emoji/question.png" data-title=":question:"></a></li>-->
+                <!--<li><a title=":+1:" href="#"><img align="absmiddle" data-alt=":thumbsup:" class="emoji" data-src="/wxqyh/jsp/wap/images/emoji/thumbsup.png" data-title=":thumbsup:"></a></li>-->
+                <!--<li><a title=":-1:" href="#"><img align="absmiddle" data-alt=":-1:" class="emoji" data-src="/wxqyh/jsp/wap/images/emoji/-1.png" data-title=":-1:"></a></li>-->
+                <!--<li><a title=":v:" href="#"><img align="absmiddle" data-alt=":v:" class="emoji" data-src="/wxqyh/jsp/wap/images/emoji/v.png" data-title=":v:"></a></li>-->
+                <!--<li><a title=":ok_hand:" href="#"><img align="absmiddle" data-alt=":ok_hand:" class="emoji" data-src="/wxqyh/jsp/wap/images/emoji/ok_hand.png" data-title=":ok_hand:"></a></li>-->
+                <!--<li><a title=":clap:" href="#"><img align="absmiddle" data-alt=":clap:" class="emoji" data-src="/wxqyh/jsp/wap/images/emoji/clap.png" data-title=":clap:"></a></li>-->
+                <!--<li><a title=":pray:" href="#"><img align="absmiddle" data-alt=":pray:" class="emoji" data-src="/wxqyh/jsp/wap/images/emoji/pray.png" data-title=":pray:"></a></li>-->
+                <!--<li><a title=":umbrella:" href="#"><img align="absmiddle" data-alt=":umbrella:" class="emoji" data-src="/wxqyh/jsp/wap/images/emoji/umbrella.png" data-title=":umbrella:"></a></li>-->
+                <!--<li><a title=":sunny:" href="#"><img align="absmiddle" data-alt=":sunny:" class="emoji" data-src="/wxqyh/jsp/wap/images/emoji/sunny.png" data-title=":sunny:"></a></li>-->
+                <!--<li><a title=":musical_note:" href="#"><img align="absmiddle" data-alt=":musical_note:" class="emoji" data-src="/wxqyh/jsp/wap/images/emoji/musical_note.png" data-title=":musical_note:"></a></li>-->
+                <!--</ul>-->
+                <!--</div>-->
+                <!--<div class="item" style="width: 484px;">-->
+                <!--<ul class="clearfix">-->
+                <!--<li><a title=":hibiscus:" href="#"><img align="absmiddle" data-alt=":hibiscus:" class="emoji" data-src="/wxqyh/jsp/wap/images/emoji/hibiscus.png" data-title=":hibiscus:"></a></li>-->
+                <!--<li><a title=":rose:" href="#"><img align="absmiddle" data-alt=":rose:" class="emoji" data-src="/wxqyh/jsp/wap/images/emoji/rose.png" data-title=":rose:"></a></li>-->
+                <!--<li><a title=":four_leaf_clover:" href="#"><img align="absmiddle" data-alt=":four_leaf_clover:" class="emoji" data-src="/wxqyh/jsp/wap/images/emoji/four_leaf_clover.png" data-title=":four_leaf_clover:"></a></li>-->
+                <!--<li><a title=":beers:" href="#"><img align="absmiddle" data-alt=":beers:" class="emoji" data-src="/wxqyh/jsp/wap/images/emoji/beers.png" data-title=":beers:"></a></li>-->
+                <!--<li><a title=":cocktail:" href="#"><img align="absmiddle" data-alt=":cocktail:" class="emoji" data-src="/wxqyh/jsp/wap/images/emoji/cocktail.png" data-title=":cocktail:"></a></li>-->
+                <!--<li><a title=":wine_glass:" href="#"><img align="absmiddle" data-alt=":wine_glass:" class="emoji" data-src="/wxqyh/jsp/wap/images/emoji/wine_glass.png" data-title=":wine_glass:"></a></li>-->
+                <!--<li><a title=":pizza:" href="#"><img align="absmiddle" data-alt=":pizza:" class="emoji" data-src="/wxqyh/jsp/wap/images/emoji/pizza.png" data-title=":pizza:"></a></li>-->
+                <!--<li><a title=":spaghetti:" href="#"><img align="absmiddle" data-alt=":spaghetti:" class="emoji" data-src="/wxqyh/jsp/wap/images/emoji/spaghetti.png" data-title=":spaghetti:"></a></li>-->
+                <!--<li><a title=":rice:" href="#"><img align="absmiddle" data-alt=":rice:" class="emoji" data-src="/wxqyh/jsp/wap/images/emoji/rice.png" data-title=":rice:"></a></li>-->
+                <!--<li><a title=":icecream:" href="#"><img align="absmiddle" data-alt=":icecream:" class="emoji" data-src="/wxqyh/jsp/wap/images/emoji/icecream.png" data-title=":icecream:"></a></li>-->
+                <!--<li><a title=":birthday:" href="#"><img align="absmiddle" data-alt=":birthday:" class="emoji" data-src="/wxqyh/jsp/wap/images/emoji/birthday.png" data-title=":birthday:"></a></li>-->
+                <!--<li><a title=":watermelon:" href="#"><img align="absmiddle" data-alt=":watermelon:" class="emoji" data-src="/wxqyh/jsp/wap/images/emoji/watermelon.png" data-title=":watermelon:"></a></li>-->
+                <!--<li><a title=":walking:" href="#"><img align="absmiddle" data-alt=":walking:" class="emoji" data-src="/wxqyh/jsp/wap/images/emoji/walking.png" data-title=":walking:"></a></li>-->
+                <!--<li><a title=":bike:" href="#"><img align="absmiddle" data-alt=":bike:" class="emoji" data-src="/wxqyh/jsp/wap/images/emoji/bike.png" data-title=":bike:"></a></li>-->
+                <!--<li><a title=":bus:" href="#"><img align="absmiddle" data-alt=":bus:" class="emoji" data-src="/wxqyh/jsp/wap/images/emoji/bus.png" data-title=":bus:"></a></li>-->
+                <!--<li><a title=":train:" href="#"><img align="absmiddle" data-alt=":train:" class="emoji" data-src="/wxqyh/jsp/wap/images/emoji/train.png" data-title=":train:"></a></li>-->
+                <!--<li><a title=":bullettrain_side:" href="#"><img align="absmiddle" data-alt=":bullettrain_side:" class="emoji" data-src="/wxqyh/jsp/wap/images/emoji/bullettrain_side.png" data-title=":bullettrain_side:"></a></li>-->
+                <!--<li><a title=":boom:" href="#"><img align="absmiddle" data-alt=":boom:" class="emoji" data-src="/wxqyh/jsp/wap/images/emoji/boom.png" data-title=":boom:"></a></li>-->
+                <!--<li><a title=":star:" href="#"><img align="absmiddle" data-alt=":star:" class="emoji" data-src="/wxqyh/jsp/wap/images/emoji/star.png" data-title=":star:"></a></li>-->
+                <!--<li><a title=":zap:" href="#"><img align="absmiddle" data-alt=":zap:" class="emoji" data-src="/wxqyh/jsp/wap/images/emoji/zap.png" data-title=":zap:"></a></li>-->
+                <!--<li><a title=":syringe:" href="#"><img align="absmiddle" data-alt=":syringe:" class="emoji" data-src="/wxqyh/jsp/wap/images/emoji/syringe.png" data-title=":syringe:"></a></li>-->
+                <!--</ul>-->
+                <!--</div>-->
+                <!--<div class="item" style="width: 484px;">-->
+                <!--<ul class="clearfix">-->
+                <!--<li><a title=":gift:" href="#"><img align="absmiddle" data-alt=":gift:" class="emoji" data-src="/wxqyh/jsp/wap/images/emoji/gift.png" data-title=":gift:"></a></li>-->
+                <!--<li><a title=":bouquet:" href="#"><img align="absmiddle" data-alt=":bouquet:" class="emoji" data-src="/wxqyh/jsp/wap/images/emoji/bouquet.png" data-title=":bouquet:"></a></li>-->
+                <!--<li><a title=":lollipop:" href="#"><img align="absmiddle" data-alt=":lollipop:" class="emoji" data-src="/wxqyh/jsp/wap/images/emoji/lollipop.png" data-title=":lollipop:"></a></li>-->
+                <!--<li><a title=":dollar:" href="#"><img align="absmiddle" data-alt=":dollar:" class="emoji" data-src="/wxqyh/jsp/wap/images/emoji/dollar.png" data-title=":dollar:"></a></li>-->
+                <!--<li><a title=":moneybag:" href="#"><img align="absmiddle" data-alt=":moneybag:" class="emoji" data-src="/wxqyh/jsp/wap/images/emoji/moneybag.png" data-title=":moneybag:"></a></li>-->
+                <!--<li><a title=":crown:" href="#"><img align="absmiddle" data-alt=":crown:" class="emoji" data-src="/wxqyh/jsp/wap/images/emoji/crown.png" data-title=":crown:"></a></li>-->
+                <!--<li><a title=":crystal_ball:" href="#"><img align="absmiddle" data-alt=":crystal_ball:" class="emoji" data-src="/wxqyh/jsp/wap/images/emoji/crystal_ball.png" data-title=":crystal_ball:"></a></li>-->
+                <!--<li><a title=":tophat:" href="#"><img align="absmiddle" data-alt=":tophat:" class="emoji" data-src="/wxqyh/jsp/wap/images/emoji/tophat.png" data-title=":tophat:"></a></li>-->
+                <!--<li><a title=":congratulations:" href="#"><img align="absmiddle" data-alt=":congratulations:" class="emoji" data-src="/wxqyh/jsp/wap/images/emoji/congratulations.png" data-title=":congratulations:"></a></li>-->
+                <!--<li><a title=":secret:" href="#"><img align="absmiddle" data-alt=":secret:" class="emoji" data-src="/wxqyh/jsp/wap/images/emoji/secret.png" data-title=":secret:"></a></li>-->
+                <!--<li><a title=":guitar:" href="#"><img align="absmiddle" data-alt=":guitar:" class="emoji" data-src="/wxqyh/jsp/wap/images/emoji/guitar.png" data-title=":guitar:"></a></li>-->
+                <!--<li><a title=":running:" href="#"><img align="absmiddle" data-alt=":running:" class="emoji" data-src="/wxqyh/jsp/wap/images/emoji/running.png" data-title=":running:"></a></li>-->
+                <!--<li><a title=":speech_balloon:" href="#"><img align="absmiddle" data-alt=":speech_balloon:" class="emoji" data-src="/wxqyh/jsp/wap/images/emoji/speech_balloon.png" data-title=":speech_balloon:"></a></li>-->
+                <!--<li><a title=":monkey_face:" href="#"><img align="absmiddle" data-alt=":monkey_face:" class="emoji" data-src="/wxqyh/jsp/wap/images/emoji/monkey_face.png" data-title=":monkey_face:"></a></li>-->
+                <!--<li><a title=":speak_no_evil:" href="#"><img align="absmiddle" data-alt=":speak_no_evil:" class="emoji" data-src="/wxqyh/jsp/wap/images/emoji/speak_no_evil.png" data-title=":speak_no_evil:"></a></li>-->
+                <!--<li><a title=":innocent:" href="#"><img align="absmiddle" data-alt=":innocent:" class="emoji" data-src="/wxqyh/jsp/wap/images/emoji/innocent.png" data-title=":innocent:"></a></li>-->
+                <!--</ul>-->
+                <!--</div>-->
+                <!--</div>-->
+                <!--<div class="pointer">-->
+                <!--<span class="current"></span> <span></span> <span></span> <span></span>-->
+                <!--</div>-->
+                <!--</div>-->
+                <!--</div>-->
+                <!--</div>-->
+                <!--</div>-->
+            </div>
+        </div>
+    </div>
+    <div class="overlay" id="overlayImage" style="display: none;"></div>
+    <div class="commentBtnBoxBg" style="display: none;"></div>
+    <script>
+        var UserId = getCookieValue("UserId");
+
+        var diaryId;
+        function GetQueryString(name) {//获取url参数
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+            var r = window.location.search.substr(1).match(reg);
+            if (r != null) return unescape(r[2]); return null;
+        }
+        $(document).ready(function () {
+            var diaryId = GetQueryString("id");
+           
+            //此页面为update页面
+            if (diaryId) {
+                getDataById(GetQueryString("id"));//根据ID获取基本数据
+                getUsersById(GetQueryString("id"), 'syr');//根据日志ID获取审阅人
+                getUsersById(GetQueryString("id"), 'xgr');//根据日志ID获取相关人
+                //alert(diaryId);
+                getPFById(GetQueryString("id"));//根据日志ID获取评分
+                getPLById(GetQueryString("id"));//根据日志ID获取评论
+                getSrcFiles(diaryId, "JournalPhotos");//获取 工作日志图片
+                getSrcFiles(diaryId, "JournalFiles");//获取 工作日志附件
+                getSrcFiles(diaryId, "JournalVoices");//获取 工作日志语音
+                getSrcFiles(diaryId, "JournalVideos");//获取 工作日志视频
+            }
+            else//新增
+            {
+                //getTypes("");//获取日志类型信息
+            }
+        });
+
+        function getSrcFiles(diaryId, type) {
+            $.ajax({
+                type: "POST",
+                url: "../Ajax/AjaxGetMsg.aspx/getSrcFiles",
+                data: "{diaryId: '" + diaryId + "',type: '" + type + "'}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                async: false,
+                success: function Success(data) {
+                    if (data.d != "") {
+                        var res = eval("(" + data.d + ")");
+
+                        if (type == 'JournalPhotos') {
+                            var addHtml = "";
+                            for (var i = 0; i < res.length; i++) {
+                                addHtml += "<li>" +
+                                
+                                "<p class=\"img\">" +
+                                "<img name=\"toUpLoadImg\" src=\"" + res.Path + res.Name + "\" alt=\"\">" +
+                                "</p>" +
+                                "</li>";
+
+                            }
+                            $("#addImg").prepend(addImgHtml);
+                        }
+                        if (type == 'JournalFiles') {
+                            var addHtml = "";
+                            for (var i = 0; i < res.length; i++) {
+                                addHtml += "<div class=\"inner-settings-item flexbox fujian\">" +
+                                               // "<p class=\""+cl+"\"></p>" +
+                                                "<div class=\"fujian_text flexItem\">" +
+                                                "<p class=\"name\">" + res.Name + "</p>" +
+                                                "<p class=\"fujian_size\">" + res.Length + " K</p>" +
+                                                "<p class=\"arrow\">" +
+                                            
+                                                "</p>" +
+                                                "</div>" +
+                                                "</div>";
+                            }
+
+                            $("#fj").prepend(addHtml);
+                        }
+                        if (type == 'JournalVoices') {
+                            var addHtml = "";
+                            for (var i = 0; i < res.length; i++) {
+                                addHtml += "<li>" +
+                         
+                            "<p class=\"img\">" +
+                            "<img  src=\"" + res.Path + res.Name + "\" style=\"margin-left:10px;width: 42px;height: 42px;\" onclick='playVoice(" + res.Path + res.Name + ")'>" +
+                            "</p>" +
+                            "</li>";
+                            }
+                            $("#addVoice").prepend(addHtml);
+                        }
+                        if (type == 'JournalVideos') {
+                            var addHtml = "";
+                            for (var i = 0; i < res.length; i++) {
+                                $(".preview").append("<div style='margin-top:10px;'><embed src=" + res.Path + res.Name + " allowscriptaccess='always' " +
+                             "allowfullscreen='true' wmode='opaque' width='280' height='200'>" +
+                             "</embed></div>");
+                            }
+
+
+                        }
+                    }
+                    else {
+                        //allusers = [];
+                    }
+                }
+            });
+        }
+        //获取update页面数据start
+        function getDataById(id) {
+            $.ajax({
+                type: "POST",
+                url: "../Ajax/AjaxGetMsg.aspx/getDataById",
+                data: "{id: '" + id + "'}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                async: false,
+                success: function Success(data) {
+                    if (data.d != "") {
+                        var das = [];
+                        das = eval("(" + data.d + ")");
+                        $("#title").html(das[0].title);//标题
+                        $("#start_time").html(das[0].start_time);//开始时间
+                        $("#end_time").html(das[0].end_time);//结束时间
+                        var minus = Math.abs(new Date(das[0].end_time) - new Date(das[0].start_time)) / 60000;
+                        $("#cxsj").html(minus);//持续时间
+                        $("#creater").html(das[0].v_xm);//用户
+                        $("#content").html(das[0].content);//内容
+                        $("#type_id").html(das[0].typeName);//日志类型
+                        $("#project_id").html(das[0].PrjName);//关联项目
+                        $("#tasks").html();//关联任务
+                        //cxsj
+                    }
+                    else {
+                        //allusers = [];
+                    }
+                }
+            });
+        }
+        function getUsersById(diaryId, userType) {
+            $.ajax({
+                type: "POST",
+                url: "../Ajax/AjaxGetMsg.aspx/getUsersById",
+                data: "{diaryId: '" + diaryId + "',userType: '" + userType + "'}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                async: false,
+                success: function Success(data) {
+                    if (data.d != "") {
+                        var RY = eval("(" + data.d + ")");
+                        if (userType == "syr") {
+                            //处理审阅人
+                            var syr = RY;
+                            $("#syrCount").html("审阅人（" + syr.length + "）");
+                            if (syr.length > 0) {
+                                var syrHtml = "";
+                                for (var i = 0; i < syr.length; i++) {
+                             
+                                    var userId = syr[i].id;
+                                    var userName = syr[i].name;
+                                    var userUrl = syr[i].url;
+                                    syrHtml += "<li>" +
+                                                  "<p class=\"img\">" +
+                                                  "<img src=\"" + userUrl + "\" alt=\"\">" +
+                                                  "</p>" +
+                                                  "<p class=\"name\">" + userName + "</p>" +
+                                             "</li>";
+                                }
+                                $("#syr").html(syrHtml);
+                            }
+
+                        }
+                        if (userType == "xgr") {
+                            //处理相关人
+                            var xgr = RY;
+                            $("#xgrCount").html("相关人（" + xgr.length + "）");
+                            if (xgr.length > 0) {
+                                var xgrHtml = "";
+                                for (var i = 0; i < xgr.length; i++) {
+                                    var userId = xgr[i].id;
+                                    var userName = xgr[i].name;
+                                    var userUrl = xgr[i].url;
+                                    xgrHtml += "<li>" +
+                                                  "<p class=\"img\">" +
+                                                  "<img src=\"" + userUrl + "\" alt=\"\">" +
+                                                  "</p>" +
+                                                  "<p class=\"name\">" + userName + "</p>" +
+                                             "</li>";
+                                }
+                                $("#xgr").html(xgrHtml);
+                            }
+                        }
+
+                        //selectType = userType;
+                        //okChecked();
+                    }
+                    else {
+                        //alldepts=[];
+                    }
+                }
+            });
+        }
+        function getPFById(id) {
+            
+            $.ajax({
+                type: "POST",
+                url: "../Ajax/AjaxGetMsg.aspx/getPFById",
+                data: "{diaryId: '" + id + "'}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                async: false,
+                success: function Success(data) {
+                    var listHtml = "";
+                    if (data.d != "") {
+                        alert(data.d);
+                        var pf = data.d.split(",")[1];
+                        if (pf == '无') {
+                            //此时无评分
+                            if (data.d.split(",")[0] == UserId) {
+
+                            } else {
+                                $("#scoreDiv").html("暂无评分");
+                            }
+                        } else {
+                            //此时有评分
+                            changeScore($("img[alt='" + pf + "']"));
+                            canScore = 0;
+                        }
+                      
+                    }else {
+                        $("#scoreDiv").html("暂无评分");
+                    }
+                }
+            });
+        }
+        function getPLById(id) {
+            //alert(id);
+            $.ajax({
+                type: "POST",
+                url: "../Ajax/AjaxGetMsg.aspx/getPLById",
+                data: "{diaryId: '" + id + "'}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                async: false,
+                success: function Success(data) {
+                    var listHtml = "";
+                    if (data.d != "") {
+                        var res = eval("(" + data.d + ")");
+                        if (res) {
+                            var d = res;
+                            console.log(d);
+                            for (var i = 0; i < d.length; i++)
+                            {
+                                listHtml += "<li class='flexbox'>" +
+                                             "<div class='avator'><img src='" + d[i].img + "' alt=''>" +
+                                             "</div><div class='comment_content flexItem mapItem'>" +
+                                             "<h3 class='clearfix'><span class='title'>" + d[i].v_xm + "</span><span class='time'>" + d[i].time + "</span>" +
+                                             "<input type='hidden' value='" + d[i].id + "'>" +
+                                             "</h3><p class='@class'>" + d[i].content + "</p></div> </li>";
+                            }
+
+                            $('#commentList').html(listHtml);
+                            if (listHtml.length <= 0)
+                            {
+                                $("#commentCount0").show();
+                            } else
+                            {
+                                $("#commentCount0").hide();
+                            }
+                        }
+                    }
+                    else {
+                        //alldepts=[];
+                    }
+                }
+            });
+        }
+        //获取update页面数据start
+        //    function getDataById(id) {
+        ////        $.ajax({
+        ////            type: "POST",
+        ////            //url: "../Ajax/AjaxGetMsg.aspx/getDepts",
+        ////            data: "{id: '" + id + "'}",
+        ////            contentType: "application/json; charset=utf-8",
+        ////            dataType: "json",
+        ////            async: false,
+        ////            success: function Success(data) {
+        ////                if (data) {
+        //        //测试数据
+        //        var data=[];
+        //        data.push({id:"1",type_id:"日报",project_id:"1",title:"测试标题1",
+        //            creater:"张三",status:"2",start_time:"2017-12-01",times:"1",
+        //            content:"测试数据一",intro:"摘要",cover:"封面",attachs:"附件",
+        //            vidios:"视频",voices:"音频",tasks:"关联任务",
+        //            syr:[{dept:"1",first:"Z",id:"1",name:"张三",tel:"13804093570",url:"http://p.qlogo.cn/bizmail/uqibPEIicNrjEErw2dcgln6868Micl38EWF1VfWlQOcHgQUEJE2D26lmA/100"},{dept:2,first:"L",id:2,name:"李四",tel:13804093571,url:"http://p.qlogo.cn/bizmail/uqibPEIicNrjEErw2dcgln6868Micl38EWF1VfWlQOcHgQUEJE2D26lmA/100"}],
+        //            xgr:[{dept:"2",first:"W",id:"3",name:"王五",tel:"13804093572",url:"http://p.qlogo.cn/bizmail/uqibPEIicNrjEErw2dcgln6868Micl38EWF1VfWlQOcHgQUEJE2D26lmA/100"},{dept:3,first:"Z",id:4,name:"赵六",tel:13804093573,url:"http://p.qlogo.cn/bizmail/uqibPEIicNrjEErw2dcgln6868Micl38EWF1VfWlQOcHgQUEJE2D26lmA/100"}],
+        //        });
+        //        $("#title").html(data[0].title);//处理title
+        //        $("#content").html(data[0].content);//处理content
+        //        $("#type_id").html(data[0].type_id);//处理content
+        //        //处理审阅人
+        //        var syr=data[0].syr;
+        //        $("#syrCount").html("审阅人（"+syr.length+"）");
+        //        if(syr.length>0){
+        //            var syrHtml="";
+        //            for(var i = 0;i<syr.length;i++){
+        //                var userId = syr[i].id;
+        //                var userName = syr[i].name;
+        //                var userUrl = syr[i].url;
+        //              syrHtml+="<li>" +
+        //                            "<p class=\"img\">" +
+        //                            "<img src=\""+userUrl+"\" alt=\"\">" +
+        //                            "</p>" +
+        //                            "<p class=\"name\">"+userName+"</p>" +
+        //                       "</li>";
+        //            }
+        //            $("#syr").html(syrHtml);
+        //        }
+        //        //处理相关人
+        //        var xgr=data[0].xgr;
+        //        $("#xgrCount").html("相关人（"+xgr.length+"）");
+        //        if(xgr.length>0){
+        //            var xgrHtml="";
+        //            for(var i = 0;i<xgr.length;i++){
+        //                var userId = xgr[i].id;
+        //                var userName = xgr[i].name;
+        //                var userUrl = xgr[i].url;
+        //              xgrHtml+="<li>" +
+        //                            "<p class=\"img\">" +
+        //                            "<img src=\""+userUrl+"\" alt=\"\">" +
+        //                            "</p>" +
+        //                            "<p class=\"name\">"+userName+"</p>" +
+        //                       "</li>";
+        //            }
+        //            $("#xgr").html(xgrHtml);
+        //        }
+        //        //测试数据
+        ////                  其他待实现。。。。
+        ////                } else {
+        ////
+        ////
+        ////                }
+        ////            }
+        ////        });
+        //    }
+        //function editDiary(){
+
+        //}
+        function showAnother(type) {//type(prev,next):上一篇，下一篇
+            //TODO
+        }
+        $("#inputDiv").focus(function () {
+            $(".foot_bar").addClass("active");
+            $(".commentBtnBoxBg").show();
+        });
+        function removeActive() {
+            $(".foot_bar").removeClass("active");
+            $(".commentBtnBoxBg").hide();
+        }
+        //发表评论
+        $("#sendmsg").click(function () {
+           // alert($("#inputDiv").val());
+            alert("发表成功");
+            removeActive();
+
+            //TODO
+        });
+        //修改评分
+        var canScore = 1;
+        function changeScore(e) {
+            if (canScore == 1) {
+                var thisScore = e.attr("alt");
+                $("img[name='scoreImg']").each(function () {
+                    if (parseInt($(this).attr("alt")) > parseInt(thisScore)) {
+                        $(this).prop("src", "../resource/images/star-off.png");
+                    } else {
+                        $(this).prop("src", "../resource/images/star-on.png");
+                    }
+                });
+                $("#scoreSpan").html(thisScore + "分");
+                $("#score").val(thisScore + "分");
+            }
+           
+        }
+        //提交评分
+        function submitScore() {
+            var score = $("#score").val();
+            $.ajax({
+                type: "POST",
+                url: "../Ajax/AjaxGetMsg.aspx/setPFById",
+                data: "{diaryId: '" + id + "',score:"+score+"}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                async: false,
+                success: function Success(data) {
+
+                    //返回数据类型： 审阅人：张三，评分：9
+                    
+                    //保存成功时
+                    var pf = data.d.split(",")[1];
+                    if (pf) {
+                        //此时有评分
+                        canScore = 1;
+                        changeScore($("img[alt='" + pf + "']"));
+                        canScore = 0;
+                    } else {
+                        alert("评分提交失败");
+                    }
+                   
+                }
+            });
+
+        }
+        //获取cookie  
+        function getCookieValue(cookieName) {
+            var cookieValue = document.cookie;
+            var cookieStartAt = cookieValue.indexOf("" + cookieName + "=");
+            if (cookieStartAt == -1) {
+                cookieStartAt = cookieValue.indexOf(cookieName + "=");
+            }
+            if (cookieStartAt == -1) {
+                cookieValue = null;
+            }
+            else {
+                cookieStartAt = cookieValue.indexOf("=", cookieStartAt) + 1;
+                cookieEndAt = cookieValue.indexOf(";", cookieStartAt);
+                if (cookieEndAt == -1) {
+                    cookieEndAt = cookieValue.length;
+                }
+                cookieValue = unescape(cookieValue.substring(cookieStartAt, cookieEndAt));//解码latin-1  
+            }
+            return cookieValue;
+        }
+    </script>
+</body>
+</html>

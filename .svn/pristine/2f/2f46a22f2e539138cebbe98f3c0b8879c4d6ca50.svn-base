@@ -1,0 +1,674 @@
+﻿<html>
+<head>
+    <meta charset="utf-8" />
+    <title>新建日志</title>
+    <meta name="description" content="" />
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="MobileOptimized" content="320" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta content="telephone=no" name="format-detection" />
+    <meta content="email=no" name="format-detection" />
+    <link rel="stylesheet" href="../resource/css/ku.css" />
+    <link rel="stylesheet" href="../resource/css/font-awesome.min.css" />
+    <!--<script src="../resource/js/jquery-1.7.2.min.js"></script>-->
+    <script src="../resource/js/jquery-12.4.min.js"></script>
+    <script src="../resource/js/selectUsers.js"></script>
+    <script src="../resource/js/jquery.ui.widget.js"></script>
+    <script src="../resource/js/jquery.iframe-transport.js"></script>
+    <script src="../resource/js/jquery.fileupload.js"></script>
+    <script src="../resource/js/jquery.xdr-transport.js"></script>
+    <script src="../resource/js/ajaxfileupload.js"></script>
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+</head>
+<body>
+<div id="wrap_main" class="wrap">
+    <div id="main" class="wrap_inner" style="height: 571px;">
+        <div id="isUnSubmit" class="topWarn" style="display: none;text-align: center;">
+            <div class="topWarn-text">
+                你有日志未提交，点击前往补交
+            </div>
+        </div>
+        <!--<form action="" id="taskform" onsubmit="return false;">-->
+        <input type="hidden" name="tbQyDiaryPO.currentDay" id="currentDate" />
+        <!--日志类型部分-->
+        <div class="f-item f-item-select">
+            <div class="inner-f-item item-text flexbox">
+                <span class="f-item-title">日志类型</span>
+                <div class="flexItem">
+                    <select name="type_id" id="type_id" class="flexItem item-select direction_rtl">
+                        <option value="">请选择</option>
+                        <option value="">日报</option>
+                        <option value="">周报</option>
+                        <option value="">月报</option>
+                        <option value="">工作总结</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <!--日志类型部分-->
+        <div class="detaildata">
+            <!--日志标题部分-->
+            <div class="f-item">
+                <div class="inner-f-item">
+                    <div class="flexItem" style="padding-right: 40px;">
+                        <input type="text" name="title" value="" id="title" placeholder="请输入日志标题" class="item-select inputStyle item-title"/>
+                    </div>
+                </div>
+            </div>
+            <!--日志标题部分-->
+            <!--日志内容部分-->
+            <div class="f-item">
+                <div class="inner-f-item tapeBox">
+                    <div class="text_div">
+                        <textarea class="item-select inputStyle item-content" name="content" id="content" cols="30" rows="2" placeholder="请输入日志内容" style="height: 42px;"></textarea>
+                    </div>
+                    <div class="fr">
+                        <!--<div class="icon-circular mt5 mr10" id="showActionSheet">-->
+                        <!--<i class="icon-circular-ic icon-circular-book"></i>-->
+                        <!--</div>-->
+                        <div class="tape" id="voiceIds" style="display: block;"></div>
+                    </div>
+                </div>
+            </div>
+            <!--日志内容部分-->
+            <!--上传图片部分-->
+            <div class="f-item">
+                <div class="loadImg clearfix">
+                    <div class="f-add-user-list" style="margin: 0;">
+                        <ul id="addImg" class="clearfix1">
+                            <li class="f-user-add" onclick="chooseImg()"></li>
+                            <li class="f-user-remove"></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!--上传图片部分-->
+            <!--上传音频部分-->
+            <div class="f-item">
+                <div class="loadImg clearfix">
+                    <div class="f-add-user-list" style="margin: 0;">
+                        <ul id="addVoice" class="clearfix1">
+                            <li id="voiceLi">
+                                <img src="../resource/images/voice.png"
+                                     style="margin-left:10px;width: 42px;height: 42px;" onclick="startVoice()">
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!--浮动窗口-->
+            <div class="overlay" id="iosMask" style="display: none;"></div>
+            <div class="popBox1 tapePop" style="display: none;">
+                <div class="popBox_title"></div>
+                <div class="popBox1_con tcenter">
+                    <img src="../resource/images/tapePlay.gif">
+                    <div class="tapeTime">01:00</div>
+                </div>
+                <div class="popBox_error"></div>
+                <div class="popBox_foot flexbox">
+                    <a class="popBox_cancel_btn flexItem" onclick="stopVoice(0)">取消</a>
+                    <a class="popBox_submit_btn flexItem" onclick="stopVoice(1)">说完了</a>
+                </div>
+            </div>
+            <!--浮动窗口-->
+            <!--上传音频部分-->
+            <!--上传视频部分-->
+            <div class="f-item">
+                <div class="loadImg clearfix">
+                    <div class="f-add-user-list" style="margin: 0;">
+                        <ul id="addvideo" class="clearfix1">
+                            <li>
+                                <img src="../resource/images/video.png"
+                                     style="margin-left:10px;width: 42px;height: 42px;" onclick="$('#fileupload').click()">
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div style="margin-top:10px;display:none">
+                <form action="" name="" enctype="multipart/form-data">
+                    <input type="file" id="fileupload" name="video" capture="camera" accept="video/*"/>
+                </form>
+            </div>
+            <!-- 上传进度条及状态： -->
+            <div class="progress">
+                <div class="bar" style="width: 0%;"></div>
+                <div class="upstatus" style="margin-top:10px;"></div>
+            </div>
+            <!-- 预览框： -->
+            <div class="preview"></div>
+            <!--上传视频部分-->
+            <!--上传附件部分-->
+            <div class="form-style" id="medialist">
+                <div class="letter_bar file_top borderBottommNone">
+                    <span class="file_top_tit">附件(0)</span>
+                    <span  class="file_top_btn" onclick="addFile()">
+                     <!--<input type="file" name="file" id="files" class="upload_file_input"/>-->
+                    <i>+</i>添加
+                 </span>
+                    <span id="fileInput" style="display: none">
+                </span>
+                </div>
+            </div>
+            <div class="settings-item" id = "fj">
+                <!--<div class="inner-settings-item flexbox fujian">-->
+                <!--<p class="ZIP"></p>-->
+                <!--<div class="fujian_text flexItem">-->
+                <!--<p class="name">工作任务.zip</p>-->
+                <!--<p class="fujian_size">611.39 K</p>-->
+                <!--<p class="arrow">-->
+                <!--<span class="wrap" onclick="$(this).parent().parent().parent().remove()" style="margin-top: 11px">-->
+                <!--<i class="qw-operate-icon qw-operate-icon-del"></i>-->
+                <!--</span>-->
+                <!--</p>-->
+                <!--</div>-->
+                <!--</div>-->
+            </div>
+            <div class="separate_bar separate_bar_h15"></div>
+            <!--上传附件部分-->
+
+            <!--选择审阅人-->
+            <!--标题部分-->
+            <div class="letter_bar">
+                审阅人
+                <div class="loadlast_onoff">
+                    <!--加载上次-->
+                    <div class="onOff" id="onOff2">
+                            <span class="onOff_off">
+                                <input type="hidden" name="toSelectId" id="toSelectId" value="0" />
+                            </span>
+                    </div>
+                </div>
+            </div>
+            <!--标题部分-->
+            <!--数据部分-->
+            <div class="f-item">
+                <div class="f-add-user clearfix">
+                    <div class="inner-f-add-user">
+                        <div class="f-add-user-list">
+                            <ul class="clearfix" id="syrUl" >
+                                <!--<li>-->
+                                <!--<a class="remove_icon" style="display: inline;"></a>-->
+                                <!--<p class="img">-->
+                                <!--<img src="http://p.qlogo.cn/bizmail/uqibPEIicNrjEErw2dcgln6868Micl38EWF1VfWlQOcHgQUEJE2D26lmA/100" alt="">-->
+                                <!--</p>-->
+                                <!--<p class="name">潘全全</p>-->
+                                <!--</li>-->
+                                <!--<li><a class="remove_icon" style="display: inline;"></a>-->
+                                <!--<p class="img">-->
+                                <!--<img src="http://p.qlogo.cn/bizmail/vLo4ibTPak84PTBYO5yIkicNL3ftwbV3oibCvYTQqWVfPicicYyiaQLYiakYQ/100" alt="">-->
+                                <!--</p>-->
+                                <!--<p class="name">潘翔伟</p></li>-->
+                                <!--<li>-->
+                                <!--<a class="remove_icon" style="display: inline;"></a>-->
+                                <!--<p class="img">-->
+                                <!--<img src="http://p.qlogo.cn/bizmail/ibvzGOTWvkhKyViabceZGyMC5WoJccbqrxWMZ02Y6RwEBp6DhH2Aejbg/100" alt="">-->
+                                <!--</p>-->
+                                <!--<p class="name">雲潇</p>-->
+                                <!--</li>-->
+                                <li class="ico-add" onclick="selectUsers('syr')"></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--数据部分-->
+            <!--选择审阅人-->
+
+            <!--选择相关人-->
+            <!--标题部分-->
+            <div class="letter_bar">
+                相关人
+                <div class="loadlast_onoff">
+                    <!--加载上次-->
+                    <div class="onOff" id="onOff3">
+                        <span class="onOff_off"><input type="hidden" name="ccSelectId" id="ccSelectId" value="0" /></span>
+                    </div>
+                </div>
+            </div>
+            <!--标题部分-->
+            <!--数据部分-->
+            <div class="f-item">
+                <div class="f-add-user clearfix">
+                    <div class="inner-f-add-user">
+                        <div id="ccPersonList" class="f-add-user-list">
+                            <ul class="clearfix" id="xgrUl">
+                                <!--<li>-->
+                                <!--<a class="remove_icon" style="display: inline;"></a>-->
+                                <!--<p class="img">-->
+                                <!--<img src="http://p.qlogo.cn/bizmail/uqibPEIicNrjEErw2dcgln6868Micl38EWF1VfWlQOcHgQUEJE2D26lmA/100" alt="">-->
+                                <!--</p>-->
+                                <!--<p class="name">潘全全</p>-->
+                                <!--</li>-->
+                                <li class="ico-add" onclick="selectUsers('xgr')"></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--数据部分-->
+            <!--选择相关人-->
+            <div class="form_btns mt10">
+                <div class="inner_form_btns">
+                    <div class="fbtns flexbox">
+                        <input type="hidden" name="tbQyDiaryPO.diaryStatus" id="taskStatus" value="" />
+                        <a class="fbtn btn qwui-btn_default flexItem" style="margin-right: 5px;" href="javascript:commitTask('0')">保存为草稿</a>
+                        <a class="fbtn btn flexItem" style="margin-left: 5px;" href="javascript:commitTask('1')">立即提交</a>
+                    </div>
+                    <div class="fbtns_desc"></div>
+                </div>
+            </div>
+        </div>
+        <!--</form>-->
+
+        <!--引入选择人员部分-->
+        <div id="usersSelect" style="display: none">
+            <tc_include file="Monitor:selectUser"/>
+        </div>
+        <!--<script type="text/javascript">$('#usersSelect').load('/themes/simplemonitor/Monitor/selectUsers.html');</script>-->
+        <!--引入选择人员部分-->
+    </div>
+</div>
+<script>
+    var diaryId;
+    $(function(){
+        //获取url中的id参数
+        diaryId = GetQueryString("id");
+        //此页面为update页面
+        if(diaryId){
+            getDataById(diaryId);
+        }
+    });
+    //获取url参数
+    function GetQueryString(name) {
+        var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if(r!=null)return  unescape(r[2]); return null;
+    }
+    //获取update页面数据start
+    function getDataById(id) {
+//        $.ajax({
+//            type: "POST",
+//            //url: "../Ajax/AjaxGetMsg.aspx/getDepts",
+//            data: "{id: '" + id + "'}",
+//            contentType: "application/json; charset=utf-8",
+//            dataType: "json",
+//            async: false,
+//            success: function Success(data) {
+//                if (data) {
+        //测试数据
+        var data=[];
+        data.push({id:"1",type_id:"1",project_id:"1",title:"测试标题1",
+            creater:"张三",status:"2",start_time:"2017-12-01",times:"1",
+            content:"测试数据一",intro:"摘要",cover:"封面",attachs:"附件",
+            vidios:"视频",voices:"音频",tasks:"关联任务",
+            syr:[{dept:"1",first:"Z",id:"1",name:"张三",tel:"13804093570",url:"http://p.qlogo.cn/bizmail/uqibPEIicNrjEErw2dcgln6868Micl38EWF1VfWlQOcHgQUEJE2D26lmA/100"},{dept:2,first:"L",id:2,name:"李四",tel:13804093571,url:"http://p.qlogo.cn/bizmail/uqibPEIicNrjEErw2dcgln6868Micl38EWF1VfWlQOcHgQUEJE2D26lmA/100"}],
+            xgr:[{dept:"2",first:"W",id:"3",name:"王五",tel:"13804093572",url:"http://p.qlogo.cn/bizmail/uqibPEIicNrjEErw2dcgln6868Micl38EWF1VfWlQOcHgQUEJE2D26lmA/100"},{dept:3,first:"Z",id:4,name:"赵六",tel:13804093573,url:"http://p.qlogo.cn/bizmail/uqibPEIicNrjEErw2dcgln6868Micl38EWF1VfWlQOcHgQUEJE2D26lmA/100"}],
+        });
+        $("input[name='title']").val(data[0].title);//处理title
+        $("textarea[name='content']").html(data[0].content);//处理content
+        //处理审阅人
+        var syr=data[0].syr;
+        if(syr.length>0){
+            checkedAllUsers=[];
+            selectType="syr";
+            for(var i = 0;i<syr.length;i++){
+                var userId = syr[i].id;
+                var userName = syr[i].name;
+                var userUrl = syr[i].url;
+                checkedAllUsers.push({id:userId,name:userName,url:userUrl});
+            }
+            console.log(checkedAllUsers);
+            okChecked();
+        }
+        //处理审阅人
+        var xgr=data[0].xgr;
+        if(xgr.length>0){
+            checkedAllUsers=[];
+            selectType="xgr";
+            for(var i = 0;i<xgr.length;i++){
+                var userId = xgr[i].id;
+                var userName = xgr[i].name;
+                var userUrl = xgr[i].url;
+                checkedAllUsers.push({id:userId,name:userName,url:userUrl});
+            }
+            okChecked();
+        }
+        //测试数据
+//                  其他待实现。。。。
+//                } else {
+//
+//
+//                }
+//            }
+//        });
+    }
+    //获取update页面数据end
+    //点击加载上一次审阅人(样式)
+    $('#onOff2').click(function () {
+        if ($(this).attr('class') == 'onOff'){
+            $(this).attr('class', 'onOff_on');
+            $(this).children('.onOff_off').addClass('active');
+            $("#toSelectId").val("1");
+            //selectFormCcOrTo("0");//0表示审阅人
+        } else {
+            $(this).attr('class', 'onOff');
+            $(this).children('.onOff_off').removeClass('active');
+            $("#toSelectId").val("0");
+        }
+    });
+    //点击加载上一次相关人(样式)
+    $('#onOff3').click(function () {
+        if ($(this).attr('class') == 'onOff') {
+            $(this).attr('class', 'onOff_on');
+            $(this).children('.onOff_off').addClass('active');
+            $("#ccSelectId").val("1");
+            //selectFormCcOrTo("1");//1表示相关人
+        } else {
+            $(this).attr('class', 'onOff');
+            $(this).children('.onOff_off').removeClass('active');
+            $("#ccSelectId").val("0");
+        }
+    });
+    <!--图片部分js-->
+    var appid = "{$appId}";
+    var timestamp = "{$timestamp}";
+    var nonceStr = "{$nonceStr}";
+    var signature = "{$signature}";
+    $(function () {
+        initWxApi();
+//        chooseImg();
+    });
+
+    //初始化微信api
+    function initWxApi() {
+        wx.config({
+            debug: false,
+            appId: appid, // 必填，公众号的唯一标识
+            timestamp: timestamp, // 必填，生成签名的时间戳
+            nonceStr: nonceStr, // 必填，生成签名的随机串
+            signature: signature,// 必填，签名，见附录1
+            jsApiList: [
+                "openEnterpriseChat",
+                "openEnterpriseContact",
+                "onMenuShareTimeline",
+                "onMenuShareAppMessage",
+                "onMenuShareQQ",
+                "onMenuShareWeibo",
+                "onMenuShareQZone",
+                "startRecord",
+                "stopRecord",
+                "onVoiceRecordEnd",
+                "playVoice",
+                "pauseVoice",
+                "stopVoice",
+                "onVoicePlayEnd",
+                "uploadVoice",
+                "downloadVoice",
+                "chooseImage",
+                "previewImage",
+                "uploadImage",
+                "downloadImage",
+                "translateVoice",
+                "getNetworkType",
+                "openLocation",
+                "getLocation",
+                "hideOptionMenu",
+                "showOptionMenu",
+                "hideMenuItems",
+                "showMenuItems",
+                "hideAllNonBaseMenuItem",
+                "showAllNonBaseMenuItem",
+                "closeWindow",
+                "scanQRCode"
+            ]
+        });
+        wx.error(function (res) {
+            alert('js授权出错,请检查域名授权设置和参数是否正确');
+        });
+    }
+
+    //wx.ready(function(res){
+    var imgIds = [];
+
+    function chooseImg() {
+        wx.chooseImage({
+            count: 9, // 默认9
+            sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+            sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+            success: function (res) {
+                var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+                if (localIds.length > 0) {
+                    var addImgHtml = "";
+                    for (var i = 0; i < localIds.length; i++) {
+                        var src = localIds[i];
+                        addImgHtml += "<li>" +
+                            "<a class=\"remove_icon\" name='removeImgA' onclick=\"deleteImg(this)\"  bdId=\"" + src + "\" style=\"display: none;\"></a>" +
+                            "<p class=\"img\">" +
+                            "<img name=\"toUpLoadImg\" src=\"" + src + "\" alt=\"\">" +
+                            "</p>" +
+                            "</li>";
+                        imgUpLoad(src);
+                    }
+                    addImgHtml += "<li class=\"f-user-add\" onclick=\"chooseImg()\"></li>" +
+                        "<li class=\"f-user-remove\" onclick=\"removeImg()\"></li>";
+                    $("#addImg").html(addImgHtml);
+                } else {
+                    alert("未选择图片");
+                }
+            }
+        });
+    }
+
+    function imgUpLoad(bendiId) {
+        wx.uploadImage({
+            localId: bendiId, // 需要上传的图片的本地ID，由chooseImage接口获得
+            isShowProgressTips: 1,// 默认为1，显示进度提示
+            success: function (res) {
+                var serverId = res.serverId; // 返回图片的服务器端ID.
+                if (serverId) {
+                    imgIds.push({bdId: bendiId, fwqId: serverId});
+                }
+            }
+        });
+    }
+
+    //        function downLoadImg() {
+    //            wx.downloadImage({
+    //                serverId: '', // 需要下载的图片的服务器端ID，由uploadImage接口获得
+    //                isShowProgressTips: 1,// 默认为1，显示进度提示
+    //                success: function (res){
+    //                    var localId = res.localId; // 返回图片下载后的本地ID
+    //                }
+    //            });
+    //        }
+
+
+    var removeImgStatus = 0;
+
+    function removeImg() {
+        if (removeImgStatus == 0) {
+            $("a[name='removeImgA']").show();
+            removeImgStatus = 1;
+        } else {
+            $("a[name='removeImgA']").hide();
+            removeImgStatus = 0;
+        }
+    }
+
+    function deleteImg(e) {
+        var thisId = $(e).attr("bdId");
+        for (var i = 0; i < imgIds.length; i++) {
+            if (imgIds[i].bdId == thisId || imgIds[i].bdId.toString() == thisId.toString()) {
+                imgIds.splice(i, 1);
+            }
+        }
+        $(e).parent().remove();
+    }
+</script>
+<!--图片部分js-->
+<!--音频部分js-->
+<script>
+    var beginVoice;
+
+    function startVoice() {
+        $("#iosMask").show();
+        $(".popBox1").show();
+        beginVoice = setInterval(timeLess, 1000);
+        wx.startRecord();
+        wx.onVoiceRecordEnd({
+            // 录音时间超过一分钟没有停止的时候会执行 complete 回调
+            complete: function (res) {
+                upLoadVoice(res.localId);
+            }
+        });
+    }
+
+    var voiceIds = [];
+
+    function stopVoice(type) {
+        $("#iosMask").hide();
+        $(".popBox1").hide();
+        clearInterval(beginVoice);
+        $(".tapeTime").html("01:00");
+        time = 59;
+        wx.stopRecord({
+            success: function (res) {
+                if (type == 1) {
+                    var html = "<li>" +
+                        "<a class=\"remove_icon\" onclick=\"deleteVoice(this)\"  bdvId=\"" + res.localId + "\" style=\"display: block;\"></a>" +
+                        "<p class=\"img\">" +
+                        "<img  src=\"../resource/images/voiceFile.png\" style=\"margin-left:10px;width: 42px;height: 42px;\" onclick='playVoice(" + res.localId + ")'>" +
+                        "</p>" +
+                        "</li>";
+                    $("#addVoice").prepend(html);
+                    upLoadVoice(res.localId);
+                }
+            }
+        });
+    }
+
+    function playVoice(id) {
+        wx.playVoice({
+            localId: id // 需要播放的音频的本地ID，由stopRecord接口获得
+        });
+    }
+
+    function upLoadVoice(bdvId) {
+        wx.uploadVoice({
+            localId: bdvId, // 需要上传的音频的本地ID，由stopRecord接口获得
+            isShowProgressTips: 1,// 默认为1，显示进度提示
+            success: function (res) {
+                var serverId = res.serverId; // 返回音频的服务器端ID
+                voiceIds.push({bdId: bdvId, fwqId: serverId});
+            }
+        });
+    }
+
+    function deleteVoice(e) {
+        var thisId = $(e).attr("bdvId");
+        for (var i = 0; i < imgIds.length; i++) {
+            if (voiceIds[i].bdvId == thisId) {
+                voiceIds.splice(i, 1);
+            }
+        }
+        $(e).parent().remove();
+    }
+
+    var time = 59;
+
+    function timeLess() {
+        $(".tapeTime").html("00:" + time);
+        if (time <= 0) {
+            stopVoice();
+        }
+        time--;
+    }
+</script>
+<!--音频部分js-->
+<!--视频部分js-->
+<script>
+    $('#fileupload').fileupload(
+        {
+            url: 'index.php?g=monitor&m=index&a=uploadFile',
+            dataType: "json",
+            multipart: true,
+            done: function (e, data) {
+                //done方法就是上传完毕的回调函数，其他回调函数可以自行查看api
+                //注意data要和jquery的ajax的data参数区分，这个对象包含了整个请求信息
+                //返回的数据在data.result中，这里dataType中设置的返回的数据类型为json
+                if (data.result.sta) {
+                    // 上传成功：
+                    $(".preview").append("<div style='margin-top:10px;'><embed src=" +
+                        data.result.previewSrc + " allowscriptaccess='always' " +
+                        "allowfullscreen='true' wmode='opaque' width='280' height='200'>" +
+                        "</embed></div>");
+//                    $(".preview").append("<div>"+data.result.msg+"</div>");
+                } else {
+                    // 上传失败：
+                    $(".upstatus").append("<div style='color:red;'>" + data.result.msg + "</div>");
+                }
+
+            },
+            //上传进度
+            progressall: function (e, data) {
+                var progress = parseInt(data.loaded / data.total * 100, 10);
+                $(".progress .bar").css("width", progress + "%");
+                $(".proportion").html("上传总进度：" + progress + "%");
+            }
+        });
+
+</script>
+<!--视频部分js-->
+<!--附件部分js-->
+<script>
+    //    生成上传文件的input
+    var nowFileCount = 1;
+    function addFile() {
+        var nowFileId = "file"+nowFileCount;
+        var inputFile = "<input type=\"file\" id=\""+nowFileId+"\" name=\""+nowFileId+"\">";
+        $("#fileInput").append(inputFile);
+        $("#"+nowFileId).click();
+        $("#"+nowFileId).change(function () {
+            uploadfilex(nowFileId);
+        });
+        nowFileCount++;
+    }
+
+    function uploadfilex(id) {
+        //上传文件
+        $.ajaxFileUpload({
+            url: "index.php?g=monitor&m=index&a=fileUpload",//处理图片脚本
+            secureuri: false,
+            fileElementId: id,//file控件id
+            dataType: 'json',
+            success: function (data, status) {
+                var res = eval("("+data+")");
+                if(res.status){
+                    var cl = res.ext.toUpperCase();
+                    var html ="<div class=\"inner-settings-item flexbox fujian\">" +
+                        "<p class=\""+cl+"\"></p>" +
+                        "<div class=\"fujian_text flexItem\">" +
+                        "<p class=\"name\">"+res.name+"</p>" +
+                        "<p class=\"fujian_size\">"+res.size+" K</p>" +
+                        "<p class=\"arrow\">" +
+                        "<span class=\"wrap\" onclick=\"$(this).parent().parent().parent().remove()\" style=\"margin-top: 11px\">" +
+                        "<i class=\"qw-operate-icon qw-operate-icon-del\"></i>" +
+                        "</span>" +
+                        "</p>" +
+                        "</div>" +
+                        "</div>";
+                    $("#fj").append(html);
+                }else{
+                    alert("上传失败");
+                }
+            },
+            error: function (data, status, e) {
+                alert(e);
+            }
+        });
+    }
+</script>
+<!--附件部分js-->
+</body>
+</html>

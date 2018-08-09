@@ -1,0 +1,276 @@
+﻿<html>
+<head>
+    <meta charset="utf-8" />
+    <title>新建日志</title>
+    <meta name="description" content="" />
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="MobileOptimized" content="320" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta content="telephone=no" name="format-detection" />
+    <meta content="email=no" name="format-detection" />
+    <link rel="stylesheet" href="../wxqyh/jsp/wap/css/ku.css" />
+    <link rel="stylesheet" href="../wxqyh/jsp/wap/css/font-awesome.min.css" />
+    <script src="../wxqyh/js/3rd-plug/jquery-ui-1.8/js/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var option = "<option value=\"0\" selected>请选择</option><option value=\"1\">日报</option><option value=\"2\">周报</option><option value=\"3\">月报</option><option value=\"4\">工作总结</option>";
+            document.getElementById("taskType").innerHTML = option;
+        });
+        function changeVal() {
+            //var temp = $('#taskType option:selected').text();//选中的文本
+            var temp = $('#taskType option:selected').val();//选中的值
+            //var temp = $("#taskType ").get(0).selectedIndex;//索引
+            if (confirm('是否用日志模版替换已填写的标题和内容?'))
+            { 
+                if (temp == '0') {
+                    document.getElementById('title').value = "";
+                    document.getElementById('content').value = "";
+                }
+                if (temp == '1') {
+                    document.getElementById('title').value = "111";
+                    document.getElementById('content').value = "111";
+                }
+                if (temp == '2') {
+                    document.getElementById('title').value = "222";
+                    document.getElementById('content').value = "222";
+                }
+                if (temp == '3') {
+                    document.getElementById('title').value = "333";
+                    document.getElementById('content').value = "333";
+                }
+                if (temp == '4') {
+                    document.getElementById('title').value = "444";
+                    document.getElementById('content').value = "444";
+                }
+            } 
+            return false; 
+        }
+    </script>
+</head>
+<body>
+<div id="wrap_main" class="wrap">
+    <div id="main" class="wrap_inner" style="height: 571px;">
+        <div id="isUnSubmit" class="topWarn" style="display: none;text-align: center;">
+            <div class="topWarn-text">
+                你有日志未提交，点击前往补交
+            </div>
+        </div>
+        <form action="" id="taskform" onsubmit="return false;">
+            <input type="hidden" name="tbQyDiaryPO.currentDay" id="currentDate" />
+            <div class="form-style">
+                <!--日志类型部分-->
+                <div class="f-item f-item-select">
+                    <div class="inner-f-item item-text flexbox">
+                        <span class="f-item-title">日志类型</span>
+                        <div class="flexItem">
+                            <select name="" id="taskType" onchange="changeVal()" class="flexItem item-select direction_rtl">
+                                <!--<option value="">请选择</option>
+                                <option value="">日报</option>
+                                <option value="">周报</option>
+                                <option value="">月报</option>
+                                <option value="">工作总结</option>-->
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <!--日志类型部分-->
+                <div class="detaildata">
+                    <!--日志标题部分-->
+                    <div class="f-item">
+                        <div class="inner-f-item">
+                            <div class="flexItem" style="padding-right: 40px;">
+                                <input type="text" name="" value="" id="title" placeholder="请输入日志标题" class="item-select inputStyle item-title"/>
+                            </div>
+                        </div>
+                    </div>
+                    <!--日志标题部分-->
+                    <!--日志内容部分-->
+                    <div class="f-item">
+                        <div class="inner-f-item tapeBox">
+                            <div class="text_div">
+                                <textarea class="item-select inputStyle item-content" name="" id="content" cols="30" rows="2" placeholder="请输入日志内容" style="height: 42px;"></textarea>
+                            </div>
+                            <div class="fr">
+                                <!--<div class="icon-circular mt5 mr10" id="showActionSheet">-->
+                                    <!--<i class="icon-circular-ic icon-circular-book"></i>-->
+                                <!--</div>-->
+                                <div class="tape" id="voiceIds" style="display: block;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--日志内容部分-->
+                    <!--日志上传图片部分-->
+                    <div class="f-item">
+                        <div class="loadImg clearfix" id="upPicDiv">
+                            <div class="f-add-user-list" style="margin: 0;">
+                                <ul id="imglist" class="impression clearfix">
+                                    <li class="f-user-add" id="addimage">
+                                        <input id="imageFileInput" class="imageFileInput" accept="image/jpeg,image/jpg,image/png,image/gif" type="file" />
+                                    </li>
+                                    <li class="f-user-remove" show="0" onclick="removeImage(this,'imglist')"></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <!--日志上传图片部分-->
+                    <!-- 上传媒体文件（手机端页面）引入  start -->
+                    <div class="form-style" id="medialist">
+                        <div class="letter_bar file_top borderBottommNone">
+                            <span class="file_top_tit" >附件(0)</span>
+                            <span class="file_top_btn" style="">
+                                <input type="file" name="file" id="fileFile1" filename="mediaIds" class="upload_file_input" />
+                                <i>+</i>上传
+                            </span>
+                        </div>
+                    </div>
+                    <!-- 上传媒体文件（手机端页面）引入  end -->
+                </div>
+                <div class="separate_bar separate_bar_h15"></div>
+
+                <!--选择负责人-->
+                <!--标题部分-->
+                <div class="letter_bar">
+                    负责人
+                    <div class="loadlast_onoff">
+                        <!--加载上次-->
+                        <div class="onOff" id="onOff2">
+                            <span class="onOff_off">
+                                <input type="hidden" name="toSelectId" id="toSelectId" value="0" />
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <!--标题部分-->
+                <!--数据部分-->
+                <div class="f-item">
+                    <div class="f-add-user clearfix">
+                        <div class="inner-f-add-user">
+                            <div class="f-add-user-list">
+                                <ul class="clearfix" id="fzrUl" >
+                                    <!--<li>-->
+                                        <!--<a class="remove_icon" style="display: inline;"></a>-->
+                                        <!--<p class="img">-->
+                                            <!--<img src="http://p.qlogo.cn/bizmail/uqibPEIicNrjEErw2dcgln6868Micl38EWF1VfWlQOcHgQUEJE2D26lmA/100" alt="">-->
+                                        <!--</p>-->
+                                        <!--<p class="name">潘全全</p>-->
+                                    <!--</li>-->
+                                    <!--<li><a class="remove_icon" style="display: inline;"></a>-->
+                                        <!--<p class="img">-->
+                                            <!--<img src="http://p.qlogo.cn/bizmail/vLo4ibTPak84PTBYO5yIkicNL3ftwbV3oibCvYTQqWVfPicicYyiaQLYiakYQ/100" alt="">-->
+                                        <!--</p>-->
+                                        <!--<p class="name">潘翔伟</p></li>-->
+                                    <!--<li>-->
+                                        <!--<a class="remove_icon" style="display: inline;"></a>-->
+                                        <!--<p class="img">-->
+                                            <!--<img src="http://p.qlogo.cn/bizmail/ibvzGOTWvkhKyViabceZGyMC5WoJccbqrxWMZ02Y6RwEBp6DhH2Aejbg/100" alt="">-->
+                                        <!--</p>-->
+                                        <!--<p class="name">雲潇</p>-->
+                                    <!--</li>-->
+                                    <li class="ico-add" onclick="selectUsers('fzr')"></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--数据部分-->
+                <!--选择负责人-->
+
+                <!--选择相关人-->
+                <!--标题部分-->
+                <div class="letter_bar">
+                    相关人
+                    <div class="loadlast_onoff">
+                        <!--加载上次-->
+                        <div class="onOff" id="onOff3">
+                            <span class="onOff_off"><input type="hidden" name="ccSelectId" id="ccSelectId" value="0" /></span>
+                        </div>
+                    </div>
+                </div>
+                <!--标题部分-->
+                <!--数据部分-->
+                <div class="f-item">
+                    <div class="f-add-user clearfix">
+                        <div class="inner-f-add-user">
+                            <div id="ccPersonList" class="f-add-user-list">
+                                <ul class="clearfix" id="xgrUl">
+                                    <!--<li>-->
+                                        <!--<a class="remove_icon" style="display: inline;"></a>-->
+                                        <!--<p class="img">-->
+                                            <!--<img src="http://p.qlogo.cn/bizmail/uqibPEIicNrjEErw2dcgln6868Micl38EWF1VfWlQOcHgQUEJE2D26lmA/100" alt="">-->
+                                        <!--</p>-->
+                                        <!--<p class="name">潘全全</p>-->
+                                    <!--</li>-->
+                                    <li class="ico-add" onclick="selectUsers('xgr')"></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--数据部分-->
+                <!--选择相关人-->
+                <div class="form_btns mt10">
+                    <div class="inner_form_btns">
+                        <div class="fbtns flexbox">
+                            <input type="hidden" name="tbQyDiaryPO.diaryStatus" id="taskStatus" value="" />
+                            <a class="fbtn btn qwui-btn_default flexItem" style="margin-right: 5px;" href="javascript:commitTask('0')">保存为草稿</a>
+                            <a class="fbtn btn flexItem" style="margin-left: 5px;" href="javascript:commitTask('1')">立即提交</a>
+                        </div>
+                        <div class="fbtns_desc"></div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!--引入选择人员部分-->
+    <div id="usersSelect" style="display: none"> </div>
+    <script type="text/javascript">$(document).ready(function () { $('#usersSelect').load('selectUsers.html'); });</script>
+    <!--引入选择人员部分-->
+</div>
+<script>
+    function removeImage(obj,imgUlId){
+        var arry;
+        arry = $(obj).parent().find("a");
+        var show = $(obj).attr("show");
+        if(show==0){
+            $(obj).attr("show","1");
+            for(var i=0;i<arry.length;i++){
+                $(arry[i]).show();
+            }
+        }else{
+            $(obj).attr("show","0");
+            for(var i=0;i<arry.length;i++){
+                $(arry[i]).hide();
+            }
+        }
+
+    }
+    //点击加载上一次负责人(样式)
+    $('#onOff2').click(function () {
+        if ($(this).attr('class') == 'onOff'){
+            $(this).attr('class', 'onOff_on');
+            $(this).children('.onOff_off').addClass('active');
+            $("#toSelectId").val("1");
+            //selectFormCcOrTo("0");//0表示负责人
+        } else {
+            $(this).attr('class', 'onOff');
+            $(this).children('.onOff_off').removeClass('active');
+            $("#toSelectId").val("0");
+        }
+    });
+    //点击加载上一次相关人(样式)
+    $('#onOff3').click(function () {
+        if ($(this).attr('class') == 'onOff') {
+            $(this).attr('class', 'onOff_on');
+            $(this).children('.onOff_off').addClass('active');
+            $("#ccSelectId").val("1");
+            //selectFormCcOrTo("1");//1表示相关人
+        } else {
+            $(this).attr('class', 'onOff');
+            $(this).children('.onOff_off').removeClass('active');
+            $("#ccSelectId").val("0");
+        }
+    });
+</script>
+</body>
+</html>

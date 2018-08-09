@@ -1,0 +1,155 @@
+        //刷新本页面
+        function reLoadPage() {
+            window.location = "DocList.aspx?id=" + document.getElementById("hdSeleValue").value + "&did=" + $('#ddlScope').val();
+        }
+
+//function ondbSelectValue(id) {
+        //    document.getElementById("hdSeleValue").value = id;
+        //    location = 'FileInfoList.aspx?id=' + id;
+        //}
+        //function valForm() {
+        //    return $('#hfldFIleName').val() != '';
+        //}
+        //重命名文件名称
+        //function addFload(type) {
+        //    var hdTypeValue = 'edit';
+        //    var Dgtitle = '编辑文件';
+        //    document.getElementById("hdType").value = hdTypeValue
+        //    document.getElementById("txtFileInfo").value = "";
+
+        //    var moreTitle;
+        //    var trId = $('#hfldPurchaseChecked').val();
+        //    var $a = $('tr[id=' + trId + ']').find('a');
+        //    var dfTitle = $a.attr('dfTitle');
+        //    dfTitle = dfTitle.substring(0, dfTitle.lastIndexOf('.'));
+
+        //    top.ui.prompt('重命名', '重命名', function (r) {
+        //        if (r) {
+        //            $('#hfldFIleName').val(r);
+        //            $('#btnSave').click();
+        //        }
+        //    });
+        //}
+
+        //function setBtn(jwTable, hdChkId) {
+        //    if (jwTable.table == undefined)
+        //        return;
+        //    if (jwTable.table.firstChild.childNodes.length == 1) {
+        //        //table中没有数据
+        //        return;
+        //    }
+        //    jwTable.registClickTrListener(function () {
+        //        document.getElementById(hdChkId).value = this.id;
+        //        setDisabledButton('', 1);
+        //    });
+        //    jwTable.registClickSingleCHKListener(function () {
+        //        var checkedChk = jwTable.getCheckedChk();
+        //        document.getElementById(hdChkId).value = jwTable.getCheckedChkIdJson(checkedChk);
+        //        if (checkedChk.length == 0) {
+        //            setDisabledButton('disabled');
+        //        }
+        //        else
+        //            if (checkedChk.length == 1) {
+        //                setDisabledButton('', 1);
+        //            }
+        //            else {
+        //                setDisabledButton('', 2);
+        //            }
+
+        //    });
+        //    jwTable.registClickAllCHKLitener(function () {
+        //        document.getElementById(hdChkId).value = jwTable.getCheckedChkIdJson();
+        //        if (this.checked) {
+        //            var checkedChks = jwTable.getAllChk();
+        //            if (checkedChks.length > 0)
+        //                setDisabledButton('', checkedChks.length);
+        //        }
+        //        else {
+        //            setDisabledButton('disabled');
+        //        }
+        //    });
+        //}
+        //设置按钮权限
+        //function setDisabledButton(disabled, chkLength) {
+        //    if (disabled != undefined && disabled != '') {
+        //        $(':button[sign="1"]').each(function (i) {
+        //            $(this).attr('disabled', 'disabled');
+        //        });
+        //        $(':submit[sign="1"]').each(function (i) {
+        //            $(this).attr('disabled', 'disabled');
+        //        });
+        //    }
+        //    else {
+        //        if ($('#hfldPurchaseChecked').val() == '')
+        //            return;
+        //        arguments.callee('disabled');
+        //        if (chkLength == 1) {
+        //            var limit = $('#' + $('#hfldPurchaseChecked').val()).attr('limit');
+        //            if (limit == '1') {
+        //                $(':button[sign="1"]').each(function (i) {
+        //                    $(this).removeAttr('disabled');
+        //                });
+        //                $(':submit[sign="1"]').each(function (i) {
+        //                    $(this).removeAttr('disabled');
+        //                });
+        //            }
+        //        }
+        //        else {
+        //            var selIds = $('#hfldPurchaseChecked').val();
+        //            selIds = selIds.substring(1, selIds.length - 1).replace(/\"/g, '');
+        //            var arrayId = selIds.split(',');
+        //            var firstRowLimit = $('#' + arrayId[0]).eq(0).attr('limit');
+        //            //多选都拥有权限
+        //            var isAllLimit = true;
+        //            if ($('#hfldManagerCode').val() == '') {
+        //                for (i = 1; i < arrayId.length; i++) {
+        //                    var currentLimit = $('#' + arrayId[i]).eq(0).attr('limit');
+        //                    if (currentLimit != firstRowLimit) {
+        //                        isAllLimit = false;
+        //                        break;
+        //                    }
+        //                }
+        //            }
+        //            if (isAllLimit && firstRowLimit == '1') {
+        //                $('#btnDel').removeAttr('disabled');
+        //            }
+        //        }
+        //    }
+        //}
+        //下载
+        //function DownLoad(path) {
+        //    viewopen('/Common/DownLoad.aspx?path=' + path);
+        //    //document.getElementById("hdPath").value = path;            
+        //    //document.getElementById("btnDown").click();
+        //}
+        //显示隐藏高级选项
+        //function dis(num) {
+        //    document.getElementById("hdSearchShow").value = num;
+        //    if (num == '1') {
+        //        document.getElementById("searchTr").style.display = 'block';
+        //        document.getElementById("heightS").style.display = 'none';
+        //        document.getElementById("btnS").style.display = 'none';
+        //    }
+        //    else {
+        //        document.getElementById("searchTr").style.display = 'none';
+        //        document.getElementById("heightS").style.display = 'block';
+        //        document.getElementById("btnS").style.display = 'block';
+        //        document.getElementById("txtStartTime").value = "";
+        //        document.getElementById("txtEndTime").value = "";
+        //        document.getElementById("txtStartSize").value = "";
+        //        document.getElementById("txtEndSize").value = "";
+        //        document.getElementById("txtFileOwner").value = "";
+        //    }
+        //}
+        //验证大小是否是数字
+        //function chkInput() {
+        //    if (document.getElementById("txtStartSize").value != "" && isNaN(document.getElementById("txtStartSize").value)) {
+        //        alert("按大小查询时输入的必须为数字");
+        //        return false;
+        //    }
+        //    if (document.getElementById("txtStartSize").value != "" && isNaN(document.getElementById("txtStartSize").value)) {
+        //        alert("按大小查询时输入的必须为数字");
+        //        return false;
+        //    }
+        //    return true;
+        //}

@@ -1,0 +1,201 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="TaskView.aspx.cs" Inherits="OA3_WorkTask_TaskView" %>
+<%@ Register TagPrefix="MyUserControl" TagName="usercontrol_fileupload_fileupload_ascx" Src="~/UserControl/FileUpload/FileUpload.ascx" %>
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title></title>
+    <script type="text/javascript" src="../Script/jquery.js"></script>
+    <script type="text/javascript" src="../StockManage/script/Config2.js"></script>
+    <script src="../Script/jw.js" type="text/javascript"></script>
+    <script src="../Script/DecimalInput.js" type="text/javascript"></script>
+
+    <link href="../Script/Print/css/print.css" rel="stylesheet" type="text/css" media="print"/>
+    <link href="../Script/Print/css/PrjManager-Print.css" rel="stylesheet" type="text/css" media="print"/>
+    <link href="../Script/Print/css/print-preview.css" rel="stylesheet" type="text/css" media="screen"/>
+    <script type="text/javascript" src="../Script/ViewOfficeOnline.js"></script>
+    <script src="../Script/Print/jquery.print-preview.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../Script/Print/jw.print.js" type="text/javascript"></script>
+    <link href="/StyleExt/CSS/StyleSheet.css" rel="stylesheet" type="text/css" media="all"/>
+    <link href="/StockManage/skins/sm4.css" rel="stylesheet" type="text/css" />
+    <link href="/StyleCss/Common.css" rel="stylesheet" type="text/css" />
+    <style type="text/css" media="print">
+        .noprint
+        {
+            display: none;
+        }
+    </style>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //打印预览
+            $('#btnDy').printPreview();
+        });
+    </script>
+</head>
+<body id="print1" style="overflow-y: auto; height: auto;">
+    <form id="form1" runat="server">
+        <div class="VPage">
+            <%-- <div align="center" id="mTable" style="margin-top: 5px; vertical-align: top;">
+                <div style="vertical-align: top;">--%>
+
+            <table class="tabCss" style="vertical-align: top; border-collapse: collapse;">
+           <tr>
+             <td class="title-divHeader">
+                工作任务信息详情
+                
+                <%--<input type="button" style="float: right;" class="noprint" onclick="winPrint()" value=" 打 印 " />
+               <input type="button" id="btnDy" style="float: right;" class="noprint" value=" 打 印 "/>--%>
+            </td>
+        </tr>
+        <tr style="height: 1px;">
+            <td>
+                <table id="bllProducer" cellpadding="0" cellspacing="0" style="border-style: none;width: 100%;">
+                    <tr>
+                        <td style="border-style: none;">
+                            填写人:&nbsp;&nbsp;<asp:Label ID="creater" runat="server"></asp:Label>
+                        </td>
+                        <td style="border-style: none; text-align: right">
+                            填写时间:&nbsp;&nbsp;<asp:Label ID="create_date" runat="server"></asp:Label>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+                <tr>
+                    <td style="vertical-align: top">
+                        <div class="cell_title_blue_line" >
+                            <div class="cell_title_blue_left">
+                            </div>
+                            <div class="cell_title_blue_bg">
+                                <span class="titlespan">工作任务详情</span>
+                            </div>
+                            <div class="cell_title_blue_right">
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+            <table class="tabCss" style="vertical-align: top; border-collapse: collapse;">
+                <tr>
+                    <td class="descTd">任务类型</td>
+                    <td class="elemTd">
+                        <asp:Label ID="type_id" runat="server"></asp:Label>
+                    </td>
+                </tr>
+              
+                <tr>
+                    <td class="descTd">任务名称
+                    </td>
+                    <td class="elemTd">
+                        <asp:Label ID="title" runat="server"></asp:Label>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="descTd">开始时间
+                    </td>
+                    <td class="elemTd">
+                        <table>
+                            <tr>
+                                <td>
+                                    <asp:Label ID="start_time" runat="server"></asp:Label>
+                                </td>
+                                <td style="width: 5px;"></td>
+                                <td style="background-color: #fafafa;">持续 <asp:Label ID="txtValue" runat="server"></asp:Label>
+                                            分钟
+                                </td>
+                                <td style="width: 5px;"></td>
+
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="descTd">结束时间
+                    </td>
+                    <td class="elemTd">
+                        <asp:Label ID="end_time" runat="server"></asp:Label>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="descTd">任务内容
+                    </td>
+                    <td class="elemTd">
+                        <asp:Label ID="content" Style="background-color: #fafafa;" Height="120px" Width="100%" Wrap="true" runat="server"></asp:Label>
+                    </td>
+                </tr>
+                  <tr>
+                    <td class="descTd">任务优先级</td>
+                    <td class="elemTd">
+                        <asp:Label ID="CodeName" runat="server"></asp:Label>
+                    </td>
+                </tr>
+                 <tr>
+                    <td class="descTd">任务进度(%)
+                    </td>
+                    <td class="elemTd">
+                        <asp:Label ID="progress" runat="server"></asp:Label> [关闭][完成]
+                    </td>
+                </tr>
+                <tr>
+                    <td class="descTd">负责人
+                    </td>
+                    <td class="elemTd">
+                        <asp:Label ID="txtTo" runat="server"></asp:Label>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="descTd">相关人
+                    </td>
+                    <td class="elemTd">
+                        <asp:Label ID="txtCopyto" runat="server"></asp:Label>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="descTd">相关图片
+                    </td>
+                    <td class="elemTd" id="FileUpload1" runat="server">
+                    </td>
+                </tr>
+                 <tr>
+                    <td class="descTd">相关音频
+                    </td>
+                    <td class="elemTd" id="FileUpload3" runat="server">
+                    </td>
+                </tr>
+                 <tr>
+                    <td class="descTd">相关视频
+                    </td>
+                    <td class="elemTd" id="FileUpload4" runat="server">
+                    </td>
+                </tr>
+                <tr>
+                    <td class="descTd">相关附件
+                    </td>
+                    <td class="elemTd" id="FileUpload2" runat="server">
+                    </td>
+                </tr>
+                <tr id="PLtitle" runat="server">
+                   <td  class="descTd" colspan="2"> 
+                        <div class="cell_title_blue_line">
+                            <div class="cell_title_blue_left">
+                            </div>
+                            <div class="cell_title_blue_bg">
+                                <span class="titlespan">工作任务回复</span>
+                            </div>
+                            <div class="cell_title_blue_right">
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <%=PL %>
+            </table>
+        </div>
+        <div id="divFram" title="" style="display: none">
+            <iframe id="ifFram" frameborder="0" width="100%" height="100%" src=""></iframe>
+        </div>
+        <input type="hidden" id="KeyId" runat="server" />
+        <input type="hidden" id="hdnDelPlanId" runat="server" />
+    </form>
+</body>
+</html>

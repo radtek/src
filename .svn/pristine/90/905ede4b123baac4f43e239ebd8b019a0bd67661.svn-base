@@ -1,0 +1,136 @@
+﻿using cn.justwin.Domain.Entities;
+using cn.justwin.Domain.Services;
+using com.jwsoft.pm.data;
+using com.jwsoft.pm.entpm.action;
+using PMBase.Basic;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Data;
+using System.IO;
+using System.Linq;
+using System.Net;
+using System.Text;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+public partial class WxSet : System.Web.UI.Page
+{
+    BasicConfigService basicConfigService = new BasicConfigService();
+    PTYhmcService PTYhmcService = new PTYhmcService();
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        if (!base.IsPostBack)
+        {
+            domain.Text = basicConfigService.GetValue("domain");
+            corpId.Text = basicConfigService.GetValue("corpId");
+            corpSecret.Text = basicConfigService.GetValue("corpSecret");
+            journalIfCheckTime.SelectedValue= basicConfigService.GetValue("journalIfCheckTime");
+            journalIfScore.SelectedValue = basicConfigService.GetValue("journalIfScore");
+        }
+    }
+
+    protected void btnSave_Click(object sender, EventArgs e)
+    {
+        string strdomain = domain.Text.Trim().ToString();
+        string strcorpId = corpId.Text.Trim().ToString();
+        string strcorpSecret = corpSecret.Text.Trim().ToString();
+        try
+        {
+            BasicConfig byName = basicConfigService.GetByName("domain");
+            byName.ParaValue = domain.Text.Trim().ToString();
+            basicConfigService.Update(byName);
+
+            BasicConfig byName2 = basicConfigService.GetByName("corpId");
+            byName2.ParaValue = corpId.Text.Trim().ToString();
+            basicConfigService.Update(byName2);
+
+            BasicConfig byName3 = basicConfigService.GetByName("corpSecret");
+            byName3.ParaValue = corpSecret.Text.Trim().ToString();
+            basicConfigService.Update(byName3);
+
+            BasicConfig byName4 = basicConfigService.GetByName("journalIfCheckTime");
+            byName4.ParaValue = journalIfCheckTime.Text.Trim().ToString();
+            basicConfigService.Update(byName4);
+
+            BasicConfig byName5 = basicConfigService.GetByName("journalIfScore");
+            byName5.ParaValue = journalIfScore.Text.Trim().ToString();
+            basicConfigService.Update(byName5);
+            string script = "\r\n\t\t\t\t\t<script>\r\n\t\t\t\t\t\ttop.ui.show( '设置成功!');\r\n\t\t\t\t\t</script>\r\n\t\t\t\t";
+            base.ClientScript.RegisterStartupScript(base.GetType(), Guid.NewGuid().ToString(), script);
+        }
+        catch
+        {
+            string script2 = "\r\n\t\t\t\t\t<script>\r\n\t\t\t\t\t\ttop.ui.show( '设置失败!');\r\n\t\t\t\t\t</script>\r\n\t\t\t\t";
+            base.ClientScript.RegisterStartupScript(base.GetType(), Guid.NewGuid().ToString(), script2);
+        }
+        return;
+    }
+    
+    protected void btnToBD_Click(object sender, EventArgs e)
+    {
+        //string strToken = WXAPI.getToken();
+    }
+    protected void btnToWX_Click(object sender, EventArgs e)
+    {
+        //string strToken = WXAPI.getToken();
+        //Hashtable allUser = base.Cache["USERLIST"] as Hashtable;
+        //if (allUser == null)
+        //{
+        //    allUser = PTYhmcService.GetAllUser();
+        //}
+
+        //DataTable dt = PersonnelAction.QueryPersonnelById(SqlStringConstructor.GetQuotedString(array[1]));
+        //string strRe = WXAPI.createWXry(dt.Rows[0]);
+        //if (strRe != "0")
+        //{
+        //    //this.JS.Text = "top.ui.alert('同步到微信失败！');";
+        //}
+        //else { }
+
+        //foreach (DictionaryEntry de in allUser)
+        //{
+        //    //Console.WriteLine("Key：" + de.Key + " | Values：" + de.Value);
+        //}
+    }
+}
+
+
+//		httpCookie.Expires = DateTime.MaxValue;
+//		base.Response.Cookies.Set(httpCookie);
+
+//    POST数据到HTTPS站点，用它来登录百度：
+
+//string loginUrl = "https://passport.baidu.com/?login";  
+//string userName = "userName";  
+//string password = "password";  
+//string tagUrl = "http://cang.baidu.com/"+userName+"/tags";  
+//Encoding encoding = Encoding.GetEncoding("gb2312");  
+
+//IDictionary<string, string> parameters = new Dictionary<string, string>();  
+//parameters.Add("tpl", "fa");  
+//parameters.Add("tpl_reg", "fa");  
+//parameters.Add("u", tagUrl);  
+//parameters.Add("psp_tt", "0");  
+//parameters.Add("username", userName);  
+//parameters.Add("password", password);  
+//parameters.Add("mem_pass", "1");  
+//HttpWebResponse response = HttpWebResponseUtility.CreatePostHttpResponse(loginUrl, parameters, null, null, encoding, null);  
+//string cookieString = response.Headers["Set-Cookie"]; 
+
+//发送GET请求到HTTP站点
+//    string userName = "userName";
+//string tagUrl = "http://cang.baidu.com/" + userName + "/tags";
+//CookieCollection cookies = new CookieCollection();//如何从response.Headers["Set-Cookie"];中获取并设置CookieCollection的代码略  
+//response = HttpWebResponseUtility.CreateGetHttpResponse(tagUrl, null, null, cookies);  
+
+//    发送POST请求到HTTP站点
+//        string loginUrl = "http://home.51cto.com/index.php?s=/Index/doLogin";
+//    string userName = "userName";
+//    string password = "password";
+
+//    IDictionary<string, string> parameters = new Dictionary<string, string>();
+//    parameters.Add("email", userName);  
+//parameters.Add("passwd", password);  
+
+//HttpWebResponse response = HttpWebResponseUtility.CreatePostHttpResponse(loginUrl, parameters, null, null, Encoding.UTF8, null);

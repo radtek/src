@@ -1,0 +1,16 @@
+﻿
+.noprint
+{
+	display: none;
+}
+
+html, body, form
+{
+	width: 100%;
+	height:auto;
+	margin: 0px;
+	padding: 0px;
+	border-width: 0px;
+	overflow: visible;
+	background-color:#FFF;
+}

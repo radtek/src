@@ -1,0 +1,97 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="WxSet.aspx.cs" Inherits="WxSet" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title>企业号配置</title>
+    <style type="text/css">
+        .auto-style1 {
+            width: 5%;
+            height: 22px;
+        }
+
+        .auto-style2 {
+            width: 95%;
+            height: 22px;
+        }
+    </style>
+</head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>参数配置</title>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <div class="pagediv" style="height: 49%; border-bottom: solid 2px #CADEED;">
+            <table class="gvdata" cellspacing="0px" border="1px" style="width: 100%; margin: auto; border-collapse: collapse;">
+                <tr>
+                    <td style="text-align: center;" colspan="2">企业号相关参数配置</td>
+                </tr>
+                <tr>
+                    <td style="text-align: right; width: 20%;">可信域名
+                    </td>
+                    <td style="text-align: left; width: 80%;">
+                        <asp:TextBox ID="domain" runat="server" placeholder="请输入可信域名" Width="487px">http://www.joyesoft.com/ </asp:TextBox>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: right;">corpId
+                    </td>
+                    <td style="text-align: left;">
+                        <asp:TextBox ID="corpId" runat="server" placeholder="请输入corpId" Width="487px">wx1a7fbb6e2f8ddeb4</asp:TextBox>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: right;" class="auto-style1">corpSecret
+                    </td>
+                    <td style="text-align: left;" class="auto-style2">
+                        <asp:TextBox ID="corpSecret" runat="server" placeholder="请输入corpSecret" Width="487px">ZHUYgsjBkMQk5GsqxgaNoQTzXcueBMJX31oK5uEKG7gdeImGnZlCxXhFupePjJEu</asp:TextBox>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: center;" colspan="2">工作日志相关参数配置</td>
+                </tr>
+                <tr>
+                    <td style="text-align: right;" class="auto-style1">日志填写时,</br>是否做时间重复检查
+                    </td>
+                    <td style="text-align: left;" class="auto-style2">
+                        <asp:RadioButtonList ID="journalIfCheckTime" runat="server" RepeatDirection="Horizontal">
+                            <asp:ListItem Value="0">否</asp:ListItem>
+                            <asp:ListItem Value="1">是</asp:ListItem>
+                        </asp:RadioButtonList>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: right;" class="auto-style1">日志查阅时,</br>是否开启评分功能
+                    </td>
+                    <td style="text-align: left;" class="auto-style2">
+                        <asp:RadioButtonList ID="journalIfScore" runat="server" RepeatDirection="Horizontal">
+                            <asp:ListItem Value="0">否</asp:ListItem>
+                            <asp:ListItem Value="1">是</asp:ListItem>
+                        </asp:RadioButtonList>
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <td colspan="2" style="text-align: right;">
+                        <asp:Button ID="btnSave" Text="保存" runat="server" OnClick="btnSave_Click" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+      <%--  <div class="pagediv" style="height: 49%; border-bottom: solid 2px #CADEED;">
+            <table class="gvdata" cellspacing="0px" border="1px" style="width: 100%; margin: auto; border-collapse: collapse;">
+                <tr>
+                    <td colspan="2" style="text-align: left;">
+                        <asp:Button ID="btnToBD" Text="同步通讯录(同步到本地)" runat="server" OnClick="btnToBD_Click" />
+                    </td>
+                    <td colspan="2" style="text-align: left;">
+                        <asp:Button ID="btnToWX" Text="同步通讯录(同步到微信)" runat="server" OnClick="btnToWX_Click" />
+                    </td>
+                </tr>
+            </table>
+        </div>--%>
+    </form>
+</body>
+</html>

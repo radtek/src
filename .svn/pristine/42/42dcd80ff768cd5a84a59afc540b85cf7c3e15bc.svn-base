@@ -1,0 +1,159 @@
+<div class="userOrDept_select">
+    <div id="checkUsers" class="wrap">
+        <div class="selectTab bottom_boder flexbox">
+            <!--<div datatype="group" class="selectTab_item flexItem active">常用</div>-->
+            <div datatype="user" class="selectTab_item flexItem">选择人员</div>
+        </div>
+        <div class="wrap_inner" style="height:571px">
+            <div class="search_box_height"></div>
+            <div class="selectMain">
+                <!--<div class="selectMain_item">-->
+                <!--<div class="itemTitle bottom_boder c999">标签(<span></span>)-->
+                <!--<i class="icon-slide icon-slideDown"></i>-->
+                <!--</div>-->
+                <!--<div style="display: none;"></div>-->
+                <!--<div class="itemTitle bottom_boder c999">常用群组(<span></span>)-->
+                <!--<i class="icon-slide icon-slideDown"></i>-->
+                <!--</div> <div style="display: none;"></div>-->
+                <!--<div class="itemTitle bottom_boder c999">常用联系人</div>-->
+                <!--<div></div>-->
+                <!--</div>-->
+                <div class="selectMain_item" style="display: block;">
+                    <div class="selectSearch bottom_boder flexbox">
+                        <div class="search_button">
+                            <i class="icon_search"></i>
+                            <span>姓名/手机号</span>
+                        </div>
+                        <div class="search_more">
+                            <a class="search_letter_btn">
+                                <i class="ic_letterList"></i>
+                            </a>
+                            <div id="allUsersFirst" class="letter_list" style="z-index: 9; top: 44px; display: none;">
+                                <ul class="clearfix">
+                                    <li><a>A</a></li>
+                                    <li><a>B</a></li>
+                                    <li><a>C</a></li>
+                                    <li><a>D</a></li>
+                                    <li><a>E</a></li>
+                                    <li><a>F</a></li>
+                                    <li><a>G</a></li>
+                                    <li><a>H</a></li>
+                                    <li><a>I</a></li>
+                                    <li><a>J</a></li>
+                                    <li><a>K</a></li>
+                                    <li><a>L</a></li>
+                                    <li><a>M</a></li>
+                                    <li><a>N</a></li>
+                                    <li><a>O</a></li>
+                                    <li><a>P</a></li>
+                                    <li><a>Q</a></li>
+                                    <li><a>R</a></li>
+                                    <li><a>S</a></li>
+                                    <li><a>T</a></li>
+                                    <li><a>U</a></li>
+                                    <li><a>V</a></li>
+                                    <li><a>W</a></li>
+                                    <li><a>X</a></li>
+                                    <li><a>Y</a></li>
+                                    <li><a>Z</a></li>
+                                    <li><a>?</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="itemTitle bottom_boder bgfff fz16" onclick="changeType(this,'bm')" style="line-height: 45px;">按组织架构选人<a class="rightLink1">&gt;</a></div>
+                    <div class="itemTitle bottom_boder bgfff fz16" onclick="changeType(this,'ry')" style="line-height: 45px;display:none">按成员名称选人<a class="rightLink1">&gt;</a></div>
+                    <div id="users" style="display: block;">
+                        <div id="allUsers">
+                            <!--全部人员-->
+                            <!--全部人员-->
+                        </div>
+                    </div>
+                    <div id="depts" style="display: none;">
+                        <div id="allDepts">
+                            <!--部门人员-->
+                            <!--部门人员-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="footheight mt20"></div>
+        </div>
+        <div class="foot_bar foot_bar_user">
+            <div class="foot_bar_inner flexbox">
+                <div class="flexItem">
+                    <a onclick="closeChecked()" class="btn qwui-btn_default">取消</a>
+                </div>
+                <div id="checked" class="selected mt5">
+                </div>
+                <div class="flexItem">
+                    <a onclick="okChecked()" class="btn fr">确定</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--搜索人员部分-->
+    <div id="searchUsers" class="wrap" style="display: none;">
+        <div class="selectSearch bottom_boder flexbox selectSearchBox">
+            <div class="search_outer">
+                <div class="search_inner">
+                    <a><i class="icon_search" id="search"></i></a>
+                    <a><i class="icon_del"></i></a>
+                    <input type="search" placeholder="姓名/手机号" required="required" class="search_input">
+                </div>
+            </div>
+            <div class="search_more">
+                <a class="search_letter_btn">
+                    <i class="ic_letterList"></i>
+                </a>
+                <div class="letter_list" style="z-index: 9; top: 44px; display: none;">
+                    <ul class="clearfix">
+                        <li><a>A</a></li>
+                        <li><a>B</a></li>
+                        <li><a>C</a></li>
+                        <li><a>D</a></li>
+                        <li><a>E</a></li>
+                        <li><a>F</a></li>
+                        <li><a>G</a></li>
+                        <li><a>H</a></li>
+                        <li><a>I</a></li>
+                        <li><a>J</a></li>
+                        <li><a>K</a></li>
+                        <li><a>L</a></li>
+                        <li><a>M</a></li>
+                        <li><a>N</a></li>
+                        <li><a>O</a></li>
+                        <li><a>P</a></li>
+                        <li><a>Q</a></li>
+                        <li><a>R</a></li>
+                        <li><a>S</a></li>
+                        <li><a>T</a></li>
+                        <li><a>U</a></li>
+                        <li><a>V</a></li>
+                        <li><a>W</a></li>
+                        <li><a>X</a></li>
+                        <li><a>Y</a></li>
+                        <li><a>Z</a></li>
+                        <li><a>*</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div id="userOrDept_select_r" class="wrap_inner" style="height:571px">
+            <div>
+                <div class="search_box_height"></div>
+                <div id="searchResult">
+                    <!--搜索到的人员-->
+                    <!--搜索到的人员-->
+                </div>
+                <p class="text-center c999 mt30 pt20" id="noSearchResult" style="display: none;">没有搜索到任何数据，换别的关键字试试</p>
+                <div class="footheight"></div>
+            </div>
+        </div>
+        <div class="foot_bar foot_bar_result">
+            <div class="foot_bar_inner flexbox">
+                <a id="selectCheckedOk" class="flexItem btn">确定</a>
+            </div>
+        </div>
+    </div>
+</div>

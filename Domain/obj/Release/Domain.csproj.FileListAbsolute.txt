@@ -1,0 +1,3 @@
+E:\workspace\NEW_Space\Domain\bin\Release\Domain.dll
+E:\workspace\NEW_Space\Domain\obj\Release\Domain.csprojResolveAssemblyReference.cache
+E:\workspace\NEW_Space\Domain\obj\Release\Domain.dll

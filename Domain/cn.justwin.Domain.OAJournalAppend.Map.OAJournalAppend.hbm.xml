@@ -1,0 +1,12 @@
+<?xml version="1.0"  encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" assembly="Domain" namespace="cn.justwin.Domain.Entities">
+  <class name="OAJournalAppend" table="OA_Journal_Append" lazy="true">
+    <id name="Id" column="Id" type="string" unsaved-value="0">
+    </id>
+    <property name="journal_id" column="journal_id" type="string"  />
+    <property name="user_id" column="user_id" type="string"  />
+    <property name="user_type" column="user_type" type="int"  />
+    <property name="look_time" column="look_time" type="DateTime"  />
+    <property name="score" column="score" type="string"  />
+  </class>
+</hibernate-mapping>

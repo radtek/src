@@ -1,0 +1,695 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>WebUtil</name>
+    </assembly>
+    <members>
+        <member name="T:cn.justwin.Web.CacheHelper">
+            <summary>
+            CacheHelper
+            </summary>
+        </member>
+        <member name="M:cn.justwin.Web.CacheHelper.#cctor">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="M:cn.justwin.Web.CacheHelper.Set(System.String,System.Object)">
+            <summary>
+            设置缓存
+            </summary>
+            <param name="key"></param>
+            <param name="val"></param>
+        </member>
+        <member name="M:cn.justwin.Web.CacheHelper.Get(System.String)">
+            <summary>
+            读取缓存
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:cn.justwin.Web.CacheHelper.Delete(System.String)">
+            <summary>
+            删除缓存
+            </summary>
+            <param name="key"></param>
+        </member>
+        <member name="M:cn.justwin.Web.CacheHelper.Exists(System.String)">
+            <summary>
+            是否存在
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:cn.justwin.Web.CacheHelper.InitSockIOPool">
+            <summary>
+            初始化SockIOPool
+            </summary>
+        </member>
+        <member name="T:cn.justwin.Web.CalculatorHelper">
+            <summary>
+            计算器
+            </summary>
+        </member>
+        <member name="M:cn.justwin.Web.CalculatorHelper.#cctor">
+            <summary>
+            静态构造方法
+            </summary>
+        </member>
+        <member name="M:cn.justwin.Web.CalculatorHelper.IsValid(System.String,System.String[])">
+            <summary>
+            检查有效性
+            </summary>
+            <param name="expression">表达式</param>
+            <param name="items">指定的项</param>
+            <example>([基本工资] + [岗位工作] - ([奖金] * [工日])) 为正确格式</example>
+            <returns>是否有效</returns>
+        </member>
+        <member name="M:cn.justwin.Web.CalculatorHelper.Calc(System.String)">
+            <summary>
+            计算
+            </summary>
+            <param name="expression">表达式</param>
+            <example>(100 + (200 - 50) * 3) = 550m</example>
+            <returns>计算结果</returns>
+        </member>
+        <member name="F:cn.justwin.Web.CalculatorHelper.engine">
+            <summary>
+            JintEngine
+            </summary>
+        </member>
+        <member name="T:cn.justwin.Web.ConfigHelper">
+             <summary>
+            ConfigParam 的摘要说明
+             </summary>
+        </member>
+        <member name="M:cn.justwin.Web.ConfigHelper.#cctor">
+            <summary>
+            静态构造方法
+            </summary>
+        </member>
+        <member name="M:cn.justwin.Web.ConfigHelper.Get(System.String)">
+            <summary>
+            获取配置信息
+            </summary>
+            <param name="key">键值</param>
+            <returns>配置信息</returns>
+        </member>
+        <member name="F:cn.justwin.Web.ConfigHelper.projectType">
+            <summary>
+            项目类型
+            </summary>
+        </member>
+        <member name="F:cn.justwin.Web.ConfigHelper.auditExpire">
+            <summary>
+            审核过期时间
+            </summary>
+        </member>
+        <member name="F:cn.justwin.Web.ConfigHelper.smtpHost">
+            <summary>
+            SMTP服务器
+            </summary>
+        </member>
+        <member name="F:cn.justwin.Web.ConfigHelper.smtpId">
+            <summary>
+            邮箱帐号
+            </summary>
+        </member>
+        <member name="F:cn.justwin.Web.ConfigHelper.smtpPwd">
+            <summary>
+            邮箱密码
+            </summary>
+        </member>
+        <member name="F:cn.justwin.Web.ConfigHelper.rtxEnabled">
+            <summary>
+            是否支持RTX
+            </summary>
+        </member>
+        <member name="F:cn.justwin.Web.ConfigHelper.rtxServerIP">
+            <summary>
+            RTX服务器IP
+            </summary>
+        </member>
+        <member name="F:cn.justwin.Web.ConfigHelper.rtxServerPort">
+            <summary>
+            RTX服务器端口号
+            </summary>
+        </member>
+        <member name="F:cn.justwin.Web.ConfigHelper.rtxPeriodHour">
+            <summary>
+            RTX代办工作提醒周期（小时）
+            </summary>
+        </member>
+        <member name="F:cn.justwin.Web.ConfigHelper.rtxPopupSecond">
+            <summary>
+            RTX弹出消息停留时间（秒）
+            </summary>
+        </member>
+        <member name="P:cn.justwin.Web.ConfigHelper.ProjectType">
+            <summary>
+            项目类型
+            </summary>
+        </member>
+        <member name="P:cn.justwin.Web.ConfigHelper.AuditExpire">
+            <summary>
+            审核过期时间
+            </summary>
+        </member>
+        <member name="P:cn.justwin.Web.ConfigHelper.SmtpHost">
+            <summary>
+            SMTP服务器
+            </summary>
+        </member>
+        <member name="P:cn.justwin.Web.ConfigHelper.SmtpId">
+            <summary>
+            邮箱帐号
+            </summary>
+        </member>
+        <member name="P:cn.justwin.Web.ConfigHelper.SmtpPwd">
+            <summary>
+            邮箱密码
+            </summary>
+        </member>
+        <member name="P:cn.justwin.Web.ConfigHelper.RTXEnabled">
+            <summary>
+            是否支持RTX
+            </summary>
+        </member>
+        <member name="P:cn.justwin.Web.ConfigHelper.RTXServerIP">
+            <summary>
+            RTX服务器IP
+            </summary>
+        </member>
+        <member name="P:cn.justwin.Web.ConfigHelper.RTXServerPort">
+            <summary>
+            RTX服务器端口号
+            </summary>
+        </member>
+        <member name="P:cn.justwin.Web.ConfigHelper.RTXPeriodHour">
+            <summary>
+            RTX代办工作提醒周期（小时）
+            </summary>
+        </member>
+        <member name="P:cn.justwin.Web.ConfigHelper.RTXPopupSecond">
+            <summary>
+            RTX弹出消息停留时间（秒）
+            </summary>
+        </member>
+        <member name="T:cn.justwin.Web.CsvHelper">
+            <summary>
+            CSV格式帮助类
+            </summary>
+        </member>
+        <member name="M:cn.justwin.Web.CsvHelper.ToCsv(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            把集合转换为CSV格式
+            </summary>
+            <param name="lst">字符串集合</param>
+            <returns>CSV格式</returns>
+        </member>
+        <member name="M:cn.justwin.Web.CsvHelper.ToList(System.String)">
+            <summary>
+            将CSV格式转换为字符串集合
+            </summary>
+            <param name="csv">CSV格式的字符串</param>
+            <returns>字符串集合</returns>
+        </member>
+        <member name="T:cn.justwin.Web.DateTimeHelper">
+            <summary>
+            DateTime帮助类
+            </summary>
+        </member>
+        <member name="M:cn.justwin.Web.DateTimeHelper.GetDateTime(System.Object)">
+            <summary>
+            返回可空日期类型
+            </summary>
+            <param name="str"></param>
+            <returns></returns>
+        </member>
+        <member name="T:cn.justwin.Web.DecimalUtility">
+            <summary>
+            Decimal辅助类
+            </summary>
+        </member>
+        <member name="F:cn.justwin.Web.DecimalUtility.decimalNumber">
+            <summary>
+            小数位数
+            </summary>
+        </member>
+        <member name="M:cn.justwin.Web.DecimalUtility.FormatToString(System.Object)">
+            <summary>
+            格式化小数
+            </summary>
+            <param name="obj"></param>
+            <returns></returns>
+        </member>
+        <member name="M:cn.justwin.Web.DecimalUtility.ConvertDecimal(System.Object)">
+            <summary>
+            转换类型，转换失败返回null
+            </summary>
+            <param name="obj"></param>
+            <returns></returns>
+        </member>
+        <member name="T:cn.justwin.Web.DirectoryUtility">
+            <summary>
+            文件夹辅助类
+            </summary>
+        </member>
+        <member name="M:cn.justwin.Web.DirectoryUtility.GetAnnex">
+            <summary>
+            返回所有附件
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:cn.justwin.Web.DirectoryUtility.GetAnnex(System.Boolean)">
+            <summary>
+            返回所有附件
+            </summary>
+            <param name="readOnly">是否只读</param>
+            <returns></returns>
+        </member>
+        <member name="M:cn.justwin.Web.DirectoryUtility.GetAnnexNames">
+            <summary>
+            返回当前路径下的所有文件名称
+            文件名称之间用逗号"，"隔开
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:cn.justwin.Web.DirectoryUtility.GetAnnexName">
+            <summary>
+            返回当前路径下所有的文件名称
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:cn.justwin.Web.DirectoryUtility.absolutePath">
+            <summary>
+            path的绝对路径
+            </summary>
+        </member>
+        <member name="T:cn.justwin.Web.Annex">
+            <summary>
+            文件信息
+            包含文件名称、文件大小
+            </summary>
+        </member>
+        <member name="F:cn.justwin.Web.Annex.readOnly">
+            <summary>
+            文件是否只读，默认可删除
+            </summary>
+        </member>
+        <member name="P:cn.justwin.Web.Annex.Name">
+            <summary>
+            文件名称
+            </summary>
+        </member>
+        <member name="P:cn.justwin.Web.Annex.Length">
+            <summary>
+            文件大小
+            </summary>
+        </member>
+        <member name="P:cn.justwin.Web.Annex.ReadOnly">
+            <summary>
+            是否只读
+            </summary>
+        </member>
+        <member name="P:cn.justwin.Web.Annex.Path">
+            <summary>
+            文件路径
+            当加载不同目录下的文件，可是实现文件删除
+            </summary>
+        </member>
+        <member name="T:cn.justwin.Web.DropDownlistUtil">
+            <summary>
+            DropDownlist辅助类
+            </summary>
+        </member>
+        <member name="M:cn.justwin.Web.DropDownlistUtil.AddEmptyItem(System.Web.UI.WebControls.DropDownList)">
+            <summary>
+            添加空项
+            </summary>
+            <param name="list"></param>
+        </member>
+        <member name="M:cn.justwin.Web.DropDownlistUtil.AddHintItem(System.Web.UI.WebControls.DropDownList,System.String)">
+            <summary>
+            添加提示项
+            </summary>
+            <param name="list"></param>
+            <param name="name"></param>
+        </member>
+        <member name="T:cn.justwin.Excel.ExcelUtility">
+            <summary>
+            Excel辅助类
+            </summary>
+        </member>
+        <member name="M:cn.justwin.Excel.ExcelUtility.#ctor(System.String)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="fullName">文件名称</param>
+        </member>
+        <member name="M:cn.justwin.Excel.ExcelUtility.GetCount(System.String)">
+            <summary>
+            获取行数
+            </summary>
+            <param name="tableName">表名称</param>
+            <returns>行数</returns>
+        </member>
+        <member name="M:cn.justwin.Excel.ExcelUtility.CreateConnectionString">
+            <summary>
+            创建连接字符串
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:cn.justwin.Excel.ExcelUtility.GetSchema">
+            <summary>
+            获取所有表名称
+            </summary>
+            <param name="path">路径</param>
+            <returns></returns>
+        </member>
+        <member name="M:cn.justwin.Excel.ExcelUtility.GetData(System.String)">
+            <summary>
+            获取数据
+            </summary>
+            <param name="path">路径</param>
+            <param name="tableName">表名称</param>
+            <returns></returns>
+        </member>
+        <member name="M:cn.justwin.Excel.ExcelUtility.GetRelation(System.String[])">
+            <summary>
+            返回数据库的列与Excel的对应关系
+            </summary>
+            <param name="arr"></param>
+            <returns></returns>
+        </member>
+        <member name="M:cn.justwin.Web.FileHelper.GetFileName(System.String)">
+            <summary>
+            根据文件的完整路径名称返回文件的文件名
+            </summary>
+            <param name="path">文件的完整路径名称</param>
+            <returns>文件名</returns>
+        </member>
+        <member name="M:cn.justwin.Web.FileHelper.GetFileDir(System.String)">
+            <summary>
+            根据文件的完整路径返回文件所在地文件夹
+            </summary>
+            <param name="path">文件的完整路径</param>
+            <returns>文件所在地文件夹</returns>
+        </member>
+        <member name="T:cn.justwin.pdf.PDFService">
+            <summary>
+            pdf文件操作
+            </summary>
+        </member>
+        <member name="M:cn.justwin.pdf.PDFService.#ctor(System.String)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="inputFile"></param>
+        </member>
+        <member name="M:cn.justwin.pdf.PDFService.PDFWatermark(System.Single,System.Single,cn.justwin.pdf.Point,cn.justwin.pdf.Point)">
+            <summary>
+            对原pdf文件打水印（图片水印和文字水印）
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:cn.justwin.pdf.PDFService.AddImageWatermark(iTextSharp.text.pdf.PdfReader,iTextSharp.text.pdf.PdfStamper,System.Collections.Generic.List{System.String},cn.justwin.pdf.Point,System.Single)">
+            <summary>
+            添加图片水印,水平间距10f的一排水印
+            </summary>
+        </member>
+        <member name="M:cn.justwin.pdf.PDFService.CreateImage(System.String,System.Single,System.Single,System.Single)">
+            <summary>
+            创建水印图片
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:cn.justwin.pdf.PDFService.AddTextWatermark(iTextSharp.text.pdf.PdfReader,iTextSharp.text.pdf.PdfStamper,System.String,cn.justwin.pdf.Point,System.Single)">
+            <summary>
+            添加文字水印
+            </summary>
+        </member>
+        <member name="M:cn.justwin.pdf.PDFService.CreateEmptyPDF">
+            <summary>
+            创建空内容PDF文件，路径与inputFile路径一致，并返回路径
+            此pdf文件用于打水印后覆盖inputFile
+            </summary>
+        </member>
+        <member name="M:cn.justwin.pdf.PDFService.CoverInputFile(System.String)">
+            <summary>
+            水印文件覆盖原文件
+            </summary>
+            <param name="ouputFilePath">水印文件</param>
+        </member>
+        <member name="M:cn.justwin.pdf.PDFService.StripTagsCharArray(System.String)">
+            <summary>
+            字符串格式换行(复制stringUtility)
+            </summary>
+            <param name="str">字符串</param>
+            <returns></returns>
+            <summary>
+            去除HTML标签获得纯文本内容  
+            </summary>
+            <param name="source"></param>
+            <returns></returns>
+        </member>
+        <member name="P:cn.justwin.pdf.PDFService.InputFile">
+            <summary>
+            输入pdf文件（包含路径）
+            </summary>
+        </member>
+        <member name="P:cn.justwin.pdf.PDFService.OutputFile">
+            <summary>
+            输出pdf文件（包含路径）
+            </summary>
+        </member>
+        <member name="P:cn.justwin.pdf.PDFService.ImageWatermark">
+            <summary>
+            水印图片路径
+            </summary>
+        </member>
+        <member name="P:cn.justwin.pdf.PDFService.auditInfo">
+            <summary>
+            审批信息
+            审批人电子签名、审批日期，审批意见
+            </summary>
+        </member>
+        <member name="P:cn.justwin.pdf.PDFService.TextWatermark">
+            <summary>
+            水印文本
+            </summary>
+        </member>
+        <member name="T:cn.justwin.Web.JwDebug">
+            <summary>
+            JwDebug
+            </summary>
+        </member>
+        <member name="M:cn.justwin.Web.JwDebug.Assert(System.Boolean)">
+            <summary>
+            条件为假时抛出异常
+            </summary>
+            <param name="condition">条件</param>
+        </member>
+        <member name="M:cn.justwin.Web.JwDebug.Assert(System.Boolean,System.String)">
+            <summary>
+            条件为假时抛出异常
+            </summary>
+            <param name="condition">条件</param>
+            <param name="msg">异常的信息</param>
+        </member>
+        <member name="M:cn.justwin.Web.JwDebug.Assert(System.Boolean,System.Exception)">
+            <summary>
+            条件为假时抛出异常
+            </summary>
+            <param name="condition">条件</param>
+            <param name="ex">异常</param>
+        </member>
+        <member name="M:cn.justwin.Web.Log4netHelper.#ctor">
+            <summary>
+            构造方法
+            </summary>
+        </member>
+        <member name="M:cn.justwin.Web.Log4netHelper.StartConfigure">
+            <summary>
+            在Application_Start()方法中调用此方法
+            </summary>
+        </member>
+        <member name="M:cn.justwin.Web.Log4netHelper.Info(System.Object,System.String)">
+            <summary>
+            记录日志
+            </summary>
+            <param name="title">日志标题</param>
+            <param name="obj">日志内容</param>
+        </member>
+        <member name="M:cn.justwin.Web.Log4netHelper.Debug(System.Object,System.String)">
+            <summary>
+            封装log4net的Debug方法
+            </summary>
+            <param name="obj"></param>
+        </member>
+        <member name="M:cn.justwin.Web.Log4netHelper.Error(System.Exception,System.String,System.String)">
+            <summary>
+            封装log4net的Error方法
+            </summary>
+            <param name="obj">要记入日志的信息</param>
+        </member>
+        <member name="M:cn.justwin.Web.Log4netHelper.CloseLog4net">
+            <summary>
+            关闭Log4Net
+            </summary>
+        </member>
+        <member name="T:cn.justwin.Web.MailUtility">
+            <summary>
+            邮件辅助类
+            </summary>
+        </member>
+        <member name="M:cn.justwin.Web.MailUtility.#ctor">
+            <summary>
+            构造方法
+            </summary>
+        </member>
+        <member name="M:cn.justwin.Web.MailUtility.#ctor(System.String,System.Collections.Generic.IList{System.String},System.String,System.String)">
+            <summary>
+            构造方法
+            </summary>
+            <param name="from">发件人</param>
+            <param name="toList">收件人列表</param>
+            <param name="subject">主题</param>
+            <param name="body">正文</param>
+        </member>
+        <member name="F:cn.justwin.Web.MailUtility.SuccessCallback">
+            <summary>
+            发送成功执行的方法
+            </summary>
+        </member>
+        <member name="F:cn.justwin.Web.MailUtility.FailCallback">
+            <summary>
+            发送失败执行的方法
+            </summary>
+        </member>
+        <member name="M:cn.justwin.Web.MailUtility.Send">
+            <summary>
+            发送邮件
+            </summary>
+        </member>
+        <member name="M:cn.justwin.Web.MailUtility.AddAttachMent(System.Net.Mail.MailMessage,System.Collections.Generic.IList{System.String})">
+            <summary>
+            添加附件
+            </summary>
+            <param name="mail">MailMessage</param>
+            <param name="attachLst">附件</param>
+        </member>
+        <member name="P:cn.justwin.Web.MailUtility.From">
+            <summary>
+            发件人
+            </summary>
+        </member>
+        <member name="P:cn.justwin.Web.MailUtility.ToList">
+            <summary>
+            收件人列表
+            </summary>
+        </member>
+        <member name="P:cn.justwin.Web.MailUtility.Subject">
+            <summary>
+            主题
+            </summary>
+        </member>
+        <member name="P:cn.justwin.Web.MailUtility.Body">
+            <summary>
+            正文
+            </summary>
+        </member>
+        <member name="P:cn.justwin.Web.MailUtility.AttachmentLst">
+            <summary>
+            附件
+            </summary>
+        </member>
+        <member name="M:cn.justwin.Web.RTXUtility.#ctor">
+            <summary>
+            构造方法
+            </summary>
+        </member>
+        <member name="P:cn.justwin.Web.RTXUtility.ServerIP">
+            <summary>
+            服务器IP
+            </summary>
+        </member>
+        <member name="P:cn.justwin.Web.RTXUtility.ServerPort">
+            <summary>
+            服务器端口号
+            </summary>
+        </member>
+        <member name="T:cn.justwin.Serialize.ISerializable">
+            <summary>
+            序列号接口
+            </summary>
+        </member>
+        <member name="T:cn.justwin.Serialize.JsonSerializer">
+            <summary>
+            JSON序列化类
+            </summary>
+        </member>
+        <member name="M:cn.justwin.Serialize.JsonSerializer.Serialize``1(``0)">
+            <summary>
+            讲指定类型序列化为JSON字符串
+            </summary>
+            <typeparam name="T">类型</typeparam>
+            <param name="t">类型实例</param>
+            <returns>JSON字符串</returns>
+        </member>
+        <member name="M:cn.justwin.Serialize.JsonSerializer.Deserialize``1(System.String)">
+            <summary>
+            将JSON字符串反序列化为指定类型
+            </summary>
+            <typeparam name="T">类型</typeparam>
+            <param name="str">JSON字符串</param>
+            <returns>该JSON字符串表示的类型实例</returns>
+        </member>
+        <member name="T:cn.justwin.Serialize.XmlSerializer">
+            <summary>
+            XML序列化类
+            </summary>
+        </member>
+        <member name="M:cn.justwin.Serialize.XmlSerializer.Serialize``1(``0)">
+            <summary>
+            将指定类型XML序列化为字符串
+            注意编码方式是utf16
+            </summary>
+            <typeparam name="T">类型</typeparam>
+            <param name="t">实例</param>
+            <returns>XML格式的字符</returns>
+        </member>
+        <member name="M:cn.justwin.Serialize.XmlSerializer.Deserialize``1(System.String)">
+            <summary>
+            将字符串反序列化为指定类型的实例
+            </summary>
+            <typeparam name="T">类型</typeparam>
+            <param name="str">XML格式的字符</param>
+            <returns>制定类型的实例</returns>
+        </member>
+        <member name="T:cn.justwin.Web.SharpZipLibWrap">
+            <summary>
+            对SharpZipLib.dll进行简单的包装
+            </summary>
+        </member>
+        <member name="T:MyWebsite.StopAppDomainRestartOnFolderDeleteModule">
+            <summary>
+            防止删除目录，session丢失
+            </summary>
+        </member>
+        <member name="M:cn.justwin.Web.StringHelper.GetArrayToInStr(System.String[])">
+            <summary>
+            根据数据转换为数据库in()指定的格式
+            </summary>
+            <param name="str"></param>
+            <returns></returns>
+        </member>
+        <member name="M:cn.justwin.Web.StringHelper.FilterSpecial(System.String)">
+            <summary>
+            过滤特殊字符
+            </summary>
+            <param name="str"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>
