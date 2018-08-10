@@ -26,7 +26,7 @@ namespace com.jwsoft.pm.data
 
         public static DataSet DataSetQuary(string SqlString)
         {
-            new com.jwsoft.common.EncryptDog.EncryptDog().IsAuthorization();
+           // new com.jwsoft.common.EncryptDog.EncryptDog().IsAuthorization();
             DataSet dataSet = new DataSet();
             SqlDataAdapter adapter = new SqlDataAdapter();
             SqlConnection connection = new Conn().SqlConnectionSystem();
@@ -49,7 +49,7 @@ namespace com.jwsoft.pm.data
 
         public static DataTable DataTableQuary(string SqlString)
         {
-            new com.jwsoft.common.EncryptDog.EncryptDog().IsAuthorization();
+           // new com.jwsoft.common.EncryptDog.EncryptDog().IsAuthorization();
             DataTable dataTable = new DataTable();
             SqlConnection connection = new Conn().SqlConnectionSystem();
             try
@@ -88,7 +88,7 @@ namespace com.jwsoft.pm.data
 
         public static int ExecSqlString(string SqlString)
         {
-            new com.jwsoft.common.EncryptDog.EncryptDog().IsAuthorization();
+            //new com.jwsoft.common.EncryptDog.EncryptDog().IsAuthorization();
             bool flag = false;
             SqlConnection connection = new Conn().SqlConnectionSystem();
             SqlTransaction transaction = connection.BeginTransaction();
@@ -124,7 +124,7 @@ namespace com.jwsoft.pm.data
 
         public static DataSet ExecuteDataSet(string spName, SqlParameter[] commandParameters)
         {
-            new com.jwsoft.common.EncryptDog.EncryptDog().IsAuthorization();
+            //new com.jwsoft.common.EncryptDog.EncryptDog().IsAuthorization();
             SqlConnection connection = new Conn().SqlConnectionSystem();
             SqlCommand command = new SqlCommand();
             SqlDataAdapter adapter = new SqlDataAdapter();
@@ -164,7 +164,7 @@ namespace com.jwsoft.pm.data
 
         public static DataTable ExecuteDataTable(string spName, SqlParameter[] commandParameters)
         {
-            new com.jwsoft.common.EncryptDog.EncryptDog().IsAuthorization();
+            //new com.jwsoft.common.EncryptDog.EncryptDog().IsAuthorization();
             SqlConnection connection = new Conn().SqlConnectionSystem();
             SqlCommand command = new SqlCommand();
             SqlDataAdapter adapter = new SqlDataAdapter();
@@ -204,7 +204,7 @@ namespace com.jwsoft.pm.data
 
         public static DataTable ExecuteDataTable(CommandType cmdType, string spName, SqlParameter[] commandParameters)
         {
-            new com.jwsoft.common.EncryptDog.EncryptDog().IsAuthorization();
+           // new com.jwsoft.common.EncryptDog.EncryptDog().IsAuthorization();
             SqlConnection connection = new Conn().SqlConnectionSystem();
             SqlCommand command = new SqlCommand();
             SqlDataAdapter adapter = new SqlDataAdapter();
@@ -244,7 +244,7 @@ namespace com.jwsoft.pm.data
 
         public static int ExecuteNonQuery(CommandType commandType, string spName, SqlParameter[] commandParameters)
         {
-            new com.jwsoft.common.EncryptDog.EncryptDog().IsAuthorization();
+            //new com.jwsoft.common.EncryptDog.EncryptDog().IsAuthorization();
             SqlConnection connection = new Conn().SqlConnectionSystem();
             SqlCommand command = new SqlCommand {
                 Connection = connection,
@@ -281,7 +281,7 @@ namespace com.jwsoft.pm.data
 
         public static void ExecuteProcedure(string spName)
         {
-            new com.jwsoft.common.EncryptDog.EncryptDog().IsAuthorization();
+            //new com.jwsoft.common.EncryptDog.EncryptDog().IsAuthorization();
             SqlConnection connection = new Conn().SqlConnectionSystem();
             SqlCommand command = new SqlCommand {
                 Connection = connection,
@@ -304,7 +304,7 @@ namespace com.jwsoft.pm.data
 
         public static void ExecuteProcedure(string spName, SqlParameter[] commandParameters)
         {
-            new com.jwsoft.common.EncryptDog.EncryptDog().IsAuthorization();
+            //new com.jwsoft.common.EncryptDog.EncryptDog().IsAuthorization();
             SqlConnection connection = new Conn().SqlConnectionSystem();
             SqlCommand command = new SqlCommand {
                 Connection = connection,
@@ -359,7 +359,7 @@ namespace com.jwsoft.pm.data
 
         public static object ExecuteScalar(string SqlString)
         {
-            new com.jwsoft.common.EncryptDog.EncryptDog().IsAuthorization();
+            //new com.jwsoft.common.EncryptDog.EncryptDog().IsAuthorization();
             object obj2 = new object();
             SqlConnection connection = new Conn().SqlConnectionSystem();
             SqlCommand command = new SqlCommand(SqlString) {
@@ -384,7 +384,7 @@ namespace com.jwsoft.pm.data
 
         public static object ExecuteScalar(string spName, SqlParameter[] commandParameters)
         {
-            new com.jwsoft.common.EncryptDog.EncryptDog().IsAuthorization();
+            //new com.jwsoft.common.EncryptDog.EncryptDog().IsAuthorization();
             object obj2 = new object();
             SqlConnection connection = new Conn().SqlConnectionSystem();
             SqlCommand command = new SqlCommand {
@@ -481,7 +481,7 @@ namespace com.jwsoft.pm.data
 
         public static void FillDataSet(DataSet data, string SqlString, string TableName)
         {
-            new com.jwsoft.common.EncryptDog.EncryptDog().IsAuthorization();
+            //new com.jwsoft.common.EncryptDog.EncryptDog().IsAuthorization();
             SqlDataAdapter adapter = new SqlDataAdapter();
             SqlConnection connection = new Conn().SqlConnectionSystem();
             try
@@ -612,7 +612,7 @@ namespace com.jwsoft.pm.data
         public static int GetRecordCount(string strTableName, string strWhere)
         {
             int num;
-            new com.jwsoft.common.EncryptDog.EncryptDog().IsAuthorization();
+           // new com.jwsoft.common.EncryptDog.EncryptDog().IsAuthorization();
             SqlParameter[] commandParameters = new SqlParameter[] { new SqlParameter("@tblName", strTableName), new SqlParameter("@fldName", ""), new SqlParameter("@PageSize", 1), new SqlParameter("@PageIndex", 1), new SqlParameter("@IsCount", 1), new SqlParameter("@OrderType", ""), new SqlParameter("@strWhere", strWhere) };
             try
             {
@@ -644,7 +644,7 @@ namespace com.jwsoft.pm.data
         public static DataTable GetRecordFromPage(ref int pgCount, string strSql, string pkName, int pgSize, int pgIndex)
         {
             DataTable table2;
-            new com.jwsoft.common.EncryptDog.EncryptDog().IsAuthorization();
+            //new com.jwsoft.common.EncryptDog.EncryptDog().IsAuthorization();
             strSql = Regex.Replace(strSql, @"\s+", " ");
             SqlParameter parameter = new SqlParameter("@pgCount", (int) pgCount) {
                 DbType = DbType.Int32,
@@ -667,7 +667,7 @@ namespace com.jwsoft.pm.data
         public static DataTable GetRecordFromPage(string strTableName, string strFieldName, int iPageSize, int iPageIndex, int iOrderType, string strWhere)
         {
             DataTable table;
-            new com.jwsoft.common.EncryptDog.EncryptDog().IsAuthorization();
+            //new com.jwsoft.common.EncryptDog.EncryptDog().IsAuthorization();
             int num = 0;
             SqlParameter[] commandParameters = new SqlParameter[] { new SqlParameter("@tblName", strTableName), new SqlParameter("@fldName", strFieldName), new SqlParameter("@PageSize", iPageSize), new SqlParameter("@PageIndex", iPageIndex), new SqlParameter("@IsCount", num), new SqlParameter("@OrderType", iOrderType), new SqlParameter("@strWhere", strWhere) };
             try
@@ -734,7 +734,7 @@ namespace com.jwsoft.pm.data
 
         public static bool NonQuerySqlString(string SqlString)
         {
-            new com.jwsoft.common.EncryptDog.EncryptDog().IsAuthorization();
+            //new com.jwsoft.common.EncryptDog.EncryptDog().IsAuthorization();
             bool flag = false;
             SqlConnection connection = new Conn().SqlConnectionSystem();
             SqlTransaction transaction = connection.BeginTransaction();
@@ -787,7 +787,7 @@ namespace com.jwsoft.pm.data
 
         public static string QuaryMaxid(string tablename, string fieldname)
         {
-            new com.jwsoft.common.EncryptDog.EncryptDog().IsAuthorization();
+            //new com.jwsoft.common.EncryptDog.EncryptDog().IsAuthorization();
             Conn conn = new Conn();
             string cmdText = "";
             string str2 = "";
@@ -811,7 +811,7 @@ namespace com.jwsoft.pm.data
 
         public static string QuaryMaxid(string tablename, string fieldname, string where)
         {
-            new com.jwsoft.common.EncryptDog.EncryptDog().IsAuthorization();
+           // new com.jwsoft.common.EncryptDog.EncryptDog().IsAuthorization();
             Conn conn = new Conn();
             string cmdText = "";
             string str2 = "";
@@ -835,7 +835,7 @@ namespace com.jwsoft.pm.data
 
         public static DataRow QueryDataRow(string sqlString)
         {
-            new com.jwsoft.common.EncryptDog.EncryptDog().IsAuthorization();
+           // new com.jwsoft.common.EncryptDog.EncryptDog().IsAuthorization();
             DataSet set = DataSetQuary(sqlString);
             set.CaseSensitive = false;
             if (set.Tables[0].Rows.Count > 0)

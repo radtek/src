@@ -107,40 +107,7 @@ namespace PMBase.Basic
             请求URL：https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid=ID&corpsecret=SECRECT
             注：此处标注大写的单词ID和SECRET，为需要替换的变量，根据实际获取值更新。其它接口也采用相同的标注，不再说明。
 
-            参数说明：
-
-            参数	必须	说明
-            corpid	是	企业ID
-            corpsecret	是	应用的凭证密钥
-            权限说明：
-
-            每个应用有独立的secret，所以每个应用的access_token应该分开来获取
-
-            返回结果：
-
-            {
-               "errcode":0，
-               "errmsg":""，
-               "access_token": "accesstoken000001",
-               "expires_in": 7200
-            }
-            参数	说明
-            access_token	获取到的凭证,最长为512字节
-            expires_in	凭证的有效时间（秒）
-            出错返回示例：
-
-            {
-               "errcode":40091,
-               "errmsg":"secret is invalid"
-            }
-            第四步：缓存和刷新access_token
-
-            开发者需要缓存access_token，用于后续接口的调用（注意：不能频繁调用gettoken接口，否则会受到频率拦截）。当access_token失效或过期时，需要重新获取。
-
-            access_token的有效期通过返回的expires_in来传达，正常情况下为7200秒（2小时），有效期内重复获取返回相同结果，过期后获取会返回新的access_token。此时企业微信保证新旧两个access_token在短时间内同时可用（access_token对应的有效期内可用），以保证企业服务的平滑过渡。
-            由于企业微信每个应用的access_token是彼此独立的，所以进行缓存时需要区分应用来进行存储。
-            access_token至少保留512字节的存储空间。
-            企业微信可能会出于运营需要，提前使access_token失效，开发者应实现access_token失效时重新获取的逻辑。
+            
              */
             #endregion
             string Secret = string.Empty;
@@ -149,6 +116,7 @@ namespace PMBase.Basic
             {
                 try
                 {
+                    //Get access_token from Cookies
                     return HttpContext.Current.Request.Cookies["access_token_"+ AgentId].Value;
                 }
                 catch
@@ -200,40 +168,7 @@ namespace PMBase.Basic
             请求URL：https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid=ID&corpsecret=SECRECT
             注：此处标注大写的单词ID和SECRET，为需要替换的变量，根据实际获取值更新。其它接口也采用相同的标注，不再说明。
 
-            参数说明：
-
-            参数	必须	说明
-            corpid	是	企业ID
-            corpsecret	是	应用的凭证密钥
-            权限说明：
-
-            每个应用有独立的secret，所以每个应用的access_token应该分开来获取
-
-            返回结果：
-
-            {
-               "errcode":0，
-               "errmsg":""，
-               "access_token": "accesstoken000001",
-               "expires_in": 7200
-            }
-            参数	说明
-            access_token	获取到的凭证,最长为512字节
-            expires_in	凭证的有效时间（秒）
-            出错返回示例：
-
-            {
-               "errcode":40091,
-               "errmsg":"secret is invalid"
-            }
-            第四步：缓存和刷新access_token
-
-            开发者需要缓存access_token，用于后续接口的调用（注意：不能频繁调用gettoken接口，否则会受到频率拦截）。当access_token失效或过期时，需要重新获取。
-
-            access_token的有效期通过返回的expires_in来传达，正常情况下为7200秒（2小时），有效期内重复获取返回相同结果，过期后获取会返回新的access_token。此时企业微信保证新旧两个access_token在短时间内同时可用（access_token对应的有效期内可用），以保证企业服务的平滑过渡。
-            由于企业微信每个应用的access_token是彼此独立的，所以进行缓存时需要区分应用来进行存储。
-            access_token至少保留512字节的存储空间。
-            企业微信可能会出于运营需要，提前使access_token失效，开发者应实现access_token失效时重新获取的逻辑。
+            
              */
             #endregion
             string Secret = string.Empty;
