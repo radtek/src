@@ -52,9 +52,7 @@
         }
     </style>
 </head>
-<body>
-    <form id="form1" runat="server">
-        <div style="display: none;">
+<body><div style="display: none;">
             <br />
             主键ID<input type="text" value="" id="KeyId" runat="server" />
           <%--    <br />
@@ -62,6 +60,8 @@
             <br />
             用户ID<input type="text" value="" id="UserID" runat="server" />
         </div>
+    <form id="form1" runat="server">
+        
         <div id="wrap_main" class="wrap page">
             <div class="searchbar_wrap fixed">
                 <div class="search_bar">

@@ -20,6 +20,14 @@
 </head>
 <body>
     <form id="form1" runat="server">
+        <div style="display: none;">
+            <br />
+            主键ID<input type="text" value="" id="KeyId" runat="server" />
+          <%--    <br />
+            上级ID<input type="text" value="" id="ParentId" runat="server" />--%>
+            <br />
+            用户ID<input type="text" value="" id="UserID" runat="server" />
+        </div>
 <div id="wrap_main" class="wrap page">
         <div class="searchbar_wrap fixed">
             <div class="search_bar">
@@ -31,7 +39,7 @@
                         <a><i class="icon_search" onclick="search()"></i></a>
                         <a><i class="icon_del qw-icon_del" onclick="qk()"></i></a>
                         <div id="temp">
-                            <input type="text" class="search_input qw-search_input" name="search" id="search" placeholder="搜索标题">
+                            <input type="text" class="search_input qw-search_input" name="search" id="search" placeholder="搜索标题"/>
                         </div>
                     </div>
                 </div>
