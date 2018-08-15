@@ -20,14 +20,6 @@
 </head>
 <body>
     <form id="form1" runat="server">
-        <div style="display: none;">
-            <br />
-            主键ID<input type="text" value="" id="KeyId" runat="server" />
-          <%--    <br />
-            上级ID<input type="text" value="" id="ParentId" runat="server" />--%>
-            <br />
-            用户ID<input type="text" value="" id="UserID" runat="server" />
-        </div>
 <div id="wrap_main" class="wrap page">
         <div class="searchbar_wrap fixed">
             <div class="search_bar">

@@ -15,23 +15,22 @@ public partial class WeChat_log_newlist : System.Web.UI.Page
     public string mlname = string.Empty;
     public string keyID = string.Empty;
     public string code = string.Empty;
+    /*
     protected override void OnInit(System.EventArgs e)
     {
         this.code = base.Request["code"];
         this.userID = base.Request["userID"];
         this.keyID = base.Request["Id"];
+        base.OnInit(e);
     }
+    */
     protected void Page_Load(object sender, EventArgs e)
     {
-        if (!string.IsNullOrEmpty(userID))
-        {
-            UserID.Value = userID;
-        }
-        else
-        {
+       
+        
             //1000012 appid
-            UserID.Value = WXAPI.getUserIdByCode(code, "1000012"); //"00200002";//WXAPI.getUserIdByCode(code, "1000012"); //"00200002";//
-        }
+           userID = WXAPI.getUserIdByCode(code, "1000011"); //"00200002";//WXAPI.getUserIdByCode(code, "1000012"); //"00200002";//
+        
 
         if (!IsPostBack)
         {
@@ -41,19 +40,15 @@ public partial class WeChat_log_newlist : System.Web.UI.Page
                 DataTable dt = publicDbOpClass.DataTableQuary(strSql);
                 if (dt.Rows.Count > 0)
                 {
-                    KeyId.Value = dt.Rows[0]["Id"].ToString();
+                    keyID = dt.Rows[0]["Id"].ToString();
                     //ParentId.Value = dt.Rows[0]["ParentId"].ToString();
                 }
-                else
-                {
-                    KeyId.Value = "";
-                    //ParentId.Value = "";
-                }
+                
                 bindMenuHead(dt.Rows[0]["Id"].ToString(), 0);
             }
             else
             {
-                KeyId.Value = keyID.ToString();
+               
                 bindMenuHead(keyID, 1);
             }
         }
